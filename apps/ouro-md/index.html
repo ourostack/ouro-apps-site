@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ouro MD — The Markdown App</title>
+    <meta name="description" content="Download Ouro MD, a native Markdown app for macOS.">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">
+        <img src="/assets/ouro-md-icon.png" alt="">
+        <span>ouro.bot</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a href="/apps/ouro-md/stable.json">Release JSON</a>
+        <a href="https://github.com/ourostack/ouro-md">Source</a>
+      </nav>
+    </header>
+
+    <main class="hero">
+      <div class="hero-grid">
+        <section>
+          <p class="eyebrow">macOS 13+</p>
+          <h1>Ouro MD</h1>
+          <p class="lead">The Markdown App. Native document windows, beautiful reading themes, live editing, tables that behave, and verified updates.</p>
+          <div class="actions">
+            <a id="download" class="button" href="https://github.com/ourostack/ouro-md/releases/latest">Download for macOS</a>
+            <a class="button secondary" href="/ouro-md-install.sh">Installer script</a>
+          </div>
+          <div class="meta" aria-label="Release details">
+            <span id="version">Latest stable</span>
+            <span>Signed and notarized</span>
+            <span>Free</span>
+          </div>
+        </section>
+        <figure class="preview">
+          <img src="/assets/ouro-md-preview.png" alt="Ouro MD rendering a Markdown document with headings, tables, and callouts.">
+        </figure>
+      </div>
+    </main>
+
+    <section class="band">
+      <div class="section feature-grid">
+        <article class="feature">
+          <h3>Native documents</h3>
+          <p>Open, save, rename, export, and recover Markdown files with standard macOS document behavior.</p>
+        </article>
+        <article class="feature">
+          <h3>Readable by default</h3>
+          <p>Quartz, Graphite, Manuscript, and Newsprint themes keep long notes and large tables comfortable.</p>
+        </article>
+        <article class="feature">
+          <h3>Verified updates</h3>
+          <p>Direct-download builds verify release manifests, checksums, byte counts, bundle identity, and signatures.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="section install">
+        <div>
+          <h2>Terminal install</h2>
+          <p class="lead">The one-line installer fetches the latest release, verifies the manifest, and installs to Applications.</p>
+        </div>
+        <pre><code>curl -fsSL https://ouro.bot/ouro-md-install.sh | bash</code></pre>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>Copyright © 2026 Ari Mendelow.</span>
+      <nav class="nav" aria-label="Footer">
+        <a href="https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md">Privacy</a>
+        <a href="https://github.com/ourostack/ouro-md/issues/new">Support</a>
+      </nav>
+    </footer>
+
+    <script>
+      fetch('/apps/ouro-md/stable.json')
+        .then((response) => response.ok ? response.json() : null)
+        .then((release) => {
+          if (!release) return;
+          document.getElementById('version').textContent = `Version ${release.version}`;
+          const download = document.getElementById('download');
+          const dmg = release.downloads && release.downloads.dmg;
+          download.href = dmg && dmg.url ? dmg.url : release.releaseURL;
+        })
+        .catch(() => {});
+    </script>
+  </body>
+</html>
