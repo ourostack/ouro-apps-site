@@ -54,8 +54,13 @@ for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
 }
 
 const home = await readFile("index.html", "utf8");
-if (!home.includes("Software that keeps up") || !home.includes("Download Ouro MD")) {
-  throw new Error("homepage must carry product-led hero and download CTA copy");
+for (const term of ["Small tools for people who live in their work", "Ouro Workbench", "One home, more than one tool", "Download Ouro MD"]) {
+  if (!home.includes(term)) {
+    throw new Error(`homepage must present Ouro as an app family and still route to Ouro MD: missing ${term}`);
+  }
+}
+if (home.includes("First out of the drawer") || home.includes("Start with Ouro MD")) {
+  throw new Error("homepage must not overfit the Ouro brand to only Ouro MD");
 }
 
 const telemetry = await readFile("assets/site-telemetry.js", "utf8");
