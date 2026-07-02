@@ -1,0 +1,25 @@
+name: CI
+
+# Validates the site contract on every push and PR. Deployment is handled by
+# Cloudflare Pages' Git integration (build command: `npm ci && npm run build`,
+# output directory: `dist`), so this workflow intentionally does NOT deploy and
+# needs no secrets.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
