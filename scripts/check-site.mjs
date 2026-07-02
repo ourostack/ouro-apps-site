@@ -10,6 +10,7 @@ const requiredFiles = [
   "assets/ouro-md-preview.png",
   "assets/site-telemetry.js",
   "ouro-md-install.sh",
+  "scripts/render-ouromd-preview.mjs",
   "styles.css",
 ];
 
@@ -60,6 +61,13 @@ if (!home.includes("Software that keeps up") || !home.includes("Download Ouro MD
 const telemetry = await readFile("assets/site-telemetry.js", "utf8");
 if (!telemetry.includes("ouro_site_page_view") || !telemetry.includes("ouro_site_cta_clicked")) {
   throw new Error("site telemetry must capture page views and CTA clicks");
+}
+
+const previewRenderer = await readFile("scripts/render-ouromd-preview.mjs", "utf8");
+for (const term of ["Household Snack & Focus Index", "<table>", "<svg", "conic-gradient"]) {
+  if (!previewRenderer.includes(term)) {
+    throw new Error(`preview renderer must keep the playful chart-rich product document: missing ${term}`);
+  }
 }
 
 console.log("site contract ok");
