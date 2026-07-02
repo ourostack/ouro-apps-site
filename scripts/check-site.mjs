@@ -8,6 +8,7 @@ const requiredFiles = [
   "apps/ouro-md/stable.json",
   "assets/ouro-md-icon.png",
   "assets/ouro-md-preview.png",
+  "assets/site-telemetry.js",
   "ouro-md-install.sh",
   "styles.css",
 ];
@@ -44,10 +45,21 @@ for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
   const h1 = dom.window.document.querySelector("h1")?.textContent;
   const canonical = dom.window.document.querySelector('link[rel="canonical"]')?.getAttribute("href");
   const ogImage = dom.window.document.querySelector('meta[property="og:image"]')?.getAttribute("content");
+  const telemetry = dom.window.document.querySelector('script[src="/assets/site-telemetry.js"]');
   const img = dom.window.document.querySelector("img[src]");
-  if (!title || !description || !canonical || !ogImage || !h1 || !img) {
-    throw new Error(`${pagePath} is missing title, description, canonical, og image, h1, or image`);
+  if (!title || !description || !canonical || !ogImage || !telemetry || !h1 || !img) {
+    throw new Error(`${pagePath} is missing title, description, canonical, og image, telemetry, h1, or image`);
   }
+}
+
+const home = await readFile("index.html", "utf8");
+if (!home.includes("Software that keeps up") || !home.includes("Download Ouro MD")) {
+  throw new Error("homepage must carry product-led hero and download CTA copy");
+}
+
+const telemetry = await readFile("assets/site-telemetry.js", "utf8");
+if (!telemetry.includes("ouro_site_page_view") || !telemetry.includes("ouro_site_cta_clicked")) {
+  throw new Error("site telemetry must capture page views and CTA clicks");
 }
 
 console.log("site contract ok");
