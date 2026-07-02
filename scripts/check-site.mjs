@@ -12,6 +12,7 @@ const requiredFiles = [
   "apps/ouro-md/stable.json",
   "assets/ouro-md-icon.png",
   "assets/ouro-md-hero.png",
+  "assets/ouro-md-hero.mp4",
   "assets/ouro-md-editing.png",
   "assets/site-telemetry.js",
   "ouro-md-install.sh",
