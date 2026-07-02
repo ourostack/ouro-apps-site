@@ -23,7 +23,7 @@ The download page promotes the DMG automatically when the latest release has one
 
 ## Deployment
 
-GitHub Pages deploys on pushes to `main`.
+GitHub Pages deploys on pushes to `main` at the GitHub-hosted preview URL.
 
 Cloudflare Pages project:
 
@@ -34,7 +34,7 @@ npx wrangler pages deploy . --project-name ouro-apps-site --branch main
 The intended app distribution route is `https://ouro.bot/apps/ouro-md/`.
 `worker.js` and `wrangler.jsonc` proxy only the app-distribution paths from
 `ouro.bot` to the Pages project so the existing apex-domain behavior can evolve
-separately.
+separately. `https://ouro.bot/` is intentionally not owned by this repo today.
 
 ```sh
 npx wrangler deploy

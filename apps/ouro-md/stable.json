@@ -8,6 +8,8 @@
   "publishedAt": "2026-07-02T03:14:39Z",
   "bundleIdentifier": "org.ourostack.ouro-md",
   "minimumMacOS": "13.0",
+  "signingMode": "developer-id",
+  "notarized": true,
   "downloads": {
     "installerScript": {
       "url": "https://ouro.bot/ouro-md-install.sh"
@@ -16,13 +18,15 @@
       "name": "Ouro-MD-0.9.73.zip",
       "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.73/Ouro-MD-0.9.73.zip",
       "bytes": 7946078,
-      "sha256": "a6a68fba4add77f270123a1994c7c7c0e27eaf833bd9b3f51868ef0c819ec68c"
+      "sha256": "a6a68fba4add77f270123a1994c7c7c0e27eaf833bd9b3f51868ef0c819ec68c",
+      "role": "auto-update"
     },
     "manifest": {
       "name": "Ouro-MD-0.9.73.manifest.json",
       "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.73/Ouro-MD-0.9.73.manifest.json",
       "bytes": 402,
-      "sha256": "a9665158f89417bb4bfb572918579204e33f78df122d1d899ccccc80a58529a0"
+      "sha256": "a9665158f89417bb4bfb572918579204e33f78df122d1d899ccccc80a58529a0",
+      "role": "metadata"
     }
   }
 }

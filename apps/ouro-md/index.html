@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ouro MD — The Markdown App</title>
     <meta name="description" content="Download Ouro MD, a native Markdown app for macOS.">
+    <link rel="canonical" href="https://ouro.bot/apps/ouro-md/">
+    <meta property="og:title" content="Ouro MD — The Markdown App">
+    <meta property="og:description" content="Download Ouro MD, a native Markdown app for macOS.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ouro.bot/apps/ouro-md/">
+    <meta property="og:image" content="https://ouro.bot/assets/ouro-md-preview.png">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
@@ -31,7 +38,7 @@
           </div>
           <div class="meta" aria-label="Release details">
             <span id="version">Latest stable</span>
-            <span>Signed and notarized</span>
+            <span id="trust">Verified release metadata</span>
             <span>Free</span>
           </div>
         </section>
@@ -84,7 +91,22 @@
           document.getElementById('version').textContent = `Version ${release.version}`;
           const download = document.getElementById('download');
           const dmg = release.downloads && release.downloads.dmg;
-          download.href = dmg && dmg.url ? dmg.url : release.releaseURL;
+          const zip = release.downloads && release.downloads.zip;
+          if (dmg && dmg.url) {
+            download.href = dmg.url;
+            download.textContent = 'Download DMG';
+          } else if (zip && zip.url) {
+            download.href = zip.url;
+            download.textContent = 'Download ZIP';
+          } else {
+            download.href = release.releaseURL;
+          }
+          const trust = document.getElementById('trust');
+          if (release.notarized === true && release.signingMode === 'developer-id') {
+            trust.textContent = 'Signed and notarized';
+          } else if (release.signingMode) {
+            trust.textContent = `${release.signingMode} release`;
+          }
         })
         .catch(() => {});
     </script>

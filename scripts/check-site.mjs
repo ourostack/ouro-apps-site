@@ -3,7 +3,6 @@ import { JSDOM } from "jsdom";
 
 const requiredFiles = [
   "index.html",
-  "CNAME",
   ".nojekyll",
   "apps/ouro-md/index.html",
   "apps/ouro-md/stable.json",
@@ -33,6 +32,9 @@ if (release.subtitle !== "The Markdown App") {
 if (!release.downloads.zip?.sha256 || !release.downloads.manifest?.sha256) {
   throw new Error("stable.json must include zip and manifest digests");
 }
+if (!("notarized" in release) || !("signingMode" in release)) {
+  throw new Error("stable.json must include signing truth fields");
+}
 
 for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
   const html = await readFile(pagePath, "utf8");
@@ -40,9 +42,11 @@ for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
   const title = dom.window.document.querySelector("title")?.textContent;
   const description = dom.window.document.querySelector('meta[name="description"]')?.getAttribute("content");
   const h1 = dom.window.document.querySelector("h1")?.textContent;
+  const canonical = dom.window.document.querySelector('link[rel="canonical"]')?.getAttribute("href");
+  const ogImage = dom.window.document.querySelector('meta[property="og:image"]')?.getAttribute("content");
   const img = dom.window.document.querySelector("img[src]");
-  if (!title || !description || !h1 || !img) {
-    throw new Error(`${pagePath} is missing title, description, h1, or image`);
+  if (!title || !description || !canonical || !ogImage || !h1 || !img) {
+    throw new Error(`${pagePath} is missing title, description, canonical, og image, h1, or image`);
   }
 }
 

@@ -26,6 +26,14 @@ if (!zip || !manifest) {
   throw new Error(`Latest release ${release.tag_name} is missing zip or manifest assets`);
 }
 
+let manifestData = {};
+const manifestResponse = await fetch(manifest.browser_download_url, {
+  headers: { "User-Agent": "ouro-apps-site-release-refresh" },
+});
+if (manifestResponse.ok) {
+  manifestData = await manifestResponse.json();
+}
+
 const digest = (item) => String(item.digest || "").replace(/^sha256:/, "");
 const download = (item, role) => ({
   name: item.name,
@@ -45,6 +53,8 @@ const metadata = {
   publishedAt: release.published_at,
   bundleIdentifier: "org.ourostack.ouro-md",
   minimumMacOS: "13.0",
+  signingMode: manifestData.signingMode || null,
+  notarized: typeof manifestData.notarized === "boolean" ? manifestData.notarized : null,
   downloads: {
     installerScript: { url: "https://ouro.bot/ouro-md-install.sh" },
     zip: download(zip, "auto-update"),
