@@ -1,10 +1,5 @@
 name: CI
 
-# Validates the site contract on every push and PR. Deployment is handled by
-# Cloudflare Pages' Git integration (build command: `npm ci && npm run build`,
-# output directory: `dist`), so this workflow intentionally does NOT deploy and
-# needs no secrets.
-
 on:
   push:
     branches: [main]
@@ -12,6 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Validates the site contract on every push and PR.
   contract:
     runs-on: ubuntu-latest
     steps:
@@ -23,3 +19,35 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+
+  # Deploys to Cloudflare Pages on push to main. The `ouro-apps-site` project is
+  # a direct-upload project (Pages Git integration can't attach to those), so the
+  # deploy runs here via the Cloudflare API. Dormant until CLOUDFLARE_API_TOKEN is
+  # set — the deploy step skips cleanly, so builds stay green until then.
+  deploy:
+    needs: contract
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - id: gate
+        run: |
+          if [ -n "${{ secrets.CLOUDFLARE_API_TOKEN }}" ]; then
+            echo "go=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::CLOUDFLARE_API_TOKEN not set — skipping deploy. Add it to enable hands-free deploys."
+            echo "go=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Deploy to Cloudflare Pages
+        if: steps.gate.outputs.go == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=ouro-apps-site --branch=main

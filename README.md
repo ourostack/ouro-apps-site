@@ -44,28 +44,28 @@ npm test
 Production is **Cloudflare Pages** (project `ouro-apps-site`), fronted by the
 `ouro-apex` Worker which routes `ouro.bot/*` to the Pages origin.
 
-### Auto-deploy on push to `main` (Cloudflare Pages Git integration)
+### Auto-deploy on push to `main`
 
-Connect the repo once in the Cloudflare dashboard → **Workers & Pages → Pages →
-the `ouro-apps-site` project → Settings → Builds & deployments → connect to Git**,
-then set:
+The Pages project `ouro-apps-site` is a **direct-upload** project, so Cloudflare
+Pages Git integration can't attach to it (that's fixed when a project is created).
+Instead, the `deploy` job in `.github/workflows/ci.yml` deploys on push to `main`
+via the Cloudflare API. It's **dormant until a token is set** — the deploy step
+skips cleanly, so builds stay green until then. To turn on hands-free deploys:
 
-| Setting                | Value                    |
-| ---------------------- | ------------------------ |
-| Production branch      | `main`                   |
-| Framework preset       | None                     |
-| Build command          | `npm ci && npm run build`|
-| Build output directory | `dist`                   |
+1. Create a scoped token: Cloudflare dashboard → **My Profile → API Tokens →
+   Create Token**, permission **Account · Cloudflare Pages · Edit**.
+2. Add it as a repo secret (`CLOUDFLARE_ACCOUNT_ID` is already set):
 
-After that, every push to `main` builds and deploys automatically — no secrets,
-no GitHub Action required. The GitHub Actions workflow in `.github/workflows/ci.yml`
-only runs the contract check (it does **not** deploy).
+   ```sh
+   gh secret set CLOUDFLARE_API_TOKEN --repo ourostack/ouro-apps-site
+   ```
 
-### Manual deploy (verification / until Git integration is connected)
+From then on, every push to `main` builds and deploys automatically.
+
+### Manual deploy (interim / verification)
 
 ```sh
-npm run build
-npx wrangler pages deploy dist --project-name ouro-apps-site --branch main
+npm run deploy   # build + wrangler pages deploy dist
 ```
 
 ### The apex Worker (separate — only when it changes)

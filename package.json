@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node scripts/check-site.mjs && node scripts/build-dist.mjs",
     "test": "node scripts/check-site.mjs",
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name ouro-apps-site --branch main",
     "render:hero": "node scripts/render-hero.mjs",
     "refresh:ouro-md": "node scripts/refresh-ouromd-release.mjs"
   },
