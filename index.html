@@ -3,123 +3,171 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ouro - Useful Mac apps</title>
-    <meta name="description" content="Ouro is a home for small, polished Mac apps. Download Ouro MD today, and follow the next tools as they ship.">
+    <title>Ouro — Native Mac apps for people who work in text</title>
+    <meta name="description" content="Ouro builds small, sharp, native Mac apps. First up: Ouro MD, a Markdown editor that renders as you write. Download it free, and follow the tools still on the bench.">
     <link rel="canonical" href="https://ouro.bot/">
-    <meta property="og:title" content="Ouro - Useful Mac apps">
-    <meta property="og:description" content="Small, polished Mac apps. Ouro MD is available now; more tools are on the bench.">
+    <meta property="og:title" content="Ouro — Native Mac apps for people who work in text">
+    <meta property="og:description" content="Small, sharp, native Mac apps. Ouro MD is available now; more tools are on the bench.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ouro.bot/">
-    <meta property="og:image" content="https://ouro.bot/assets/ouro-md-preview.png">
+    <meta property="og:image" content="https://ouro.bot/assets/ouro-md-hero.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="/assets/ouro-md-icon.png">
     <link rel="stylesheet" href="/styles.css">
     <script defer src="/assets/site-telemetry.js"></script>
   </head>
   <body class="home-page">
-    <header class="site-header">
-      <a class="brand" href="/" data-telemetry="nav_home">
-        <img src="/assets/ouro-md-icon.png" alt="">
-        <span>ouro</span>
-      </a>
-      <nav class="nav" aria-label="Primary">
-        <a href="#apps" data-telemetry="nav_apps">Apps</a>
-        <a href="/apps/ouro-md/" data-telemetry="nav_ouro_md">Ouro MD</a>
-        <a href="https://github.com/ourostack" data-telemetry="nav_github">GitHub</a>
-      </nav>
+    <header class="site-header" id="top">
+      <div class="wrap">
+        <a class="brand" href="/" data-telemetry="nav_home">ouro</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#apps" data-telemetry="nav_apps">Apps</a>
+          <a href="/apps/ouro-md/" class="nav-hide-sm" data-telemetry="nav_ouro_md">Ouro MD</a>
+          <a href="https://github.com/ourostack" data-telemetry="nav_github">GitHub</a>
+          <a href="/apps/ouro-md/" class="btn" data-telemetry="nav_download">Download</a>
+        </nav>
+      </div>
     </header>
 
     <main>
-      <section class="home-hero family-hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Mac apps from the Ouro workshop</p>
-          <h1>Small tools for people who live in their work.</h1>
-          <p class="lead">Ouro makes focused native apps for notes, projects, agents, and the odd document that arrives wearing hiking boots.</p>
-          <div class="actions">
-            <a class="button" href="#apps" data-telemetry="hero_apps">See the apps</a>
-            <a class="button secondary" href="/apps/ouro-md/" data-telemetry="hero_ouro_md">Download Ouro MD</a>
+      <section class="hero">
+        <div class="wrap">
+          <div class="hero-copy">
+            <p class="eyebrow reveal">Ouro · Native Mac apps</p>
+            <h1 class="reveal d1">Markdown that renders <span class="accent">as you write.</span></h1>
+            <p class="lead reveal d2">Ouro makes small, sharp apps for people who live in text. First out of the workshop: <strong>Ouro MD</strong> — write in Markdown and read it in place. No preview pane, no toggle, no source-code cave.</p>
+            <div class="actions reveal d3">
+              <a id="home-download" class="btn primary" href="/apps/ouro-md/" data-telemetry="home_download">Download Ouro MD</a>
+              <a class="btn ghost" href="/apps/ouro-md/" data-telemetry="home_learn_ouro_md">Learn about Ouro MD</a>
+            </div>
+            <div class="trust reveal d3">
+              <span>macOS 13+</span>
+              <span id="home-trust">Signed &amp; notarized</span>
+              <span>Local files stay local</span>
+            </div>
+          </div>
+
+          <div class="hero-media reveal d2">
+            <figure class="window" style="margin:0">
+              <div class="window-bar">
+                <span class="window-lights"><i></i><i></i><i></i></span>
+                <span class="window-title">How to Take Over the World.md</span>
+              </div>
+              <div class="window-media">
+                <img src="/assets/ouro-md-hero.png" width="1720" height="1144"
+                     alt="Ouro MD rendering a Markdown document — a heading, a styled warning callout, and a live flowchart diagram.">
+              </div>
+            </figure>
           </div>
         </div>
-
-        <div class="app-stack" aria-label="Ouro app cards">
-          <article class="stack-card stack-card-live">
-            <span class="status-pill">Available now</span>
-            <h2>Ouro MD</h2>
-            <p>A Markdown app for long docs, wide tables, charts, notes, and local files that should stay local.</p>
-            <img src="/assets/ouro-md-preview.png" alt="Ouro MD rendering a playful Markdown report with charts, tables, code, and callouts.">
-          </article>
-          <article class="stack-card stack-card-next">
-            <span class="status-pill muted-pill">In the workshop</span>
-            <h2>Ouro Workbench</h2>
-            <p>A native workspace for running, watching, and steering agent work without losing the plot.</p>
-          </article>
-        </div>
       </section>
 
-      <section id="apps" class="section app-shelf">
-        <div class="shelf-heading">
-          <p class="eyebrow">Apps</p>
-          <h2>One home, more than one tool.</h2>
-          <p>Ouro MD is the first public download here. Workbench and future apps belong on the same shelf, with their own pages when they are ready.</p>
-        </div>
+      <section class="section apps-section" id="apps">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">The apps</p>
+            <h2>One workshop, more than one tool.</h2>
+            <p>Ouro MD is the first app you can download here. Workbench and whatever comes next get their own home on the same shelf — when they're real, not before.</p>
+          </div>
 
-        <div class="app-cards">
-          <article class="app-card available-card">
-            <div>
-              <span class="status-pill">Available now</span>
+          <div class="apps-grid">
+            <article class="app-card featured">
+              <div class="app-card-top">
+                <img class="app-icon" src="/assets/ouro-md-icon.png" alt="">
+                <span class="pill live">Available now</span>
+              </div>
               <h3>Ouro MD</h3>
-              <p>Read and edit Markdown in a native Mac app that behaves like a document editor, not a browser tab in a trench coat.</p>
-            </div>
-            <div class="download-row">
-              <span id="home-version">Latest stable</span>
-              <span>macOS 13+</span>
-            </div>
-            <a id="home-download" class="button wide" href="/apps/ouro-md/" data-telemetry="home_download_dmg">Download Ouro MD</a>
-            <a class="text-link" href="/apps/ouro-md/" data-telemetry="home_more_ouro_md">Details</a>
-          </article>
+              <p>Write in Markdown and read it at the same time. A native editor that stays calm with long documents, wide tables, code, math, and diagrams.</p>
+              <div class="spacer"></div>
+              <div class="card-foot">
+                <a class="btn primary" href="/apps/ouro-md/" data-telemetry="card_download_ouro_md">Download</a>
+                <a class="text-link" href="/apps/ouro-md/" data-telemetry="card_learn_ouro_md">Details</a>
+              </div>
+            </article>
 
-          <article class="app-card quiet-card">
-            <div>
-              <span class="status-pill muted-pill">In progress</span>
+            <article class="app-card">
+              <div class="app-card-top">
+                <span class="app-glyph">◐</span>
+                <span class="pill soon">In the workshop</span>
+              </div>
               <h3>Ouro Workbench</h3>
-              <p>A native command center for agent sessions, repos, tasks, and the work that happens between them.</p>
-            </div>
-            <a class="button secondary wide" href="https://github.com/ourostack" data-telemetry="workbench_github">Follow on GitHub</a>
-          </article>
+              <p>A native command center for running, watching, and steering agent work — repos, tasks, and the space between them, without losing the plot.</p>
+              <div class="spacer"></div>
+              <div class="card-foot">
+                <a class="text-link" href="https://github.com/ourostack" data-telemetry="card_workbench_github">Follow along</a>
+              </div>
+            </article>
 
-          <article class="app-card quiet-card">
-            <div>
-              <span class="status-pill muted-pill">Later</span>
-              <h3>More small apps</h3>
-              <p>This page should grow as the tools grow: one clear app card, one honest status, one obvious next step.</p>
-            </div>
-          </article>
+            <article class="app-card quiet">
+              <div class="app-card-top">
+                <span class="app-glyph">＋</span>
+                <span class="pill soon">Later</span>
+              </div>
+              <h3>More small tools</h3>
+              <p>The shelf grows as the tools do: one clear card, one honest status, one obvious next step. No vaporware, no roadmaps you'll resent.</p>
+            </article>
+          </div>
         </div>
       </section>
 
+      <section class="section tint">
+        <div class="wrap">
+          <div class="section-head center">
+            <p class="eyebrow">Why Ouro</p>
+            <h2>Made the way desktop software used to be made.</h2>
+          </div>
+          <div class="apps-grid" style="margin-top:38px">
+            <article class="app-card">
+              <h3>Genuinely native</h3>
+              <p>Real Mac apps, not a browser tab in a trench coat. Native menus, shortcuts, and windows — fast, quiet, and at home on macOS.</p>
+            </article>
+            <article class="app-card">
+              <h3>Local-first</h3>
+              <p>Your files are plain files on your disk. No account to make, no cloud to trust, nothing phoning your documents home.</p>
+            </article>
+            <article class="app-card">
+              <h3>Shipped with receipts</h3>
+              <p>Public downloads are Developer-ID signed and notarized, with checksums and manifests you can verify. Trust, but audit.</p>
+            </article>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
-      <span>Copyright © 2026 Ari Mendelow.</span>
-      <nav class="nav" aria-label="Footer">
-        <a href="/apps/ouro-md/" data-telemetry="footer_ouro_md">Ouro MD</a>
-        <a href="https://github.com/ourostack" data-telemetry="footer_github">GitHub</a>
-      </nav>
+      <div class="wrap">
+        <div>
+          <a class="brand" href="/" data-telemetry="footer_home">ouro</a>
+          <p class="foot-meta">© 2026 Ari Mendelow · Native Mac apps.</p>
+        </div>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/apps/ouro-md/" data-telemetry="footer_ouro_md">Ouro MD</a>
+          <a href="https://github.com/ourostack" data-telemetry="footer_github">GitHub</a>
+        </nav>
+      </div>
     </footer>
 
     <script>
+      // Header hairline on scroll.
+      (function () {
+        var header = document.querySelector('.site-header');
+        var onScroll = function () { header.classList.toggle('is-scrolled', window.scrollY > 8); };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      })();
+      // Promote the live release: real version + direct download link when available.
       fetch('/apps/ouro-md/stable.json')
-        .then((response) => response.ok ? response.json() : null)
-        .then((release) => {
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (release) {
           if (!release) return;
-          document.getElementById('home-version').textContent = `Ouro MD ${release.version}`;
-          const download = document.getElementById('home-download');
-          const dmg = release.downloads && release.downloads.dmg;
-          if (dmg && dmg.url) {
-            download.href = dmg.url;
+          var dl = document.getElementById('home-download');
+          var dmg = release.downloads && release.downloads.dmg;
+          if (dmg && dmg.url) { dl.href = dmg.url; }
+          if (release.notarized === true && release.signingMode === 'developer-id') {
+            document.getElementById('home-trust').textContent = 'Signed & notarized';
           }
         })
-        .catch(() => {});
+        .catch(function () {});
     </script>
   </body>
 </html>
