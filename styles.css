@@ -178,6 +178,8 @@ p { margin: 0; }
 
 /* ---- App-window frame (product imagery) -------------------------------- */
 
+/* The product shot IS the real Ouro MD render — just frame it cleanly, no
+   invented app chrome. */
 .window {
   overflow: hidden;
   border: 1px solid var(--line-strong);
@@ -185,44 +187,9 @@ p { margin: 0; }
   background: var(--surface);
   box-shadow: var(--shadow-lg);
 }
-.window-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 40px;
-  padding: 0 15px;
-  border-bottom: 1px solid var(--line);
-  background: linear-gradient(var(--bg-tint), var(--bg));
-}
-.window-lights { display: flex; gap: 8px; }
-.window-lights i { width: 11px; height: 11px; border-radius: 50%; background: var(--line-strong); }
-.window-lights i:nth-child(1) { background: #e5695b; }
-.window-lights i:nth-child(2) { background: #e6bd53; }
-.window-lights i:nth-child(3) { background: #57ac57; }
-.window-title {
-  font-family: var(--mono);
-  font-size: 12.5px;
-  color: var(--faint);
-  margin-inline: auto;
-  transform: translateX(-16px);
-  max-width: 62%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.window-media { position: relative; background: var(--surface); }
-.window-media img, .window-media video { width: 100%; height: auto; }
-.window-media.placeholder {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 16 / 10;
-  color: var(--faint);
-  font-family: var(--mono);
-  font-size: 13px;
-  background:
-    repeating-linear-gradient(-45deg, transparent 0 12px, rgba(27,23,18,0.02) 12px 24px),
-    var(--bg);
-}
+.window-media { display: block; background: var(--surface); }
+.window-media img,
+.window-media video { display: block; width: 100%; height: auto; }
 
 /* ---- Hero -------------------------------------------------------------- */
 
@@ -389,7 +356,6 @@ code {
   .nav { gap: 14px; }
   .actions { gap: 10px; }
   .actions .btn { flex: 1 1 auto; }
-  .window-title { transform: none; }
   .app-card { padding: 22px; }
   .site-footer .wrap { flex-direction: column; align-items: flex-start; gap: 20px; }
 }
