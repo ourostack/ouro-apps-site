@@ -2,10 +2,10 @@
   "appName": "Ouro MD",
   "subtitle": "The Markdown App",
   "channel": "stable",
-  "version": "0.9.74",
-  "releaseTag": "v0.9.74",
-  "releaseURL": "https://github.com/ourostack/ouro-md/releases/tag/v0.9.74",
-  "publishedAt": "2026-07-02T06:23:54Z",
+  "version": "0.9.77",
+  "releaseTag": "v0.9.77",
+  "releaseURL": "https://github.com/ourostack/ouro-md/releases/tag/v0.9.77",
+  "publishedAt": "2026-07-02T22:54:23Z",
   "bundleIdentifier": "org.ourostack.ouro-md",
   "minimumMacOS": "13.0",
   "signingMode": "developer-id",
@@ -15,24 +15,24 @@
       "url": "https://ouro.bot/ouro-md-install.sh"
     },
     "zip": {
-      "name": "Ouro-MD-0.9.74.zip",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.74/Ouro-MD-0.9.74.zip",
-      "bytes": 7954528,
-      "sha256": "c2c28c58e1d784f02899683e5ae8da0b7abec82124a00a8e883f2d71981bc889",
+      "name": "Ouro-MD-0.9.77.zip",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.77/Ouro-MD-0.9.77.zip",
+      "bytes": 7951179,
+      "sha256": "51826529dcfa1ce863a2512920e2b88e5d9f418af5c8646c6b434031fc3eebcb",
       "role": "auto-update"
     },
     "dmg": {
-      "name": "Ouro-MD-0.9.74.dmg",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.74/Ouro-MD-0.9.74.dmg",
-      "bytes": 10583789,
-      "sha256": "98dd4169be68b75b701af612a31ad5b35e2bdb368d6dd574b16023fc1bc197a9",
+      "name": "Ouro-MD-0.9.77.dmg",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.77/Ouro-MD-0.9.77.dmg",
+      "bytes": 10587924,
+      "sha256": "a50aa06c8a097ad22987d8a043f82a8496728645018a7956e04e8401266489b4",
       "role": "interactive-install"
     },
     "manifest": {
-      "name": "Ouro-MD-0.9.74.manifest.json",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.74/Ouro-MD-0.9.74.manifest.json",
-      "bytes": 816,
-      "sha256": "1025ae756ebebc001aad1a540adb3451d5e50bdcd49c2513ab540e164b405969",
+      "name": "Ouro-MD-0.9.77.manifest.json",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.77/Ouro-MD-0.9.77.manifest.json",
+      "bytes": 806,
+      "sha256": "13742e651e326c68e52b13480990925e926c0d43ba8d232edae877ee56346741",
       "role": "metadata"
     }
   }
