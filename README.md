@@ -31,4 +31,11 @@ Cloudflare Pages project:
 npx wrangler pages deploy . --project-name ouro-apps-site --branch main
 ```
 
-The intended custom domain is `ouro.bot`.
+The intended app distribution route is `https://ouro.bot/apps/ouro-md/`.
+`worker.js` and `wrangler.jsonc` proxy only the app-distribution paths from
+`ouro.bot` to the Pages project so the existing apex-domain behavior can evolve
+separately.
+
+```sh
+npx wrangler deploy
+```
