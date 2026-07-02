@@ -3,83 +3,79 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ouro MD — The Markdown App</title>
-    <meta name="description" content="Download Ouro MD, a native Markdown app for macOS.">
+    <title>Ouro MD - The Markdown App</title>
+    <meta name="description" content="Download Ouro MD, a native Markdown app for macOS that makes long docs and wide tables feel civilized.">
     <link rel="canonical" href="https://ouro.bot/apps/ouro-md/">
-    <meta property="og:title" content="Ouro MD — The Markdown App">
-    <meta property="og:description" content="Download Ouro MD, a native Markdown app for macOS.">
+    <meta property="og:title" content="Ouro MD - The Markdown App">
+    <meta property="og:description" content="A native Markdown app for macOS that makes long docs and wide tables feel civilized.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ouro.bot/apps/ouro-md/">
     <meta property="og:image" content="https://ouro.bot/assets/ouro-md-preview.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="/styles.css">
+    <script defer src="/assets/site-telemetry.js"></script>
   </head>
-  <body>
+  <body class="app-page">
     <header class="site-header">
-      <a class="brand" href="/">
+      <a class="brand" href="/" data-telemetry="nav_home">
         <img src="/assets/ouro-md-icon.png" alt="">
-        <span>ouro.bot</span>
+        <span>ouro</span>
       </a>
       <nav class="nav" aria-label="Primary">
-        <a href="/apps/ouro-md/stable.json">Release JSON</a>
-        <a href="https://github.com/ourostack/ouro-md">Source</a>
+        <a href="/apps/ouro-md/stable.json" data-telemetry="nav_release_json">Release JSON</a>
+        <a href="https://github.com/ourostack/ouro-md" data-telemetry="nav_source">Source</a>
       </nav>
     </header>
 
-    <main class="hero">
-      <div class="hero-grid">
-        <section>
-          <p class="eyebrow">macOS 13+</p>
-          <h1>Ouro MD</h1>
-          <p class="lead">The Markdown App. Native document windows, beautiful reading themes, live editing, tables that behave, and verified updates.</p>
+    <main>
+      <section class="app-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Ouro MD for macOS 13+</p>
+          <h1>The Markdown app for documents with elbows.</h1>
+          <p class="lead">Write in Markdown. Read in comfort. Open real files. Tame wide tables. Keep your local notes local, even when they are carrying half a project on their back.</p>
           <div class="actions">
-            <a id="download" class="button" href="https://github.com/ourostack/ouro-md/releases/latest">Download for macOS</a>
-            <a class="button secondary" href="/ouro-md-install.sh">Installer script</a>
+            <a id="download" class="button" href="https://github.com/ourostack/ouro-md/releases/latest" data-telemetry="app_download">Download Ouro MD</a>
+            <a class="button secondary" href="/ouro-md-install.sh" data-telemetry="app_install_script">Install by terminal</a>
           </div>
-          <div class="meta" aria-label="Release details">
+          <div class="release-strip" aria-label="Release details">
             <span id="version">Latest stable</span>
             <span id="trust">Verified release metadata</span>
-            <span>Free</span>
+            <span>Local files stay yours</span>
           </div>
-        </section>
-        <figure class="preview">
+        </div>
+        <figure class="product-shot">
           <img src="/assets/ouro-md-preview.png" alt="Ouro MD rendering a Markdown document with headings, tables, and callouts.">
         </figure>
-      </div>
-    </main>
+      </section>
 
-    <section class="band">
-      <div class="section feature-grid">
-        <article class="feature">
-          <h3>Native documents</h3>
-          <p>Open, save, rename, export, and recover Markdown files with standard macOS document behavior.</p>
+      <section class="section feature-marquee">
+        <article>
+          <h2>It is nice to write in. It is nicer to read in.</h2>
+          <p>Markdown editors often make you pick a side: source code cave or decorative preview aquarium. Ouro MD lets the document feel like a document while staying honest about the Markdown underneath.</p>
         </article>
-        <article class="feature">
-          <h3>Readable by default</h3>
-          <p>Quartz, Graphite, Manuscript, and Newsprint themes keep long notes and large tables comfortable.</p>
-        </article>
-        <article class="feature">
-          <h3>Verified updates</h3>
-          <p>Direct-download builds verify release manifests, checksums, byte counts, bundle identity, and signatures.</p>
-        </article>
-      </div>
-    </section>
+        <div class="mini-grid">
+          <div><b>Tables behave</b><span>Wide ones scroll locally. Narrow ones simply sit there looking smug.</span></div>
+          <div><b>Files feel native</b><span>Open, rename, save, export, print, recent files. The Mac stuff is not a bonus round.</span></div>
+          <div><b>Keyboard paths exist</b><span>Shortcuts, command palette, discoverable commands, and less wandering through menus like a lost tourist.</span></div>
+          <div><b>Release checks bite</b><span>Checksums, manifests, signatures, packaged probes, installer smoke. The app arrives with receipts.</span></div>
+        </div>
+      </section>
 
-    <section class="band">
-      <div class="section install">
+      <section class="section install-section">
         <div>
-          <h2>Terminal install</h2>
-          <p class="lead">The one-line installer fetches the latest release, verifies the manifest, and installs to Applications.</p>
+          <p class="eyebrow">Terminal install</p>
+          <h2>One line, no treasure map.</h2>
+          <p class="lead">The installer fetches the latest release, verifies the manifest and checksum, and installs the app. It is there for people who prefer their magic auditable.</p>
         </div>
         <pre><code>curl -fsSL https://ouro.bot/ouro-md-install.sh | bash</code></pre>
-      </div>
-    </section>
+      </section>
+    </main>
 
     <footer class="site-footer">
       <span>Copyright © 2026 Ari Mendelow.</span>
       <nav class="nav" aria-label="Footer">
-        <a href="https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md">Privacy</a>
-        <a href="https://github.com/ourostack/ouro-md/issues/new">Support</a>
+        <a href="https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md" data-telemetry="footer_privacy">Privacy</a>
+        <a href="https://github.com/ourostack/ouro-md/issues/new" data-telemetry="footer_support">Support</a>
       </nav>
     </footer>
 
@@ -88,13 +84,13 @@
         .then((response) => response.ok ? response.json() : null)
         .then((release) => {
           if (!release) return;
-          document.getElementById('version').textContent = `Version ${release.version}`;
+          document.getElementById('version').textContent = `Ouro MD ${release.version}`;
           const download = document.getElementById('download');
           const dmg = release.downloads && release.downloads.dmg;
           const zip = release.downloads && release.downloads.zip;
           if (dmg && dmg.url) {
             download.href = dmg.url;
-            download.textContent = 'Download DMG';
+            download.textContent = 'Download Ouro MD';
           } else if (zip && zip.url) {
             download.href = zip.url;
             download.textContent = 'Download ZIP';
@@ -103,7 +99,7 @@
           }
           const trust = document.getElementById('trust');
           if (release.notarized === true && release.signingMode === 'developer-id') {
-            trust.textContent = 'Signed and notarized';
+            trust.textContent = 'Signed, notarized, and verified';
           } else if (release.signingMode) {
             trust.textContent = `${release.signingMode} release`;
           }

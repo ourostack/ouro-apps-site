@@ -4,9 +4,6 @@
   "main": "worker.js",
   "compatibility_date": "2026-07-02",
   "routes": [
-    { "pattern": "ouro.bot/apps/*", "zone_name": "ouro.bot" },
-    { "pattern": "ouro.bot/assets/*", "zone_name": "ouro.bot" },
-    { "pattern": "ouro.bot/styles.css", "zone_name": "ouro.bot" },
-    { "pattern": "ouro.bot/ouro-md-install.sh", "zone_name": "ouro.bot" }
+    { "pattern": "ouro.bot/*", "zone_name": "ouro.bot" }
   ]
 }
