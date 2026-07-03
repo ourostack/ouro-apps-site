@@ -12,9 +12,24 @@
     <meta property="og:url" content="https://ouro.bot/apps/ouro-md/">
     <meta property="og:image" content="https://ouro.bot/assets/ouro-md-hero.png">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="/assets/ouro-md-icon.png">
+    <link rel="icon" href="/assets/ouro-md-icon.png" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <link rel="stylesheet" href="/styles.css">
     <script defer src="/assets/site-telemetry.js"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Ouro MD",
+        "operatingSystem": "macOS 13+",
+        "applicationCategory": "DeveloperApplication",
+        "url": "https://ouro.bot/apps/ouro-md/",
+        "description": "A native macOS Markdown editor that renders as you type — no preview pane, no toggle.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "publisher": { "@type": "Organization", "name": "Ouro", "url": "https://ouro.bot/" }
+      }
+    </script>
   </head>
   <body class="app-page">
     <header class="site-header" id="top">
@@ -52,7 +67,7 @@
           <div class="hero-media reveal d2">
             <figure class="window" style="margin:0">
               <div class="window-media">
-                <video autoplay muted loop playsinline poster="/assets/ouro-md-hero.png" width="1280" height="720"
+                <video muted loop playsinline poster="/assets/ouro-md-hero.png" width="1280" height="720"
                        aria-label="Ouro MD: typing Markdown — a heading, bold, inline code, and an equation — and watching each render live in place as you write.">
                   <source src="/assets/ouro-md-hero.mp4" type="video/mp4">
                 </video>
@@ -147,6 +162,15 @@
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
       })();
+      // Respect reduced motion: only play the hero clip when motion is welcome;
+      // otherwise it holds on its poster frame.
+      if (!window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.window-media video').forEach(function (v) {
+          v.setAttribute('autoplay', '');
+          var p = v.play();
+          if (p && p.catch) p.catch(function () {});
+        });
+      }
       // Promote the real release: version, download link, signing truth.
       fetch('/apps/ouro-md/stable.json')
         .then(function (r) { return r.ok ? r.json() : null; })

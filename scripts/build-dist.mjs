@@ -13,6 +13,8 @@ const include = [
   "index.html",
   "styles.css",
   ".nojekyll",
+  "robots.txt",
+  "sitemap.xml",
   "ouro-md-install.sh",
   "apps",
   "assets",
