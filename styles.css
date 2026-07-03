@@ -165,14 +165,14 @@ p { margin: 0; }
 }
 .brand img { width: 28px; height: 28px; border-radius: 7px; box-shadow: var(--shadow-sm); }
 .nav { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 30px); }
-.nav a {
+.nav a:not(.btn) {
   color: var(--ink-soft);
   font-size: 15px;
   font-weight: 550;
   text-decoration: none;
   transition: color 0.15s ease;
 }
-.nav a:hover { color: var(--accent-ink); }
+.nav a:not(.btn):hover { color: var(--accent-ink); }
 .nav .btn { min-height: 38px; padding: 0 15px; font-size: 14px; }
 .nav-hide-sm { display: inline; }
 
