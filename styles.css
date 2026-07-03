@@ -333,7 +333,7 @@ code {
 .site-footer { border-top: 1px solid var(--line); padding-block: 40px; margin-top: 8px; }
 .site-footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
 .site-footer .brand { font-size: 15px; }
-.foot-meta { color: var(--faint); font-size: 13.5px; }
+.foot-meta { color: var(--muted); font-size: 13.5px; }
 .foot-nav { display: flex; flex-wrap: wrap; gap: 18px; }
 .foot-nav a { color: var(--muted); font-size: 14px; text-decoration: none; }
 .foot-nav a:hover { color: var(--accent-ink); }
