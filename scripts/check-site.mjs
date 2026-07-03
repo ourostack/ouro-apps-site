@@ -17,6 +17,9 @@ const requiredFiles = [
   "assets/site-telemetry.js",
   "ouro-md-install.sh",
   "styles.css",
+  "robots.txt",
+  "sitemap.xml",
+  "assets/apple-touch-icon.png",
 ];
 
 for (const file of requiredFiles) {
