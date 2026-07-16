@@ -39,6 +39,9 @@ if (release.appName !== "Ouro MD") {
 if (release.subtitle !== "The Markdown App") {
   throw new Error("stable.json subtitle must be The Markdown App");
 }
+if (release.bundleIdentifier !== "bot.ouro.md") {
+  throw new Error("stable.json bundleIdentifier must match the signed Ouro MD app");
+}
 if (!release.downloads.zip?.sha256 || !release.downloads.manifest?.sha256) {
   throw new Error("stable.json must include zip and manifest digests");
 }
