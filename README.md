@@ -54,9 +54,11 @@ Production is **Cloudflare Pages** (project `ouro-apps-site`), fronted by the
 
 The Pages project `ouro-apps-site` is a **direct-upload** project, so Cloudflare
 Pages Git integration can't attach to it (that's fixed when a project is created).
-Instead, the `deploy` job in `.github/workflows/ci.yml` deploys on push to `main`
-via the Cloudflare API. It's **dormant until a token is set** — the deploy step
-skips cleanly, so builds stay green until then. To turn on hands-free deploys:
+Instead, the `deploy` job in `.github/workflows/ci.yml` deploys on every push to
+`main` via the Cloudflare API. The scoped **Cloudflare Pages · Edit** token and
+Mendelow Studio account ID are configured as repo secrets.
+
+To rotate the deploy token:
 
 1. Create a scoped token: Cloudflare dashboard → **My Profile → API Tokens →
    Create Token**, permission **Account · Cloudflare Pages · Edit**.
