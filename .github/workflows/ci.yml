@@ -36,8 +36,8 @@ jobs:
 
   # Deploys to Cloudflare Pages on push to main. The `ouro-apps-site` project is
   # a direct-upload project (Pages Git integration can't attach to those), so the
-  # deploy runs here via the Cloudflare API. Dormant until CLOUDFLARE_API_TOKEN is
-  # set — the deploy step skips cleanly, so builds stay green until then.
+  # deploy runs here via the Cloudflare API. The scoped Pages token is configured;
+  # the explicit gate keeps forks and future credential-rotation gaps build-safe.
   deploy:
     needs: [contract, ui-checks]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
