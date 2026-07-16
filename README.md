@@ -39,6 +39,12 @@ npm run refresh:ouro-md
 npm test
 ```
 
+`.github/workflows/refresh-ouromd-release.yml` performs this refresh hourly and
+commits changes after validating/building the site. When
+`CLOUDFLARE_API_TOKEN` is configured, the same run deploys the refreshed build
+to Pages; without it, source stays current but production deployment is skipped
+with a warning.
+
 ## Deployment
 
 Production is **Cloudflare Pages** (project `ouro-apps-site`), fronted by the

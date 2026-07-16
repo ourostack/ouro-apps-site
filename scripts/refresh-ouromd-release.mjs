@@ -51,7 +51,7 @@ const metadata = {
   releaseTag: release.tag_name,
   releaseURL: release.html_url,
   publishedAt: release.published_at,
-  bundleIdentifier: "org.ourostack.ouro-md",
+  bundleIdentifier: manifestData.bundleIdentifier || "bot.ouro.md",
   minimumMacOS: "13.0",
   signingMode: manifestData.signingMode || null,
   notarized: typeof manifestData.notarized === "boolean" ? manifestData.notarized : null,
