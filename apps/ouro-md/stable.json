@@ -2,10 +2,10 @@
   "appName": "Ouro MD",
   "subtitle": "The Markdown App",
   "channel": "stable",
-  "version": "0.9.83",
-  "releaseTag": "v0.9.83",
-  "releaseURL": "https://github.com/ourostack/ouro-md/releases/tag/v0.9.83",
-  "publishedAt": "2026-07-16T19:30:38Z",
+  "version": "0.9.84",
+  "releaseTag": "v0.9.84",
+  "releaseURL": "https://github.com/ourostack/ouro-md/releases/tag/v0.9.84",
+  "publishedAt": "2026-07-24T03:21:45Z",
   "bundleIdentifier": "bot.ouro.md",
   "minimumMacOS": "13.0",
   "signingMode": "developer-id",
@@ -15,24 +15,24 @@
       "url": "https://ouro.bot/ouro-md-install.sh"
     },
     "zip": {
-      "name": "Ouro-MD-0.9.83.zip",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.83/Ouro-MD-0.9.83.zip",
-      "bytes": 8059905,
-      "sha256": "8fc2fc5d3859986a5d5998faa4c4081015e3ca34705e081c193abbe1d8eb6df5",
+      "name": "Ouro-MD-0.9.84.zip",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.84/Ouro-MD-0.9.84.zip",
+      "bytes": 8070092,
+      "sha256": "751a07145ee6943d4e9d5caf538586c0a4583cd09c67586060abb536f21473f1",
       "role": "auto-update"
     },
     "dmg": {
-      "name": "Ouro-MD-0.9.83.dmg",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.83/Ouro-MD-0.9.83.dmg",
-      "bytes": 10654939,
-      "sha256": "cdbff30f4095553bd76618edc9677c693491e852d25827a6930f49b24bd33162",
+      "name": "Ouro-MD-0.9.84.dmg",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.84/Ouro-MD-0.9.84.dmg",
+      "bytes": 10653413,
+      "sha256": "803e9bb64e70e0a02b09b5119000fbf542195f58bb4b93050ef0bce737d715a9",
       "role": "interactive-install"
     },
     "manifest": {
-      "name": "Ouro-MD-0.9.83.manifest.json",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.83/Ouro-MD-0.9.83.manifest.json",
+      "name": "Ouro-MD-0.9.84.manifest.json",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.84/Ouro-MD-0.9.84.manifest.json",
       "bytes": 806,
-      "sha256": "7d435ec467c3c24bd073f1eedaee9699a03442462337865980078386d6c7563b",
+      "sha256": "e54f347ba66817dd06c098da023eb9efdd8dd66a53dd34fcdbd3bd7711fff946",
       "role": "metadata"
     }
   }
