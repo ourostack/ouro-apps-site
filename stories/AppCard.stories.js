@@ -32,7 +32,7 @@ export const InProgress = {
           <span class="pill soon">In development</span>
         </div>
         <h3>Ouro Shepherd</h3>
-        <p>An Ouro agent that watches your coding agents in cmux, answers the routine prompts the way you would, and brings you the rest in one digest.</p>
+        <p>Lets an Ouro agent watch your coding agents in cmux, answer the routine prompts the way you would, and bring you the rest in one digest.</p>
         <div class="spacer"></div>
         <div class="card-foot"><a class="text-link" href="#">Follow along</a></div>
       </article>

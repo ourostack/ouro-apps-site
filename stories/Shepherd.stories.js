@@ -8,6 +8,7 @@ export default {
 export const Flow = {
   render: () => `<div style="max-width:620px">
 <figure class="flow" aria-labelledby="flow-caption">
+            <figcaption id="flow-caption">Illustration of how Shepherd fits in. Not a screenshot.</figcaption>
             <div class="flow-row">
               <p class="flow-label">Your sessions in cmux</p>
               <div class="flow-nodes">
@@ -27,16 +28,15 @@ export const Flow = {
                 <span>reads each session, answers what's routine, keeps the rest for you</span>
               </div>
             </div>
-            <div class="flow-down" aria-hidden="true">↓</div>
-            <div class="flow-row">
+            <div class="flow-down flow-you" aria-hidden="true">↓</div>
+            <div class="flow-row flow-you">
               <p class="flow-label">You</p>
               <div class="flow-nodes">
                 <div class="flow-node"><b>One digest</b><span>what was answered, what needs you</span></div>
                 <div class="flow-node"><b>A status line</b><span>on each cmux workspace</span></div>
-                <div class="flow-node"><b>A text</b><span>when you've stepped away</span></div>
+                <div class="flow-node"><b>A message</b><span>if your agent can reach your phone</span></div>
               </div>
             </div>
-            <figcaption id="flow-caption">Illustration of how Shepherd fits in. Not a screenshot.</figcaption>
           </figure>
 </div>`,
 };
@@ -65,11 +65,12 @@ export const DecisionLadder = {
   parameters: { canvasBg: 'var(--bg-tint)' },
   render: () => `<div style="max-width:480px">
 <ol class="ladder" aria-label="How Shepherd handles a prompt, in order">
-            <li><b>Safety floor</b><span>Plain code, no model. Anything on the floor goes straight to you.</span></li>
-            <li><b>Your precedent</b><span>If you've decided this exact kind of prompt before, it follows your decision.</span></li>
-            <li><b>Your principles</b><span>For something new, it reasons from your principles and closest cases, and answers only when confident.</span></li>
-            <li><b>Ask you</b><span>Otherwise it hands the prompt to you, with its best guess attached.</span></li>
+            <li><b>Safety floor</b><span>Plain code, no model. Anything on the floor will go straight to you.</span></li>
+            <li><b>Your precedent</b><span>If you've decided this exact kind of prompt before, it will follow your decision.</span></li>
+            <li><b>Your principles</b><span>For something new, it will reason from your principles and closest cases, and answer only when it's confident and the floor agrees.</span></li>
+            <li><b>Ask you</b><span>Otherwise it will hand the prompt to you, with its best guess attached.</span></li>
           </ol>
+          <p class="ladder-note">If it can't decide in time and you don't answer, nothing is approved. The prompt stays in cmux for you.</p>
 </div>`,
 };
 
@@ -77,9 +78,9 @@ export const CmuxNote = {
   parameters: { canvasBg: 'var(--bg-tint)' },
   render: () => `<div style="max-width:520px">
 <div class="prose cmux-note">
-            <h3>Works with cmux</h3>
-            <p>Shepherd isn't a new terminal and isn't a fork you have to install. It works with stock <a href="https://cmux.com" data-telemetry="shepherd_cmux_link">cmux</a>, the open-source macOS terminal, through its documented command-line and socket interface. No cmux account needed.</p>
-            <p class="fine">cmux is made by Manaflow. Ouro Shepherd is an independent project and is not affiliated with or endorsed by Manaflow.</p>
+            <h3>Built for stock cmux</h3>
+            <p>Shepherd isn't a new terminal and isn't a fork you have to install. It's built for stock <a href="https://cmux.com" data-telemetry="shepherd_cmux_link">cmux</a>, the open-source macOS terminal, and will work through cmux's documented command-line and socket interface (you turn on socket automation once). No cmux account needed.</p>
+            <p class="fine">cmux is made by Manaflow. Ouro Shepherd is an independent project and is not affiliated with or endorsed by Manaflow. Claude Code, Codex, and GitHub Copilot are trademarks of their owners; no affiliation is implied.</p>
           </div>
 </div>`,
 };

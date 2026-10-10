@@ -347,10 +347,9 @@ code {
   display: grid;
   gap: 10px;
   padding: clamp(18px, 3vw, 28px);
-  border: 1px solid var(--line-strong);
+  border: 1.5px dashed var(--line-strong);
   border-radius: var(--radius-lg);
-  background: var(--surface);
-  box-shadow: var(--shadow-md);
+  background: transparent;
 }
 .flow-label {
   font-family: var(--mono);
@@ -393,8 +392,8 @@ code {
 .flow-hub svg { flex: none; }
 .flow-hub b { display: block; color: var(--ink); font-size: 16px; }
 .flow-hub span { color: var(--ink-soft); font-size: 14px; line-height: 1.45; }
-.flow figcaption,
-.digest figcaption { margin-top: 4px; color: var(--muted); font-size: 13px; }
+.flow figcaption { margin-bottom: 6px; color: var(--muted); font-size: 13px; }
+.digest figcaption { color: var(--muted); font-size: 13px; }
 
 .digest { margin: 0; }
 .digest .codeblock code { font-size: 13.5px; }
@@ -443,6 +442,7 @@ code {
 .shepherd-page .install .wrap > * { min-width: 0; }
 .shepherd-page .install h2 { margin-top: 16px; font-size: clamp(26px, 3.2vw, 40px); }
 .shepherd-page .install .lead { margin-top: 16px; }
+.ladder-note { margin-top: 4px; padding-left: 52px; color: var(--ink-soft); font-size: 15px; }
 .cmux-note h3 { font-size: 20px; }
 .cmux-note p { margin-top: 12px; color: var(--ink-soft); font-size: 16px; }
 .cmux-note a { color: var(--accent-ink); }
@@ -472,6 +472,10 @@ code {
   .features.six { grid-template-columns: 1fr; }
   .app-card { padding: 22px; }
   .site-footer .wrap { flex-direction: column; align-items: flex-start; gap: 20px; }
+}
+
+@media (max-width: 480px) {
+  .flow-you { display: none; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

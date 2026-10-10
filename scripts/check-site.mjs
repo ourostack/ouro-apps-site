@@ -84,7 +84,7 @@ for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
 // framing must survive) while guaranteeing the download path. The second family
 // slot is Ouro Shepherd (it replaced the frozen Ouro Workbench).
 const home = await readFile("index.html", "utf8");
-for (const term of ["Ouro MD", "Ouro Shepherd", "/apps/shepherd/", "One workshop, more than one tool", "Download Ouro MD", "as you write"]) {
+for (const term of ["Ouro MD", "Ouro Shepherd", "/apps/shepherd/", "Mac tools for people who work in text", "One workshop, more than one tool", "Download Ouro MD", "as you write"]) {
   if (!home.includes(term)) {
     throw new Error(`homepage must present Ouro as an app family and route to Ouro MD: missing "${term}"`);
   }
@@ -113,8 +113,7 @@ const shepherdMain = new JSDOM(shepherd).window.document.querySelector("main");
 if (shepherdMain.querySelector("img, video")) {
   throw new Error("Shepherd page must not show product screenshots or video until the product ships; use diagrams");
 }
-const shepherdDoc = shepherdMain.ownerDocument;
-if ([...shepherdDoc.querySelectorAll("a, button")].some((el) => /download|install/i.test(el.textContent))) {
+if ([...shepherdMain.querySelectorAll("a, button")].some((el) => /download|install/i.test(el.textContent))) {
   throw new Error("Shepherd page must not offer a download until the product ships");
 }
 

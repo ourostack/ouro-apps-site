@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ouro Shepherd — Keep every coding agent moving</title>
-    <meta name="description" content="Ouro Shepherd is an Ouro agent, in development, that watches the Claude Code, Codex, and GitHub Copilot CLI sessions you run in cmux. It tells you who needs you, answers the routine prompts the way you would, and sends one digest instead of a stream of pings.">
+    <title>Ouro Shepherd: keep every coding agent moving</title>
+    <meta name="description" content="Ouro Shepherd, in development, lets an Ouro agent watch the Claude Code, Codex, and GitHub Copilot CLI sessions you run in cmux. It tells you who needs you, answers the routine prompts the way you would, and sends one digest instead of a stream of pings.">
     <link rel="canonical" href="https://ouro.bot/apps/shepherd/">
-    <meta property="og:title" content="Ouro Shepherd — Keep every coding agent moving">
-    <meta property="og:description" content="An Ouro agent, in development, that watches your coding agents in cmux, answers the routine prompts, and brings you the rest in one digest.">
+    <meta property="og:title" content="Ouro Shepherd: keep every coding agent moving">
+    <meta property="og:description" content="In development: Shepherd lets an Ouro agent watch your coding agents in cmux, answer the routine prompts, and bring you the rest in one digest.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ouro.bot/apps/shepherd/">
     <meta property="og:image" content="https://ouro.bot/assets/apple-touch-icon.png">
@@ -26,7 +26,7 @@
           <a href="#what" class="nav-hide-sm" data-telemetry="nav_shepherd_what">What it does</a>
           <a href="#safety" class="nav-hide-sm" data-telemetry="nav_shepherd_safety">Safety</a>
           <a href="https://github.com/ourostack/ouroboros" data-telemetry="nav_shepherd_source">Source</a>
-          <a href="#status" class="btn" data-telemetry="nav_shepherd_status">Follow along</a>
+          <a href="#status" class="btn" data-telemetry="nav_shepherd_status">Status</a>
         </nav>
       </div>
     </header>
@@ -37,19 +37,20 @@
           <div class="hero-copy">
             <p class="eyebrow reveal">Ouro Shepherd · In development</p>
             <h1 class="reveal d1">Keep every coding agent <span class="accent">moving.</span></h1>
-            <p class="lead reveal d2">Shepherd is an Ouro agent that watches the Claude Code, Codex, and GitHub Copilot CLI sessions you run in <a href="https://cmux.com" data-telemetry="shepherd_hero_cmux">cmux</a>. It tells you who needs you, answers the routine prompts the way you would, and brings you everything else in one digest, on your Mac or on your phone.</p>
+            <p class="lead reveal d2">Shepherd lets an Ouro agent watch the Claude Code, Codex, and GitHub Copilot CLI sessions you run in <a href="https://cmux.com" data-telemetry="shepherd_hero_cmux">cmux</a>. It tells you who needs you, answers the routine prompts the way you would, and brings you everything else in one digest.</p>
             <div class="actions reveal d3">
               <a class="btn primary" href="https://github.com/ourostack/ouroboros" data-telemetry="shepherd_follow_github">Follow along on GitHub</a>
               <a class="btn ghost" href="#how" data-telemetry="shepherd_how">How it decides</a>
             </div>
             <div class="trust reveal d3">
               <span>In development</span>
-              <span>Works with stock cmux</span>
-              <span>Hard limits it can't cross</span>
+              <span>Built for stock cmux</span>
+              <span>Hard limits, written in code</span>
             </div>
           </div>
 
           <figure class="flow reveal d2" aria-labelledby="flow-caption">
+            <figcaption id="flow-caption">Illustration of how Shepherd fits in. Not a screenshot.</figcaption>
             <div class="flow-row">
               <p class="flow-label">Your sessions in cmux</p>
               <div class="flow-nodes">
@@ -69,16 +70,15 @@
                 <span>reads each session, answers what's routine, keeps the rest for you</span>
               </div>
             </div>
-            <div class="flow-down" aria-hidden="true">↓</div>
-            <div class="flow-row">
+            <div class="flow-down flow-you" aria-hidden="true">↓</div>
+            <div class="flow-row flow-you">
               <p class="flow-label">You</p>
               <div class="flow-nodes">
                 <div class="flow-node"><b>One digest</b><span>what was answered, what needs you</span></div>
                 <div class="flow-node"><b>A status line</b><span>on each cmux workspace</span></div>
-                <div class="flow-node"><b>A text</b><span>when you've stepped away</span></div>
+                <div class="flow-node"><b>A message</b><span>if your agent can reach your phone</span></div>
               </div>
             </div>
-            <figcaption id="flow-caption">Illustration of how Shepherd fits in. Not a screenshot.</figcaption>
           </figure>
         </div>
       </section>
@@ -89,7 +89,7 @@
             <p class="eyebrow">The problem</p>
             <h2>More agents, same one of you.</h2>
             <p>Running several coding agents at once is fast until you become the bottleneck. You tab through terminals to find the one that's stuck. You approve the same harmless command for the tenth time. You come back from lunch and can't tell what each session did.</p>
-            <p>Shepherd sits beside your sessions and does that triage for you, so your attention goes to the decisions that are actually yours.</p>
+            <p>Shepherd will sit beside your sessions and do that triage for you, so your attention goes to the decisions that are actually yours.</p>
             <ul class="mini-list">
               <li>One answer to "who needs me right now?"</li>
               <li>A plain summary of what each session did</li>
@@ -118,15 +118,15 @@
           <div class="section-head">
             <p class="eyebrow">What it does</p>
             <h2>Triage for your coding agents.</h2>
-            <p>Shepherd follows your sessions through cmux's own agent events and screen text, then does the small jobs you'd otherwise do by hand.</p>
+            <p>Shepherd will follow your sessions through cmux's own agent events and screen text, then do the small jobs you'd otherwise do by hand.</p>
           </div>
           <div class="features six">
             <div class="feature"><h3>Who needs you</h3><p>One answer across every workspace: which sessions are waiting on you, and for what.</p></div>
             <div class="feature"><h3>What each session did</h3><p>Ask about any session and get a short account of what it did and where it stands.</p></div>
-            <div class="feature"><h3>A status line per workspace</h3><p>A one-line status on each cmux workspace, so the sidebar tells you the story at a glance.</p></div>
-            <div class="feature"><h3>One digest</h3><p>Shepherd waits for things to settle, then sends one summary instead of a ping per event.</p></div>
-            <div class="feature"><h3>On your phone</h3><p>Your Ouro agent texts you the digest, so you can step away without losing the thread.</p></div>
-            <div class="feature"><h3>Routine prompts, answered</h3><p>Permission prompts you'd approve anyway get answered for you, with a one-line reason you can check.</p></div>
+            <div class="feature"><h3>A status line per workspace</h3><p>A one-line status on each cmux workspace, so the sidebar shows where each one stands.</p></div>
+            <div class="feature"><h3>One digest</h3><p>Shepherd will wait for things to settle, then send one summary instead of a ping per event.</p></div>
+            <div class="feature"><h3>On your phone</h3><p>If your Ouro agent can message you, for example over iMessage, it sends the digest there too.</p></div>
+            <div class="feature"><h3>Routine prompts, answered</h3><p>Permission prompts you'd approve anyway will be answered for you, with a one-line reason you can check.</p></div>
           </div>
         </div>
       </section>
@@ -136,15 +136,18 @@
           <div class="prose">
             <p class="eyebrow">How it decides</p>
             <h2>Your judgment, not a rulebook.</h2>
-            <p>Shepherd doesn't grow a long list of rules. It works from a short set of principles you agree with and a casebook of decisions you actually made. When you answer a prompt it escalated, or tell it "you should have asked me", that becomes a new case.</p>
-            <p>Principles change only when you approve the change. Every answer is logged with its reasoning, so you can always see why it did what it did.</p>
+            <p>Shepherd won't grow a long list of rules. It will work from a short set of principles you agree with and a casebook of decisions you actually made. When you answer a prompt it escalated, or tell it "you should have asked me", that will become a new case.</p>
+            <p>Principles will change only when you approve the change. Every answer will be logged with its reasoning, so you'll always be able to see why it did what it did.</p>
           </div>
+          <div>
           <ol class="ladder" aria-label="How Shepherd handles a prompt, in order">
-            <li><b>Safety floor</b><span>Plain code, no model. Anything on the floor goes straight to you.</span></li>
-            <li><b>Your precedent</b><span>If you've decided this exact kind of prompt before, it follows your decision.</span></li>
-            <li><b>Your principles</b><span>For something new, it reasons from your principles and closest cases, and answers only when confident.</span></li>
-            <li><b>Ask you</b><span>Otherwise it hands the prompt to you, with its best guess attached.</span></li>
+            <li><b>Safety floor</b><span>Plain code, no model. Anything on the floor will go straight to you.</span></li>
+            <li><b>Your precedent</b><span>If you've decided this exact kind of prompt before, it will follow your decision.</span></li>
+            <li><b>Your principles</b><span>For something new, it will reason from your principles and closest cases, and answer only when it's confident and the floor agrees.</span></li>
+            <li><b>Ask you</b><span>Otherwise it will hand the prompt to you, with its best guess attached.</span></li>
           </ol>
+          <p class="ladder-note">If it can't decide in time and you don't answer, nothing is approved. The prompt stays in cmux for you.</p>
+          </div>
         </div>
       </section>
 
@@ -152,8 +155,8 @@
         <div class="wrap">
           <div class="section-head">
             <p class="eyebrow">The safety floor</p>
-            <h2>Some things always come to you.</h2>
-            <p>The floor is written in code and checked before and after any model judgment. Nothing a model says can move it.</p>
+            <h2>Some things will always come to you.</h2>
+            <p>The floor will be plain code, checked before and after any model judgment. Nothing a model says will be able to move it.</p>
           </div>
           <div class="features six">
             <div class="feature"><h3>Credentials</h3><p>Passwords, tokens, keys, and two-factor codes.</p></div>
@@ -172,14 +175,15 @@
             <p class="eyebrow">Where it stands</p>
             <h2>In development, built in the open.</h2>
             <p class="lead">There's nothing to download yet. Shepherd is being built as part of Ouro, our open-source agent harness. This page will say so when you can try it.</p>
+            <p class="lead">You'll need an Ouro agent running on the same Mac. Shepherd's judgment calls use your agent's model provider.</p>
             <div class="actions">
               <a class="btn primary" href="https://github.com/ourostack/ouroboros" data-telemetry="shepherd_follow_github_secondary">Follow along on GitHub</a>
             </div>
           </div>
           <div class="prose cmux-note">
-            <h3>Works with cmux</h3>
-            <p>Shepherd isn't a new terminal and isn't a fork you have to install. It works with stock <a href="https://cmux.com" data-telemetry="shepherd_cmux_link">cmux</a>, the open-source macOS terminal, through its documented command-line and socket interface. No cmux account needed.</p>
-            <p class="fine">cmux is made by Manaflow. Ouro Shepherd is an independent project and is not affiliated with or endorsed by Manaflow.</p>
+            <h3>Built for stock cmux</h3>
+            <p>Shepherd isn't a new terminal and isn't a fork you have to install. It's built for stock <a href="https://cmux.com" data-telemetry="shepherd_cmux_link">cmux</a>, the open-source macOS terminal, and will work through cmux's documented command-line and socket interface (you turn on socket automation once). No cmux account needed.</p>
+            <p class="fine">cmux is made by Manaflow. Ouro Shepherd is an independent project and is not affiliated with or endorsed by Manaflow. Claude Code, Codex, and GitHub Copilot are trademarks of their owners; no affiliation is implied.</p>
           </div>
         </div>
       </section>
