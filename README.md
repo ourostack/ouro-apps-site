@@ -78,10 +78,22 @@ npm run deploy   # build + wrangler pages deploy dist
 
 ### The apex Worker (separate — only when it changes)
 
-`worker.js` + `wrangler.jsonc` define the `ouro-apex` Worker that proxies
-`ouro.bot/*` to the Pages deployment. It rarely changes; redeploy only when you
-edit those two files:
+`worker.js` + `wrangler.jsonc` define the `ouro-apex` Worker that fronts
+`ouro.bot/*`. The ouro.bot website forwards to https://ouroboros.bot: every path
+gets a 302 to the same path on ouroboros.bot, and `/support/` goes to Ouro MD's
+GitHub issues. The Worker still proxies these paths to the Pages deployment
+unchanged, because Ouro MD, its installer, its App Store listing and its product
+page depend on them: `/ouro-md-install.sh`, `/apps/ouro-md` and everything under
+`/apps/ouro-md/` and `/assets/`, `/styles.css`, `/robots.txt` and `/sitemap.xml`.
+`tests/worker.test.mjs` is the contract.
+
+Merging to `main` does not deploy the Worker; the Pages deploy in CI never
+touches it. Redeploy it by hand, only when you edit those two files, and check
+the kept paths before and after:
 
 ```sh
+scripts/verify-endpoints.sh > before.txt
 npx wrangler deploy
+scripts/verify-endpoints.sh > after.txt
+diff <(grep ^KEEP before.txt) <(grep ^KEEP after.txt)   # must print nothing
 ```
