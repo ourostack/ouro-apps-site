@@ -7,21 +7,36 @@
 const origin = "https://ouro-apps-site.pages.dev";
 const forwardOrigin = "https://ouroboros.bot";
 
-// App Store support URL for Ouro MD. Support goes through GitHub issues.
-const supportURL = "https://github.com/ourostack/ouro-md/issues";
+// Ouro MD's App Store support and privacy URLs. They go where the app and its
+// product page already send people: GitHub issues and PRIVACY.md.
+const elsewhere = new Map([
+  ["/support", "https://github.com/ourostack/ouro-md/issues"],
+  ["/support/", "https://github.com/ourostack/ouro-md/issues"],
+  ["/privacy", "https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md"],
+  ["/privacy/", "https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md"],
+]);
 
-const keptExact = new Set([
+// Only files that exist are kept. Pages answers any unknown path with the old
+// homepage and status 200, so an unknown path under /apps/ouro-md/ or /assets/
+// is forwarded like every other path. A test checks that every file in apps/ouro-md/
+// and assets/ is listed here.
+const kept = new Set([
   "/ouro-md-install.sh",
   "/apps/ouro-md",
+  "/apps/ouro-md/",
+  "/apps/ouro-md/index.html",
+  "/apps/ouro-md/stable.json",
+  "/assets/apple-touch-icon.png",
+  "/assets/favicon-32x32.png",
+  "/assets/ouro-md-editing.png",
+  "/assets/ouro-md-hero.mp4",
+  "/assets/ouro-md-hero.png",
+  "/assets/ouro-md-icon.png",
+  "/assets/site-telemetry.js",
   "/styles.css",
   "/robots.txt",
   "/sitemap.xml",
 ]);
-const keptPrefixes = ["/apps/ouro-md/", "/assets/"];
-
-function isKept(pathname) {
-  return keptExact.has(pathname) || keptPrefixes.some((prefix) => pathname.startsWith(prefix));
-}
 
 function redirect(location) {
   return new Response(null, {
@@ -34,10 +49,10 @@ export default {
   async fetch(request) {
     const url = new URL(request.url);
 
-    if (!isKept(url.pathname)) {
-      if (url.pathname === "/support" || url.pathname === "/support/") {
-        return redirect(supportURL);
-      }
+    if (elsewhere.has(url.pathname)) {
+      return redirect(elsewhere.get(url.pathname));
+    }
+    if (!kept.has(url.pathname)) {
       return redirect(forwardOrigin + url.pathname + url.search);
     }
 

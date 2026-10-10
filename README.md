@@ -79,21 +79,17 @@ npm run deploy   # build + wrangler pages deploy dist
 ### The apex Worker (separate — only when it changes)
 
 `worker.js` + `wrangler.jsonc` define the `ouro-apex` Worker that fronts
-`ouro.bot/*`. The ouro.bot website forwards to https://ouroboros.bot: every path
-gets a 302 to the same path on ouroboros.bot, and `/support/` goes to Ouro MD's
-GitHub issues. The Worker still proxies these paths to the Pages deployment
-unchanged, because Ouro MD, its installer, its App Store listing and its product
-page depend on them: `/ouro-md-install.sh`, `/apps/ouro-md` and everything under
-`/apps/ouro-md/` and `/assets/`, `/styles.css`, `/robots.txt` and `/sitemap.xml`.
-`tests/worker.test.mjs` is the contract.
+`ouro.bot/*`. The ouro.bot website forwards to https://ouroboros.bot: every path gets a 302 to the same path on ouroboros.bot, except Ouro MD's App Store support and privacy URLs, which go where the app already sends people: `/support/` to Ouro MD's GitHub issues and `/privacy/` to its `PRIVACY.md`.
 
-Merging to `main` does not deploy the Worker; the Pages deploy in CI never
-touches it. Redeploy it by hand, only when you edit those two files, and check
-the kept paths before and after:
+The Worker still proxies an exact list of files to the Pages deployment unchanged, because Ouro MD, its installer, its App Store listing and its product page depend on them: `/ouro-md-install.sh`, `/apps/ouro-md`, the product page and `stable.json` under `/apps/ouro-md/`, each file in `assets/`, `/styles.css`, `/robots.txt` and `/sitemap.xml`. Any other path, including an unknown one under `/apps/ouro-md/` or `/assets/`, is forwarded, because Pages would answer it with the old homepage and status 200. When you add a file under `apps/ouro-md/` or `assets/`, add it to the list in `worker.js`; a test fails until you do. `tests/worker.test.mjs` is the contract.
+
+Merging to `main` does not deploy the Worker; the Pages deploy in CI never touches it. Until someone runs `npx wrangler deploy`, `worker.js` on `main` can differ from the deployed Worker, and anyone who deploys the Worker for another reason ships what is on `main`. Redeploy it by hand, only when you edit those two files, and check the kept paths before and after.
+
+The hourly refresh workflow (cron `17 * * * *`) rewrites `apps/ouro-md/stable.json` whenever Ouro MD ships, so the check compares that file's fields, not its hash. Take both snapshots within the same hour, away from :17 past the hour; the script warns between :12 and :25.
 
 ```sh
 scripts/verify-endpoints.sh > before.txt
 npx wrangler deploy
 scripts/verify-endpoints.sh > after.txt
-diff <(grep ^KEEP before.txt) <(grep ^KEEP after.txt)   # must print nothing
+diff <(grep -E '^(KEEP|SCHEMA)' before.txt) <(grep -E '^(KEEP|SCHEMA)' after.txt)   # must print nothing
 ```

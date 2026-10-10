@@ -4,6 +4,7 @@
 
 import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
+import { readdir } from "node:fs/promises";
 import worker from "../worker.js";
 
 const PAGES = "https://ouro-apps-site.pages.dev";
@@ -40,9 +41,12 @@ const kept = [
   "/apps/ouro-md/",
   "/apps/ouro-md/index.html",
   "/assets/ouro-md-icon.png",
+  "/assets/ouro-md-hero.png",
   "/assets/ouro-md-hero.mp4",
+  "/assets/ouro-md-editing.png",
   "/assets/site-telemetry.js",
   "/assets/favicon-32x32.png",
+  "/assets/apple-touch-icon.png",
   "/styles.css",
   "/robots.txt",
   "/sitemap.xml",
@@ -89,7 +93,7 @@ test("keeps the query string when it forwards", async () => {
 });
 
 test("forwards other paths to the same path on ouroboros.bot", async () => {
-  for (const path of ["/privacy/", "/index.html", "/apps/", "/apps/ouro-workbench/", "/favicon.ico"]) {
+  for (const path of ["/terms/", "/index.html", "/apps/", "/apps/ouro-workbench/", "/favicon.ico"]) {
     const response = await get(path);
     assert.equal(response.status, 302, path);
     assert.equal(response.headers.get("location"), `https://ouroboros.bot${path}`, path);
@@ -101,6 +105,37 @@ test("does not keep lookalike paths", async () => {
   for (const path of ["/ouro-md-install.sh.bak", "/assetsx/a.png", "/apps/ouro-mdx/", "/styles.css/x"]) {
     const response = await get(path);
     assert.equal(response.status, 302, path);
+  }
+  assert.equal(calls.length, 0);
+});
+
+// Pages answers an unknown path with the old homepage and status 200, so the
+// Worker keeps only files that exist and forwards everything else.
+test("forwards unknown paths under /apps/ouro-md/ and /assets/ instead of serving the old homepage", async () => {
+  for (const path of ["/apps/ouro-md/nope", "/apps/ouro-md/old.json", "/assets/nope.png", "/assets/"]) {
+    const response = await get(path);
+    assert.equal(response.status, 302, path);
+    assert.equal(response.headers.get("location"), `https://ouroboros.bot${path}`, path);
+  }
+  assert.equal(calls.length, 0);
+});
+
+test("keeps every file the site publishes under /apps/ouro-md/ and /assets/", async () => {
+  const published = [
+    ...(await readdir(new URL("../apps/ouro-md/", import.meta.url))).map((name) => `/apps/ouro-md/${name}`),
+    ...(await readdir(new URL("../assets/", import.meta.url))).map((name) => `/assets/${name}`),
+  ];
+  for (const path of published) {
+    const response = await get(path);
+    assert.equal(response.headers.get("x-ouro-apps-site"), "cloudflare-worker-proxy", path);
+  }
+});
+
+test("sends the App Store privacy URL to Ouro MD's privacy policy", async () => {
+  for (const path of ["/privacy", "/privacy/"]) {
+    const response = await get(path);
+    assert.equal(response.status, 302, path);
+    assert.equal(response.headers.get("location"), "https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md", path);
   }
   assert.equal(calls.length, 0);
 });
