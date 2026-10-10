@@ -29,10 +29,10 @@ export const InProgress = {
       <article class="app-card">
         <div class="app-card-top">
           <span class="app-glyph">◐</span>
-          <span class="pill soon">In the workshop</span>
+          <span class="pill soon">In development</span>
         </div>
-        <h3>Ouro Workbench</h3>
-        <p>A native command center for running, watching, and steering agent work — repos, tasks, and the space between them.</p>
+        <h3>Ouro Shepherd</h3>
+        <p>An Ouro agent that watches your coding agents in cmux, answers the routine prompts the way you would, and brings you the rest in one digest.</p>
         <div class="spacer"></div>
         <div class="card-foot"><a class="text-link" href="#">Follow along</a></div>
       </article>

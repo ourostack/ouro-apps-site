@@ -14,8 +14,10 @@ python3 -m http.server 4178   # then open http://localhost:4178/
 ```
 
 `scripts/check-site.mjs` is a guardrail: it keeps the homepage the Ouro *family*
-home (Workbench + the family framing must survive), the app page the Ouro MD
-product page, the hero a real render, and telemetry lightweight. Change the IA
+home (Shepherd + the family framing must survive), the app page the Ouro MD
+product page, the hero a real render, the in-development Shepherd page
+(`/apps/shepherd/`) honest (no screenshots or downloads until it ships), and
+telemetry lightweight. Change the IA
 freely — just update the contract to match, keeping that spirit.
 
 ## Product imagery
