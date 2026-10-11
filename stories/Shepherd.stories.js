@@ -10,11 +10,11 @@ export const Flow = {
 <figure class="flow" aria-labelledby="flow-caption">
             <figcaption id="flow-caption">Illustration of how Shepherd fits in. Not a screenshot.</figcaption>
             <div class="flow-row">
-              <p class="flow-label">Your sessions in cmux</p>
+              <p class="flow-label">Your terminals</p>
               <div class="flow-nodes">
-                <div class="flow-node"><span class="dot wait" aria-hidden="true"></span><b>Claude Code</b><span>waiting on you</span></div>
-                <div class="flow-node"><span class="dot ask" aria-hidden="true"></span><b>Codex</b><span>asks to run tests</span></div>
-                <div class="flow-node"><span class="dot work" aria-hidden="true"></span><b>Copilot CLI</b><span>working</span></div>
+                <div class="flow-node"><span class="dot ask" aria-hidden="true"></span><b>Codex</b><span>"Want me to go ahead?"</span></div>
+                <div class="flow-node"><span class="dot work" aria-hidden="true"></span><b>Claude Code</b><span>waiting on its subagents</span></div>
+                <div class="flow-node"><span class="dot wait" aria-hidden="true"></span><b>Copilot CLI</b><span>needs your sign-in</span></div>
               </div>
             </div>
             <div class="flow-down" aria-hidden="true">↓</div>
@@ -25,16 +25,16 @@ export const Flow = {
               </svg>
               <div>
                 <b>Shepherd</b>
-                <span>reads each session, answers what's routine, keeps the rest for you</span>
+                <span>asks, each time an agent stops: should it have?</span>
               </div>
             </div>
             <div class="flow-down flow-you" aria-hidden="true">↓</div>
             <div class="flow-row flow-you">
-              <p class="flow-label">You</p>
+              <p class="flow-label">What happens</p>
               <div class="flow-nodes">
-                <div class="flow-node"><b>One digest</b><span>what was answered, what needs you</span></div>
-                <div class="flow-node"><b>A status line</b><span>on each cmux workspace</span></div>
-                <div class="flow-node"><b>A message</b><span>if your agent can reach your phone</span></div>
+                <div class="flow-node"><b>Answered</b><span>"[Ouro for Ari] Go ahead…" typed in the terminal</span></div>
+                <div class="flow-node"><b>Left alone</b><span>counted as progress</span></div>
+                <div class="flow-node"><b>Sent to you</b><span>on Telegram, for now</span></div>
               </div>
             </div>
           </figure>
@@ -45,18 +45,15 @@ export const Digest = {
   parameters: { canvasBg: 'var(--bg-tint)' },
   render: () => `<div style="max-width:560px">
 <figure class="digest" aria-labelledby="digest-caption">
-            <pre class="codeblock"><code><span class="c-cmd">Shepherd</span> · 3 sessions, last 10 minutes
+            <pre class="codeblock"><code><span class="c-com">api-refactor · Codex</span>
 
-<span class="c-com">Answered for you</span>
-  ✓ api-refactor (Claude Code): ran the test suite
-    routine, in the repo, easy to undo
-  ✓ docs (Copilot CLI): read files under ./docs
-    read-only
+  I've drafted the migration plan.
+  Want me to go ahead and apply it?
 
-<span class="c-com">Needs you</span>
-  • deploy-fix (Codex): wants to force-push main
-    force pushes always come to you</code></pre>
-            <figcaption id="digest-caption">What a digest could look like. Illustration, not real output.</figcaption>
+<span class="c-cmd">› [Ouro for Ari]</span> Go ahead and apply it. It's in your task.
+
+<span class="c-com">status: answered for Ari: plan is inside the task</span></code></pre>
+            <figcaption id="digest-caption">What an answer could look like in the terminal. Illustration, not real output.</figcaption>
           </figure>
 </div>`,
 };
@@ -64,13 +61,13 @@ export const Digest = {
 export const DecisionLadder = {
   parameters: { canvasBg: 'var(--bg-tint)' },
   render: () => `<div style="max-width:480px">
-<ol class="ladder" aria-label="How Shepherd handles a prompt, in order">
-            <li><b>Safety floor</b><span>Plain code, no model. Anything on the floor will go straight to you.</span></li>
-            <li><b>Your precedent</b><span>If you've decided this exact kind of prompt before, it will follow your decision.</span></li>
-            <li><b>Your principles</b><span>For something new, it will reason from your principles and closest cases, and answer only when it's confident and the floor agrees.</span></li>
-            <li><b>Ask you</b><span>Otherwise it will hand the prompt to you, with its best guess attached.</span></li>
+<ol class="ladder" aria-label="What Shepherd does when an agent stops, in order">
+            <li><b>The agent stops</b><span>cmux or Herdr reports that the agent has finished its turn. If it starts again within a few seconds, Shepherd lets it be.</span></li>
+            <li><b>Shepherd reads the screen</b><span>A judge reads the last lines of the terminal and decides: stopped too early, needs you, finished, or still waiting on its own work.</span></li>
+            <li><b>It acts on that</b><span>Too early: it answers. Needs you or finished: it tells you. Still working: it leaves the agent alone.</span></li>
+            <li><b>It writes it down</b><span>Every decision goes into the log, with the reason.</span></li>
           </ol>
-          <p class="ladder-note">If it can't decide in time and you don't answer, nothing is approved. The prompt stays in cmux for you.</p>
+          <p class="ladder-note">If the judge can't tell, or fails, Shepherd does nothing. The agent's question stays in the terminal for you.</p>
 </div>`,
 };
 
@@ -78,9 +75,10 @@ export const CmuxNote = {
   parameters: { canvasBg: 'var(--bg-tint)' },
   render: () => `<div style="max-width:520px">
 <div class="prose cmux-note">
-            <h3>Built for stock cmux</h3>
-            <p>Shepherd isn't a new terminal and isn't a fork you have to install. It's built for stock <a href="https://cmux.com" data-telemetry="shepherd_cmux_link">cmux</a>, the open-source macOS terminal, and will work through cmux's documented command-line and socket interface (you connect it once from a cmux terminal). No cmux account needed.</p>
-            <p class="fine">cmux is made by Manaflow. Ouro Shepherd is an independent project and is not affiliated with or endorsed by Manaflow. Claude Code, Codex, and GitHub Copilot are trademarks of their owners; no affiliation is implied.</p>
+            <h3>Your terminal, your agents</h3>
+            <p>Shepherd isn't a terminal and isn't a fork you have to install. It connects to stock <a href="https://cmux.com" data-telemetry="shepherd_cmux_link">cmux</a> through its socket (you store a token once, from a cmux terminal) and to <a href="https://herdr.dev" data-telemetry="shepherd_herdr_link">Herdr</a> through its local socket. No cmux account needed.</p>
+            <p>It is built to be agent-agnostic. It uses the terminal's own stop signal and reads the screen, so no part of it depends on one particular coding agent. We're testing it with Claude Code, Codex, GitHub Copilot CLI and Agency.</p>
+            <p class="fine">cmux is made by Manaflow, and Herdr by Herdr, Inc. Ouro Shepherd is an independent project and is not affiliated with or endorsed by Manaflow or Herdr, Inc. Claude Code, Codex, GitHub Copilot, Agency, Telegram and Tailscale are names or trademarks of their owners; no affiliation is implied.</p>
           </div>
 </div>`,
 };
