@@ -62,8 +62,8 @@ export async function renderCards(root, outDir) {
         div({ position: "absolute", top: 0, left: 0, right: 0, height: "6px", background: COLOR.scale }),
         div({ display: "flex", flexDirection: "column", justifyContent: "center", width: "760px", padding: "64px 0 120px 80px" }, [
           ...(card.tag ? [div({ display: "flex", fontSize: "22px", letterSpacing: "0.22em", textTransform: "uppercase", color: COLOR.fang, marginBottom: "28px" }, card.tag)] : []),
-          div({ display: "flex", fontFamily: "Cormorant Garamond", fontWeight: 400, fontSize: `${titleSize}px`, lineHeight: 1.04, letterSpacing: "-0.01em", color: COLOR.ink }, title),
-          div({ display: "flex", fontSize: "27px", lineHeight: 1.4, color: COLOR.mist, marginTop: "28px" }, subtitle),
+          div({ display: "flex", fontFamily: "Cormorant Garamond", fontWeight: 400, fontSize: `${titleSize}px`, lineHeight: 1.04, letterSpacing: "-0.01em", color: COLOR.ink, textWrap: "balance" }, title),
+          div({ display: "flex", fontSize: "27px", lineHeight: 1.4, color: COLOR.mist, marginTop: "28px", textWrap: "balance" }, subtitle),
         ]),
         div({ position: "absolute", right: "72px", top: "0", bottom: "40px", width: "320px", display: "flex", alignItems: "center", justifyContent: "center" }, [
           { type: "img", props: { src: mark, width: 320, height: 320 } },
