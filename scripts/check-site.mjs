@@ -1,5 +1,6 @@
 import { access, readFile } from "node:fs/promises";
 import { JSDOM } from "jsdom";
+import { cards, cardUrl } from "./og-cards.mjs";
 
 // Guards the site's shape so a well-meaning edit can't quietly break the IA:
 // the homepage stays the Ouro *family* home, the app page stays Ouro MD, the
@@ -99,22 +100,38 @@ for (const term of ["rendered document", "Download Ouro MD", "ouro-md-install.sh
   }
 }
 
-// Shepherd page = an honest page for a product in development. It says so,
-// credits cmux without implying affiliation, keeps the safety floor, and shows
-// diagrams instead of screenshots of UI that doesn't exist. No download button
-// until there is something to download.
+// Shepherd page = a public coming-soon preview. It says so, credits cmux without
+// implying affiliation, keeps the safety floor, and shows labelled illustrations,
+// never screenshots, of a product that isn't generally available. Approved brand
+// artwork (/assets/brand/) is the only imagery. No download, install or launch
+// date until there is something to use.
 const shepherd = await readFile("apps/shepherd/index.html", "utf8");
-for (const term of ["In development", "https://cmux.com", "not affiliated with or endorsed by Manaflow", "always come to you", "Not a screenshot"]) {
+for (const term of ["Coming soon", "We're using and refining Shepherd on our own machines ahead of wider availability.", "https://cmux.com", "not affiliated with or endorsed by Manaflow", "always come to you", "Not a screenshot", "Illustration, not real output"]) {
   if (!shepherd.includes(term)) {
     throw new Error(`Shepherd page must stay honest about its status and cmux: missing "${term}"`);
   }
 }
 const shepherdMain = new JSDOM(shepherd).window.document.querySelector("main");
-if (shepherdMain.querySelector("img, video")) {
-  throw new Error("Shepherd page must not show product screenshots or video until the product ships; use diagrams");
+if ([...shepherdMain.querySelectorAll("img, video")].some((el) => !(el.getAttribute("src") || "").startsWith("/assets/brand/"))) {
+  throw new Error("Shepherd page must not show product screenshots or video until the product ships; use labelled illustrations");
+}
+for (const stale of ["nothing to try", "isn't running for anyone", "In development"]) {
+  if (shepherd.includes(stale)) throw new Error(`Shepherd page is a coming-soon preview now: drop "${stale}"`);
 }
 if ([...shepherdMain.querySelectorAll("a, button")].some((el) => /download|install/i.test(el.textContent))) {
   throw new Error("Shepherd page must not offer a download until the product ships");
+}
+
+// Every page's share card is drawn at build time (scripts/og-cards.mjs) from its
+// own og:title and og:description; the page must point at that card.
+for (const card of cards) {
+  const doc = new JSDOM(await readFile(card.page, "utf8")).window.document;
+  const url = cardUrl(card.name);
+  for (const [selector, expected] of [['meta[property="og:image"]', url], ['meta[name="twitter:image"]', url], ['meta[name="twitter:card"]', "summary_large_image"], ['meta[property="og:image:width"]', "1200"], ['meta[property="og:image:height"]', "630"]]) {
+    if (doc.querySelector(selector)?.getAttribute("content") !== expected) throw new Error(`${card.page}: ${selector} must be ${expected}`);
+  }
+  if (!doc.querySelector('meta[property="og:image:alt"]')?.getAttribute("content")) throw new Error(`${card.page} needs og:image:alt`);
+  if (!doc.querySelector('meta[property="og:title"]')?.getAttribute("content") || !doc.querySelector('meta[property="og:description"]')?.getAttribute("content")) throw new Error(`${card.page} needs og:title and og:description for its card`);
 }
 
 // Telemetry stays lightweight: page views + CTA clicks, no content capture.

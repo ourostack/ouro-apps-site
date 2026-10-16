@@ -4,15 +4,19 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ouro Shepherd: keep every coding agent moving</title>
-    <meta name="description" content="Ouro Shepherd, in development, watches the coding agents in your terminals. When one hands control back too early, it answers in the terminal where you can see it. When one needs you, it tells you.">
+    <meta name="description" content="Ouro Shepherd, coming soon, watches the coding agents in your terminals. When one hands control back too early, it answers in the terminal where you can see it. When one needs you, it tells you.">
     <link rel="canonical" href="https://ouro.bot/apps/shepherd/">
     <meta property="og:title" content="Ouro Shepherd: keep every coding agent moving">
-    <meta property="og:description" content="In development: Shepherd answers coding agents that stop too early, in plain view, and brings you only what is yours to decide.">
+    <meta property="og:description" content="Coming soon: Shepherd answers coding agents that stop too early, in plain view, and brings you only what is yours to decide.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ouro.bot/apps/shepherd/">
-    <meta property="og:image" content="https://ouro.bot/assets/apple-touch-icon.png">
-    <meta name="twitter:card" content="summary">
-    <link rel="icon" href="/assets/ouro-md-icon.png" sizes="any">
+    <meta property="og:image" content="https://ouro.bot/og/shepherd.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ouro Shepherd: keep every coding agent moving. The Shepherd mark, Ouro with a shepherd's staff.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ouro.bot/og/shepherd.png">
+    <link rel="icon" type="image/svg+xml" href="/assets/brand/ouro.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <link rel="stylesheet" href="/styles.css">
@@ -21,7 +25,7 @@
   <body class="app-page shepherd-page">
     <header class="site-header" id="top">
       <div class="wrap">
-        <a class="brand" href="/" data-telemetry="nav_home">ouro</a>
+        <a class="brand" href="/" data-telemetry="nav_home"><img class="brand-mark" src="/assets/brand/ouro-render-128.webp" srcset="/assets/brand/ouro-render-128.webp 1x, /assets/brand/ouro-render-256.webp 2x" width="30" height="30" alt=""> ouro</a>
         <nav class="nav" aria-label="Primary">
           <a href="#what" class="nav-hide-sm" data-telemetry="nav_shepherd_what">What it does</a>
           <a href="#safety" class="nav-hide-sm" data-telemetry="nav_shepherd_safety">What comes to you</a>
@@ -35,15 +39,16 @@
       <section class="hero">
         <div class="wrap">
           <div class="hero-copy">
-            <p class="eyebrow reveal">Ouro Shepherd · In development</p>
+            <img class="product-mark reveal" src="/assets/brand/shepherd-render-256.webp" srcset="/assets/brand/shepherd-render-256.webp 1x, /assets/brand/shepherd-render-512.webp 2x" width="112" height="112" alt="">
+            <p class="eyebrow reveal">Ouro Shepherd · Coming soon</p>
             <h1 class="reveal d1">Keep every coding agent <span class="accent">moving.</span></h1>
-            <p class="lead reveal d2">Coding agents often hand control back before they need to. Shepherd is being built to watch the agents in your terminals and judge each of those stops. If an agent stopped too early, Shepherd answers it in the terminal, where you can see it. If it needs you, Shepherd tells you.</p>
+            <p class="lead reveal d2">Coding agents often hand control back before they need to. Shepherd watches the agents in your terminals and judges each of those stops. If an agent stopped too early, Shepherd answers it in the terminal, where you can see it. If it needs you, Shepherd tells you.</p>
             <div class="actions reveal d3">
               <a class="btn primary" href="https://github.com/ourostack/ouroboros/blob/main/docs/shepherd-sense.md" data-telemetry="shepherd_read_design">Read how it works</a>
               <a class="btn ghost" href="#how" data-telemetry="shepherd_how">How it decides</a>
             </div>
             <div class="trust reveal d3">
-              <span>In development</span>
+              <span>Coming soon</span>
               <span>For cmux and Herdr</span>
               <span>Every answer visible</span>
             </div>
@@ -89,7 +94,7 @@
             <p class="eyebrow">The problem</p>
             <h2>Agents stop too early.</h2>
             <p>Run a few coding agents at once and a pattern shows up. One asks "want me to go ahead?" about work you already asked for. One offers a menu where the right choice is obvious. One writes a plan and then waits. Each stop sits there until you notice it, and you lose the time in between.</p>
-            <p>Shepherd will answer those stops for you, in the open, so your attention goes to the ones that are really yours.</p>
+            <p>Shepherd answers those stops for you, in the open, so your attention goes to the ones that are really yours.</p>
             <ul class="mini-list">
               <li>Fewer stalls you have to find yourself</li>
               <li>Every answer shown where it happened</li>
@@ -115,7 +120,7 @@
           <div class="section-head">
             <p class="eyebrow">What it does</p>
             <h2>A second look at every stop.</h2>
-            <p>Shepherd is part of Ouro, our open-source agent harness. Here's what it's being built to do. It follows the terminal's own signal that an agent has stopped, then reads the screen to decide what kind of stop it was.</p>
+            <p>Shepherd is part of Ouro, our open-source agent harness. Here's what it does. It follows the terminal's own signal that an agent has stopped, then reads the screen to decide what kind of stop it was.</p>
           </div>
           <div class="features six">
             <div class="feature"><h3>Judges every stop</h3><p>Each time an agent hands control back, a quick model call decides whether it should have.</p></div>
@@ -170,8 +175,8 @@
         <div class="wrap">
           <div>
             <p class="eyebrow">Where it stands</p>
-            <h2>In development, built in the open.</h2>
-            <p class="lead">Shepherd's code is in Ouro, but it isn't running for anyone yet, and there's nothing to try. We're proving it on our own machines first. This page will say so when you can use it.</p>
+            <h2>Coming soon, built in the open.</h2>
+            <p class="lead">We're using and refining Shepherd on our own machines ahead of wider availability. Its code is in Ouro, our open-source agent harness, and this page will say so when you can use it.</p>
             <p class="lead">You'll need an Ouro agent running on the same computer as your terminals. The judge runs on your agent's model provider, so each stop it judges is a small model call on your account. On your phone, decisions arrive on Telegram; for the terminal itself, use <a href="https://github.com/ZingerLittleBee/Heeler" data-telemetry="shepherd_heeler_link">Heeler</a> with Herdr, or SSH over Tailscale.</p>
             <div class="actions">
               <a class="btn primary" href="https://github.com/ourostack/ouroboros" data-telemetry="shepherd_follow_github">Follow along on GitHub</a>
@@ -190,8 +195,8 @@
     <footer class="site-footer">
       <div class="wrap">
         <div>
-          <a class="brand" href="/" data-telemetry="footer_home">ouro</a>
-          <p class="foot-meta">© 2026 Ari Mendelow · Ouro Shepherd, in development.</p>
+          <a class="brand" href="/" data-telemetry="footer_home"><img class="brand-mark" src="/assets/brand/ouro-render-128.webp" srcset="/assets/brand/ouro-render-128.webp 1x, /assets/brand/ouro-render-256.webp 2x" width="30" height="30" alt=""> ouro</a>
+          <p class="foot-meta">© 2026 Ari Mendelow · Ouro Shepherd, coming soon.</p>
         </div>
         <nav class="foot-nav" aria-label="Footer">
           <a href="/" data-telemetry="footer_ouro">Ouro</a>

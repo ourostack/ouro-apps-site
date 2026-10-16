@@ -481,3 +481,8 @@ code {
   .reveal.d3 { animation-delay: 0.18s; }
   @keyframes rise { to { opacity: 1; transform: none; } }
 }
+
+/* The approved Ouro render is the brand mark: no tile, no shadow. */
+.brand img.brand-mark { width: 30px; height: 30px; border-radius: 0; box-shadow: none; object-fit: contain; }
+.app-card .app-icon.app-render { width: 44px; height: 44px; transform: scale(1.2); border-radius: 0; box-shadow: none; object-fit: contain; }
+.product-mark { display: block; width: 112px; height: 112px; object-fit: contain; margin: 0 0 6px -6px; }

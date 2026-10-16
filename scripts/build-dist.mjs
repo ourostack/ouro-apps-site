@@ -4,6 +4,7 @@
 
 import { cp, rm, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { renderCards } from "./og-cards.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = `${root}/dist`;
@@ -25,4 +26,6 @@ await mkdir(dist, { recursive: true });
 for (const entry of include) {
   await cp(`${root}/${entry}`, `${dist}/${entry}`, { recursive: true });
 }
-console.log(`built dist/ (${include.length} entries)`);
+// Share cards are drawn from each page's current og:title and og:description.
+const drawn = await renderCards(root, `${dist}/og`);
+console.log(`built dist/ (${include.length} entries, ${drawn.length} share cards)`);

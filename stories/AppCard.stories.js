@@ -28,8 +28,8 @@ export const InProgress = {
     <div style="max-width:360px">
       <article class="app-card">
         <div class="app-card-top">
-          <span class="app-glyph">◐</span>
-          <span class="pill soon">In development</span>
+          <img class="app-icon app-render" src="/assets/brand/shepherd-render-256.webp" width="44" height="44" alt="">
+          <span class="pill soon">Coming soon</span>
         </div>
         <h3>Ouro Shepherd</h3>
         <p>Watches the coding agents in your terminals. When one stops too early, it answers in plain view. When one needs you, it tells you.</p>

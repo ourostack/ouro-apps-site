@@ -15,9 +15,10 @@ python3 -m http.server 4178   # then open http://localhost:4178/
 
 `scripts/check-site.mjs` is a guardrail: it keeps the homepage the Ouro *family*
 home (Shepherd + the family framing must survive), the app page the Ouro MD
-product page, the hero a real render, the in-development Shepherd page
-(`/apps/shepherd/`) honest (no screenshots or downloads until it ships), and
-telemetry lightweight. Change the IA
+product page, the hero a real render, the Shepherd page
+(`/apps/shepherd/`) an honest coming-soon preview (labelled illustrations, no
+screenshots, downloads or launch date until it ships), every page pointing at
+its build-time share card, and telemetry lightweight. Change the IA
 freely — just update the contract to match, keeping that spirit.
 
 ## Product imagery
@@ -87,3 +88,12 @@ edit those two files:
 ```sh
 npx wrangler deploy
 ```
+
+## Share cards
+
+`npm run build` draws each page's Open Graph card into `dist/og/<name>.png`
+(`scripts/og-cards.mjs`) from that page's own `og:title` and `og:description`,
+with the approved product render from `scripts/og/marks/`. Change the copy in
+the page and the next deploy redraws the card; there is nothing to regenerate
+by hand. A new page gets a line in `cards` and the matching `og:image` tags,
+which `scripts/check-site.mjs` enforces.
