@@ -338,6 +338,117 @@ code {
 .foot-nav a { color: var(--muted); font-size: 14px; text-decoration: none; }
 .foot-nav a:hover { color: var(--accent-ink); }
 
+/* ---- Shepherd page: diagrams, not screenshots -------------------------- */
+
+/* Shepherd has no shipped UI yet, so its page explains itself with plain
+   typographic diagrams. Never dress these up as app chrome. */
+.flow {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: transparent;
+}
+.flow-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.flow-nodes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+.flow-node {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-content: start;
+  column-gap: 8px;
+  row-gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.flow-node b { grid-column: 2; font-size: 14.5px; font-weight: 650; }
+.flow-node span:not(.dot) { grid-column: 2; color: var(--muted); font-size: 13px; line-height: 1.4; }
+.flow-node:not(:has(.dot)) { grid-template-columns: 1fr; }
+.flow-node:not(:has(.dot)) b,
+.flow-node:not(:has(.dot)) span { grid-column: 1; }
+.dot { grid-row: 1; width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; }
+.dot.wait { background: var(--accent); }
+.dot.ask { background: transparent; border: 2px solid var(--accent); }
+.dot.work { background: var(--line-strong); }
+.flow-down { text-align: center; color: var(--faint); font-size: 18px; line-height: 1; }
+.flow-hub {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  background: var(--accent-wash);
+  color: var(--accent-ink);
+}
+.flow-hub svg { flex: none; }
+.flow-hub b { display: block; color: var(--ink); font-size: 16px; }
+.flow-hub span { color: var(--ink-soft); font-size: 14px; line-height: 1.45; }
+.flow figcaption { margin-bottom: 6px; color: var(--muted); font-size: 13px; }
+.digest figcaption { color: var(--muted); font-size: 13px; }
+
+.digest { margin: 0; }
+.digest .codeblock code { font-size: 13.5px; }
+.digest figcaption { margin-top: 12px; }
+
+.ladder { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.ladder li {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  padding: 0 0 22px 52px;
+  counter-increment: step;
+}
+.ladder li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -2px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+.ladder li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 34px;
+  bottom: 0;
+  width: 1px;
+  background: var(--line-strong);
+}
+.ladder li:first-child::before { background: var(--accent); border-color: var(--accent); color: #fff; }
+.ladder b { font-size: 17px; }
+.ladder span { color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+.features.six { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.shepherd-page .split > *,
+.shepherd-page .install .wrap > * { min-width: 0; }
+.shepherd-page .install h2 { margin-top: 16px; font-size: clamp(26px, 3.2vw, 40px); }
+.shepherd-page .install .lead { margin-top: 16px; }
+.ladder-note { margin-top: 4px; padding-left: 52px; color: var(--ink-soft); font-size: 15px; }
+.cmux-note h3 { font-size: 20px; }
+.cmux-note p { margin-top: 12px; color: var(--ink-soft); font-size: 16px; }
+.cmux-note a { color: var(--accent-ink); }
+.cmux-note .fine { color: var(--muted); font-size: 13.5px; }
+.hero-copy .lead a { color: var(--accent-ink); }
+
 /* ---- Responsive -------------------------------------------------------- */
 
 @media (max-width: 900px) {
@@ -356,6 +467,9 @@ code {
   .nav { gap: 14px; }
   .actions { gap: 10px; }
   .actions .btn { flex: 1 1 auto; }
+  .flow-nodes { grid-template-columns: 1fr; gap: 8px; }
+  .digest .codeblock code { white-space: pre-wrap; font-size: 12.5px; }
+  .features.six { grid-template-columns: 1fr; }
   .app-card { padding: 22px; }
   .site-footer .wrap { flex-direction: column; align-items: flex-start; gap: 20px; }
 }
@@ -367,3 +481,8 @@ code {
   .reveal.d3 { animation-delay: 0.18s; }
   @keyframes rise { to { opacity: 1; transform: none; } }
 }
+
+/* The approved Ouro render is the brand mark: no tile, no shadow. */
+.brand img.brand-mark { width: 30px; height: 30px; border-radius: 0; box-shadow: none; object-fit: contain; }
+.app-card .app-icon.app-render { width: 44px; height: 44px; transform: scale(1.2); border-radius: 0; box-shadow: none; object-fit: contain; }
+.product-mark { display: block; width: 112px; height: 112px; object-fit: contain; margin: 0 0 6px -6px; }

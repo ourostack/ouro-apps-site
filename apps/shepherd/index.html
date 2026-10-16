@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ouro Shepherd: keep every coding agent moving</title>
+    <meta name="description" content="Ouro Shepherd, coming soon, watches the coding agents in your terminals. When one hands control back too early, it answers in the terminal where you can see it. When one needs you, it tells you.">
+    <link rel="canonical" href="https://ouro.bot/apps/shepherd/">
+    <meta property="og:title" content="Ouro Shepherd: keep every coding agent moving">
+    <meta property="og:description" content="Coming soon: Shepherd answers coding agents that stop too early, in plain view, and brings you only what is yours to decide.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ouro.bot/apps/shepherd/">
+    <meta property="og:image" content="https://ouro.bot/og/shepherd.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ouro Shepherd: keep every coding agent moving. The Shepherd mark, Ouro with a shepherd's staff.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ouro.bot/og/shepherd.png">
+    <link rel="icon" type="image/svg+xml" href="/assets/brand/ouro.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="stylesheet" href="/styles.css">
+    <script defer src="/assets/site-telemetry.js"></script>
+  </head>
+  <body class="app-page shepherd-page">
+    <header class="site-header" id="top">
+      <div class="wrap">
+        <a class="brand" href="/" data-telemetry="nav_home"><img class="brand-mark" src="/assets/brand/ouro-render-128.webp" srcset="/assets/brand/ouro-render-128.webp 1x, /assets/brand/ouro-render-256.webp 2x" width="30" height="30" alt=""> ouro</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#what" class="nav-hide-sm" data-telemetry="nav_shepherd_what">What it does</a>
+          <a href="#safety" class="nav-hide-sm" data-telemetry="nav_shepherd_safety">What comes to you</a>
+          <a href="https://github.com/ourostack/ouroboros" data-telemetry="nav_shepherd_source">Source</a>
+          <a href="#status" class="btn" data-telemetry="nav_shepherd_status">Status</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="wrap">
+          <div class="hero-copy">
+            <img class="product-mark reveal" src="/assets/brand/shepherd-render-256.webp" srcset="/assets/brand/shepherd-render-256.webp 1x, /assets/brand/shepherd-render-512.webp 2x" width="112" height="112" alt="">
+            <p class="eyebrow reveal">Ouro Shepherd · Coming soon</p>
+            <h1 class="reveal d1">Keep every coding agent <span class="accent">moving.</span></h1>
+            <p class="lead reveal d2">Coding agents often hand control back before they need to. Shepherd watches the agents in your terminals and judges each of those stops. If an agent stopped too early, Shepherd answers it in the terminal, where you can see it. If it needs you, Shepherd tells you.</p>
+            <div class="actions reveal d3">
+              <a class="btn primary" href="https://github.com/ourostack/ouroboros/blob/main/docs/shepherd-sense.md" data-telemetry="shepherd_read_design">Read how it works</a>
+              <a class="btn ghost" href="#how" data-telemetry="shepherd_how">How it decides</a>
+            </div>
+            <div class="trust reveal d3">
+              <span>Coming soon</span>
+              <span>For cmux and Herdr</span>
+              <span>Every answer visible</span>
+            </div>
+          </div>
+
+          <figure class="flow reveal d2" aria-labelledby="flow-caption">
+            <figcaption id="flow-caption">Illustration of how Shepherd fits in. Not a screenshot.</figcaption>
+            <div class="flow-row">
+              <p class="flow-label">Your terminals</p>
+              <div class="flow-nodes">
+                <div class="flow-node"><span class="dot ask" aria-hidden="true"></span><b>Codex</b><span>"Want me to go ahead?"</span></div>
+                <div class="flow-node"><span class="dot work" aria-hidden="true"></span><b>Claude Code</b><span>waiting on its subagents</span></div>
+                <div class="flow-node"><span class="dot wait" aria-hidden="true"></span><b>Copilot CLI</b><span>needs your sign-in</span></div>
+              </div>
+            </div>
+            <div class="flow-down" aria-hidden="true">↓</div>
+            <div class="flow-hub">
+              <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true" focusable="false">
+                <circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="86 21" stroke-linecap="round" transform="rotate(-60 24 24)"/>
+                <path d="M33.5 7.5 L40 10.5 L35 15.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div>
+                <b>Shepherd</b>
+                <span>asks, each time an agent stops: should it have?</span>
+              </div>
+            </div>
+            <div class="flow-down flow-you" aria-hidden="true">↓</div>
+            <div class="flow-row flow-you">
+              <p class="flow-label">What happens</p>
+              <div class="flow-nodes">
+                <div class="flow-node"><b>Answered</b><span>"[Ouro for Ari] Go ahead…" typed in the terminal</span></div>
+                <div class="flow-node"><b>Left alone</b><span>counted as progress</span></div>
+                <div class="flow-node"><b>Sent to you</b><span>on Telegram, for now</span></div>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section tint">
+        <div class="wrap split">
+          <div class="prose">
+            <p class="eyebrow">The problem</p>
+            <h2>Agents stop too early.</h2>
+            <p>Run a few coding agents at once and a pattern shows up. One asks "want me to go ahead?" about work you already asked for. One offers a menu where the right choice is obvious. One writes a plan and then waits. Each stop sits there until you notice it, and you lose the time in between.</p>
+            <p>Shepherd answers those stops for you, in the open, so your attention goes to the ones that are really yours.</p>
+            <ul class="mini-list">
+              <li>Fewer stalls you have to find yourself</li>
+              <li>Every answer shown where it happened</li>
+              <li>Real decisions still come to you</li>
+            </ul>
+          </div>
+          <figure class="digest" aria-labelledby="digest-caption">
+            <pre class="codeblock"><code><span class="c-com">api-refactor · Codex</span>
+
+  I've drafted the migration plan.
+  Want me to go ahead and apply it?
+
+<span class="c-cmd">› [Ouro for Ari]</span> Go ahead and apply it. It's in your task.
+
+<span class="c-com">status: answered for Ari: plan is inside the task</span></code></pre>
+            <figcaption id="digest-caption">What an answer could look like in the terminal. Illustration, not real output.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section" id="what">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">What it does</p>
+            <h2>A second look at every stop.</h2>
+            <p>Shepherd is part of Ouro, our open-source agent harness. Here's what it does. It follows the terminal's own signal that an agent has stopped, then reads the screen to decide what kind of stop it was.</p>
+          </div>
+          <div class="features six">
+            <div class="feature"><h3>Judges every stop</h3><p>Each time an agent hands control back, a quick model call decides whether it should have.</p></div>
+            <div class="feature"><h3>Answers in plain view</h3><p>A reply is typed into the terminal as <code>[Ouro for &lt;your name&gt;]</code>, and that terminal's status line says what was answered and why. A menu gets a key press instead, recorded on the status line and in the log.</p></div>
+            <div class="feature"><h3>Leaves background work alone</h3><p>An agent waiting on its own subagents hasn't really stopped. Shepherd won't answer it and logs the stop as progress.</p></div>
+            <div class="feature"><h3>Stays out of your terminal</h3><p>It never types into the terminal you're using, and it checks the screen again just before it sends anything.</p></div>
+            <div class="feature"><h3>Knows when to back off</h3><p>After three answers in a row to one agent with no sign of you, it stops answering there and tells you.</p></div>
+            <div class="feature"><h3>Fixes the cause</h3><p>Every decision is logged. When the same kind of early stop keeps happening, your Ouro agent will propose a fix to the instructions that caused it.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tint" id="how">
+        <div class="wrap split">
+          <div class="prose">
+            <p class="eyebrow">How it decides</p>
+            <h2>Trust the agent. Show the work.</h2>
+            <p>Ouro works on a simple idea we call "trust the fucking agent": a coding agent doing the job you gave it should keep going, not stop to ask permission. So Shepherd has no allowlist of approved commands. That includes permission prompts: if the work is routine and inside the task, Shepherd may press the key that approves it.</p>
+            <p>What keeps that accountable is visibility, not a rulebook. Every answer appears in the terminal and on its status line, and every decision goes into a log on your machine that you can read.</p>
+          </div>
+          <div>
+          <ol class="ladder" aria-label="What Shepherd does when an agent stops, in order">
+            <li><b>The agent stops</b><span>cmux or Herdr reports that the agent has finished its turn. If it starts again within a few seconds, Shepherd lets it be.</span></li>
+            <li><b>Shepherd reads the screen</b><span>A judge reads the last lines of the terminal and decides: stopped too early, needs you, finished, or still waiting on its own work.</span></li>
+            <li><b>It acts on that</b><span>Too early: it answers. Needs you or finished: it tells you. Still working: it leaves the agent alone.</span></li>
+            <li><b>It writes it down</b><span>Every decision goes into the log, with the reason.</span></li>
+          </ol>
+          <p class="ladder-note">If the judge can't tell, or fails, Shepherd does nothing. The agent's question stays in the terminal for you.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="safety">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">What comes to you</p>
+            <h2>Some things will always come to you.</h2>
+            <p>Shepherd is built to leave these alone. It leaves the question in the terminal and your Ouro agent tells you about it, on Telegram for now. Finished work comes to you the same way. The judge is a model and can be wrong, which is why every answer it does give is visible and logged.</p>
+          </div>
+          <div class="features six">
+            <div class="feature"><h3>Your voice</h3><p>Anything that would be sent or published as you.</p></div>
+            <div class="feature"><h3>Your decisions</h3><p>Choices that are yours to make, not the agent's.</p></div>
+            <div class="feature"><h3>Your money</h3><p>Purchases, payments, and anything that spends for you.</p></div>
+            <div class="feature"><h3>Your credentials</h3><p>Sign-ins, passwords, keys, and accounts only you can act in.</p></div>
+            <div class="feature"><h3>Irreversible acts</h3><p>Anything that can't be undone.</p></div>
+            <div class="feature"><h3>Real ambiguity</h3><p>When it isn't clear what you meant or whether the agent may do it.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tint install" id="status">
+        <div class="wrap">
+          <div>
+            <p class="eyebrow">Where it stands</p>
+            <h2>Coming soon, built in the open.</h2>
+            <p class="lead">We're using and refining Shepherd on our own machines ahead of wider availability. Its code is in Ouro, our open-source agent harness, and this page will say so when you can use it.</p>
+            <p class="lead">You'll need an Ouro agent running on the same computer as your terminals. The judge runs on your agent's model provider, so each stop it judges is a small model call on your account. On your phone, decisions arrive on Telegram; for the terminal itself, use <a href="https://github.com/ZingerLittleBee/Heeler" data-telemetry="shepherd_heeler_link">Heeler</a> with Herdr, or SSH over Tailscale.</p>
+            <div class="actions">
+              <a class="btn primary" href="https://github.com/ourostack/ouroboros" data-telemetry="shepherd_follow_github">Follow along on GitHub</a>
+            </div>
+          </div>
+          <div class="prose cmux-note">
+            <h3>Your terminal, your agents</h3>
+            <p>Shepherd isn't a terminal and isn't a fork you have to install. It connects to stock <a href="https://cmux.com" data-telemetry="shepherd_cmux_link">cmux</a> through its socket (you store a token once, from a cmux terminal) and to <a href="https://herdr.dev" data-telemetry="shepherd_herdr_link">Herdr</a> through its local socket. No cmux account needed.</p>
+            <p>It is built to be agent-agnostic. It uses the terminal's own stop signal and reads the screen, so no part of it depends on one particular coding agent. We're testing it with Claude Code, Codex, GitHub Copilot CLI and Agency.</p>
+            <p class="fine">cmux is made by Manaflow, and Herdr by Herdr, Inc. Ouro Shepherd is an independent project and is not affiliated with or endorsed by Manaflow or Herdr, Inc. Claude Code, Codex, GitHub Copilot, Agency, Telegram and Tailscale are names or trademarks of their owners; no affiliation is implied.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div>
+          <a class="brand" href="/" data-telemetry="footer_home"><img class="brand-mark" src="/assets/brand/ouro-render-128.webp" srcset="/assets/brand/ouro-render-128.webp 1x, /assets/brand/ouro-render-256.webp 2x" width="30" height="30" alt=""> ouro</a>
+          <p class="foot-meta">© 2026 Ari Mendelow · Ouro Shepherd, coming soon.</p>
+        </div>
+        <nav class="foot-nav" aria-label="Footer">
+          <a href="/" data-telemetry="footer_ouro">Ouro</a>
+          <a href="/apps/ouro-md/" data-telemetry="footer_ouro_md">Ouro MD</a>
+          <a href="https://github.com/ourostack/ouroboros" data-telemetry="footer_shepherd_source">Source</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var header = document.querySelector('.site-header');
+        var onScroll = function () { header.classList.toggle('is-scrolled', window.scrollY > 8); };
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+      })();
+    </script>
+  </body>
+</html>
