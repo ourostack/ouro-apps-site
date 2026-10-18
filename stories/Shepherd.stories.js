@@ -77,7 +77,7 @@ export const CmuxNote = {
 <div class="prose cmux-note">
             <h3>Your terminal, your agents</h3>
             <p>Shepherd isn't a terminal and isn't a fork you have to install. It connects to stock <a href="https://cmux.com" data-telemetry="shepherd_cmux_link">cmux</a> through its socket (you store a token once, from a cmux terminal) and to <a href="https://herdr.dev" data-telemetry="shepherd_herdr_link">Herdr</a> through its local socket. No cmux account needed.</p>
-            <p>It is built to be agent-agnostic. It uses the terminal's own stop signal and reads the screen, so no part of it depends on one particular coding agent. We're testing it with Claude Code, Codex, GitHub Copilot CLI and Agency.</p>
+            <p>It is built to be agent-agnostic. It uses the terminal's own stop signal and reads the screen, so no part of it depends on one particular agent. We're testing it with Claude Code, Codex, GitHub Copilot CLI and Agency.</p>
             <p class="fine">cmux is made by Manaflow, and Herdr by Herdr, Inc. Ouro Shepherd is an independent project and is not affiliated with or endorsed by Manaflow or Herdr, Inc. Claude Code, Codex, GitHub Copilot, Agency, Telegram and Tailscale are names or trademarks of their owners; no affiliation is implied.</p>
           </div>
 </div>`,

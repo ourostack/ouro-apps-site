@@ -32,7 +32,7 @@ export const InProgress = {
           <span class="pill soon">Coming soon</span>
         </div>
         <h3>Ouro Shepherd</h3>
-        <p>Watches the coding agents in your terminals. When one stops too early, it answers in plain view. When one needs you, it tells you.</p>
+        <p>Watches the agents in your terminals. When one stops too early, it answers in plain view. When one needs you, it tells you.</p>
         <div class="spacer"></div>
         <div class="card-foot"><a class="text-link" href="#">Follow along</a></div>
       </article>
