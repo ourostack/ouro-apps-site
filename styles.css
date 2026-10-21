@@ -131,7 +131,7 @@ p { margin: 0; }
   text-decoration: none;
   transition: color 0.15s ease, gap 0.15s ease;
 }
-.text-link:hover { color: var(--accent-ink); gap: 8px; }
+.text-link:hover { color: var(--accent-ink); gap: 8px; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .text-link::after { content: "→"; font-weight: 400; }
 
 /* ---- Header ------------------------------------------------------------ */
@@ -200,14 +200,14 @@ p { margin: 0; }
   gap: clamp(32px, 5vw, 68px);
   align-items: center;
 }
-.hero-copy { max-width: 560px; }
+/* Text fills its column (Ari, 2026-10-20): the hero copy takes its whole grid column, and no line is capped. */
 .hero h1 {
   margin-top: 20px;
   font-size: clamp(38px, 5.4vw, 62px);
   letter-spacing: -0.035em;
 }
 .hero h1 .accent { color: var(--accent); }
-.hero .lead { margin-top: 20px; max-width: 30em; }
+.hero .lead { margin-top: 20px; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 30px; }
 .trust {
   display: flex;
@@ -225,8 +225,7 @@ p { margin: 0; }
 
 .section { padding-block: clamp(56px, 8vw, 104px); }
 .section.tint { background: var(--bg-tint); border-block: 1px solid var(--line); }
-.section-head { max-width: 660px; }
-.section-head.center { max-width: 720px; margin-inline: auto; text-align: center; }
+.section-head.center { margin-inline: auto; text-align: center; }
 .section-head.center .eyebrow { justify-content: center; }
 .section-head h2 { margin-top: 16px; font-size: clamp(28px, 3.6vw, 44px); }
 .section-head p { margin-top: 16px; color: var(--muted); font-size: clamp(16px, 1.3vw, 19px); }
@@ -456,7 +455,6 @@ code {
   .split,
   .install .wrap { grid-template-columns: 1fr; }
   .hero .wrap { gap: 36px; }
-  .hero-copy { max-width: none; }
   .split .media { order: -1; }
   .nav-hide-sm { display: none; }
 }

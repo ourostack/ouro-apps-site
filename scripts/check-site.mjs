@@ -100,13 +100,14 @@ for (const term of ["rendered document", "Download Ouro MD", "ouro-md-install.sh
   }
 }
 
-// Shepherd page = a public coming-soon preview. It says so, credits cmux without
-// implying affiliation, keeps the safety floor, and shows labelled illustrations,
-// never screenshots, of a product that isn't generally available. Approved brand
-// artwork (/assets/brand/) is the only imagery. No download, install or launch
-// date until there is something to use.
+// Shepherd page = an experiment that ships inside Ouroboros (Ari, 2026-10-20: "coming soon"
+// was inaccurate). It says so, credits cmux without implying affiliation, keeps the safety
+// floor, and shows labelled illustrations, never screenshots. Approved brand artwork
+// (/assets/brand/) is the only imagery. No download or launch date; setup is the design
+// doc's "Turning it on".
 const shepherd = await readFile("apps/shepherd/index.html", "utf8");
-for (const term of ["Coming soon", "We're using and refining Shepherd on our own machines ahead of wider availability.", "https://cmux.com", "not affiliated with or endorsed by Manaflow", "always come to you", "Not a screenshot", "Illustration, not real output"]) {
+if (/coming soon/i.test(shepherd)) throw new Error("Shepherd ships inside Ouroboros: it is not coming soon");
+for (const term of ["Experimental", "Shepherd ships in Ouroboros, our open-source agent harness, as an early alpha.", "#turning-it-on", "https://cmux.com", "not affiliated with or endorsed by Manaflow", "always come to you", "Not a screenshot", "Illustration, not real output"]) {
   if (!shepherd.includes(term)) {
     throw new Error(`Shepherd page must stay honest about its status and cmux: missing "${term}"`);
   }
