@@ -446,6 +446,12 @@ code {
 .cmux-note p { margin-top: 12px; color: var(--ink-soft); font-size: 16px; }
 .cmux-note a { color: var(--accent-ink); }
 .cmux-note .fine { color: var(--muted); font-size: 13.5px; }
+/* Text beside text reads top to bottom: How it decides puts its steps under its copy,
+   and Where it stands puts the terminal note under the status (Ari, 2026-10-20). Copy
+   beside its own picture (The problem) stays side by side. */
+.shepherd-page #how .split,
+.shepherd-page .install .wrap { grid-template-columns: minmax(0, 1fr); align-items: start; }
+.shepherd-page #how .ladder { margin-top: 8px; }
 .hero-copy .lead a { color: var(--accent-ink); }
 
 /* ---- Responsive -------------------------------------------------------- */
