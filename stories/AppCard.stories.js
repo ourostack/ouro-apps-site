@@ -28,11 +28,11 @@ export const InProgress = {
     <div style="max-width:360px">
       <article class="app-card">
         <div class="app-card-top">
-          <span class="app-glyph">◐</span>
-          <span class="pill soon">In the workshop</span>
+          <img class="app-icon app-render" src="/assets/brand/shepherd-render-256.webp" width="44" height="44" alt="">
+          <span class="pill soon">Experimental</span>
         </div>
-        <h3>Ouro Workbench</h3>
-        <p>A native command center for running, watching, and steering agent work — repos, tasks, and the space between them.</p>
+        <h3>Ouro Shepherd</h3>
+        <p>Watches the agents in your terminals. When one stops too early, it answers in plain view. When one needs you, it tells you.</p>
         <div class="spacer"></div>
         <div class="card-foot"><a class="text-link" href="#">Follow along</a></div>
       </article>
