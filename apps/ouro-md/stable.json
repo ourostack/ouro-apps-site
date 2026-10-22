@@ -2,10 +2,10 @@
   "appName": "Ouro MD",
   "subtitle": "The Markdown App",
   "channel": "stable",
-  "version": "0.9.105",
-  "releaseTag": "v0.9.105",
-  "releaseURL": "https://github.com/ourostack/ouro-md/releases/tag/v0.9.105",
-  "publishedAt": "2026-10-21T01:10:48Z",
+  "version": "0.9.106",
+  "releaseTag": "v0.9.106",
+  "releaseURL": "https://github.com/ourostack/ouro-md/releases/tag/v0.9.106",
+  "publishedAt": "2026-10-22T01:27:45Z",
   "bundleIdentifier": "bot.ouro.md",
   "minimumMacOS": "13.0",
   "signingMode": "developer-id",
@@ -15,24 +15,24 @@
       "url": "https://ouro.bot/ouro-md-install.sh"
     },
     "zip": {
-      "name": "Ouro-MD-0.9.105.zip",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.105/Ouro-MD-0.9.105.zip",
-      "bytes": 8509593,
-      "sha256": "72a3999d8911b243a25c09962229f00523915f62cdace0e126044adfa6e118a1",
+      "name": "Ouro-MD-0.9.106.zip",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.106/Ouro-MD-0.9.106.zip",
+      "bytes": 8510904,
+      "sha256": "9ffdaa633a7463733a64cb71a90b51890af89abf636d3fbba004a0603d539851",
       "role": "auto-update"
     },
     "dmg": {
-      "name": "Ouro-MD-0.9.105.dmg",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.105/Ouro-MD-0.9.105.dmg",
-      "bytes": 9601743,
-      "sha256": "71ae64a447d74f687ba66194b235afb4f515281115494497993da60d4ad08439",
+      "name": "Ouro-MD-0.9.106.dmg",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.106/Ouro-MD-0.9.106.dmg",
+      "bytes": 9605441,
+      "sha256": "b28a0532597a2850500a43f5567534f24742dadaef40cdc192e2155db2da839c",
       "role": "interactive-install"
     },
     "manifest": {
-      "name": "Ouro-MD-0.9.105.manifest.json",
-      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.105/Ouro-MD-0.9.105.manifest.json",
+      "name": "Ouro-MD-0.9.106.manifest.json",
+      "url": "https://github.com/ourostack/ouro-md/releases/download/v0.9.106/Ouro-MD-0.9.106.manifest.json",
       "bytes": 810,
-      "sha256": "15403aee09471034f93f1a4d5179167a0eecf6e5f1f811fd0743345390010c63",
+      "sha256": "a13f05e77d2cdb01e48a35ba5ba11a412cf7de569e0322735b4ffb57e0019e06",
       "role": "metadata"
     }
   }
