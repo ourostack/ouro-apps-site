@@ -3,14 +3,14 @@ export default {
   tags: ['autodocs'],
 };
 
-export const Eyebrow = { render: () => `<p class="eyebrow">Ouro · Native Mac apps</p>` };
+export const Eyebrow = { render: () => `<p class="eyebrow">Ouro MD · The Markdown app</p>` };
 
-export const Pills = {
+export const Tags = {
   render: () => `
     <div style="display:flex;gap:12px;align-items:center">
-      <span class="pill live">Available now</span>
-      <span class="pill soon">In the workshop</span>
-      <span class="pill soon">Later</span>
+      <span class="tag tag-today">Use today</span>
+      <span class="tag tag-exp">Experimental</span>
+      <span class="tag tag-alpha">Under construction</span>
     </div>`,
 };
 

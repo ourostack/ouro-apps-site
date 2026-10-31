@@ -6,15 +6,15 @@ export default {
 
 export const Hero = {
   render: () => `
-    <section class="hero">
+    <section class="hero app-page">
       <div class="wrap">
         <div class="hero-copy">
-          <p class="eyebrow">Ouro · Native Mac apps</p>
-          <h1>Markdown that renders <span class="accent">as you write.</span></h1>
-          <p class="lead">Ouro makes small, sharp apps for people who live in text. First out of the workshop: <strong>Ouro MD</strong> — write in Markdown and read it in place. No preview pane, no toggle.</p>
+          <p class="eyebrow">Ouro MD · The Markdown app</p>
+          <h1 class="heading-lead">Write in the rendered document.</h1>
+          <p class="lead">Ouro MD renders Markdown in place as you type.</p>
           <div class="actions">
             <a class="btn primary" href="#">Download Ouro MD</a>
-            <a class="btn ghost" href="#">Learn about Ouro MD</a>
+            <a class="btn" href="#">Learn about Ouro MD</a>
           </div>
           <div class="trust">
             <span>macOS 13+</span><span>Signed &amp; notarized</span><span>Local files stay local</span>
