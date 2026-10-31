@@ -290,3 +290,21 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 
 /* Keep a command such as npx ouro.bot on one line inside prose. */
 .shelf code { white-space: nowrap; }
+
+/* ---- Product clips: one recording per theme, as on ouroboros.bot --------- */
+
+.clip-frame { position: relative; aspect-ratio: 4 / 3; background: var(--color-undergrowth); }
+.clip-theme { height: 100%; }
+.clip-video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; transform: scale(1.04); }
+.theme-light-only { display: none; }
+:root[data-theme="light"] .theme-light-only { display: block; }
+:root[data-theme="light"] .theme-dark-only { display: none; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .theme-light-only { display: block; }
+  :root:not([data-theme="dark"]) .theme-dark-only { display: none; }
+}
+.clip-toggle { position: absolute; right: 0.6rem; bottom: 0.6rem; padding: 0.3rem 0.75rem; border-radius: 999px; font: 500 0.8125rem var(--font-body); color: var(--color-bone); background: color-mix(in srgb, var(--color-void) 85%, transparent); border: 1px solid color-mix(in srgb, var(--color-canopy) 80%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); cursor: pointer; }
+.clip-toggle:hover { color: var(--color-scale); }
+.clip-toggle[hidden] { display: none; }
+.media-caption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.6rem; }
+.tag-plain { --tag-tone: var(--color-mist); }

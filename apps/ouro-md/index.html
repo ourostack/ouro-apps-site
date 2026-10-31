@@ -97,14 +97,26 @@
           </div>
 
           <div class="hero-media">
-            <figure class="window" style="margin:0">
-              <div class="window-media">
-                <video muted loop playsinline poster="/assets/ouro-md-hero.png" width="1280" height="720"
-                       aria-label="Ouro MD: typing Markdown — a heading, bold, inline code, and an equation — and watching each render live in place as you write.">
-                  <source src="/assets/ouro-md-hero.mp4" type="video/mp4">
-                </video>
-              </div>
-            </figure>
+          <figure class="media clip">
+            <!-- Real Ouro MD recordings, the same clips ouroboros.bot shows (copied from
+                 ourostack/ouroboros-website public/images/workshop). One per theme. -->
+            <div class="window clip-frame">
+                <div class="clip-theme theme-light-only">
+                  <video class="clip-video" muted playsinline loop preload="none" poster="/assets/media/ouro-md-typing-light-poster.png" width="840" height="630" aria-label="Lists and flowcharts render as you type.">
+                    <source src="/assets/media/ouro-md-typing-light.webm" type="video/webm">
+                    <source src="/assets/media/ouro-md-typing-light.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <div class="clip-theme theme-dark-only">
+                  <video class="clip-video" muted playsinline loop preload="none" poster="/assets/media/ouro-md-typing-dark-poster.png" width="840" height="630" aria-label="Lists and flowcharts render as you type.">
+                    <source src="/assets/media/ouro-md-typing-dark.webm" type="video/webm">
+                    <source src="/assets/media/ouro-md-typing-dark.mp4" type="video/mp4">
+                  </video>
+                </div>
+              <button type="button" class="clip-toggle" hidden>Pause</button>
+            </div>
+            <figcaption class="media-caption">Lists and flowcharts render as you type. <span class="tag tag-plain">Dramatization</span></figcaption>
+          </figure>
           </div>
         </div>
       </section>
@@ -190,16 +202,8 @@
     </footer>
 
     <script src="/assets/site-shell.js" defer></script>
+    <script src="/assets/clips.js" defer></script>
     <script>
-      // Respect reduced motion: only play the hero clip when motion is welcome;
-      // otherwise it holds on its poster frame.
-      if (!window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.window-media video').forEach(function (v) {
-          v.setAttribute('autoplay', '');
-          var p = v.play();
-          if (p && p.catch) p.catch(function () {});
-        });
-      }
       // Promote the real release: version, download link, signing truth.
       fetch('/apps/ouro-md/stable.json')
         .then(function (r) { return r.ok ? r.json() : null; })

@@ -29,7 +29,7 @@ export const Shelf = {
               <img src="/assets/brand/ouro-hx-render-128.webp" srcset="/assets/brand/ouro-hx-render-128.webp 128w, /assets/brand/ouro-hx-render-256.webp 256w" sizes="64px" width="64" height="64" alt="" loading="lazy" class="mark-render shelf-mark">
               <div class="shelf-body">
                 <h3 class="shelf-name">Ouro HX</h3>
-                <p class="status"><span class="tag tag-alpha">Under construction</span> Component library in development</p>
+                <p class="status"><span class="tag tag-today">Use today</span> React component library</p>
                 <p>Ouro HX is a React component library that feels right to the people using it and is obvious to the agents building with it.</p>
                 <p class="shelf-links"><a class="link" href="https://ui.ouro.bot/voyage/" data-telemetry="card_ouro_hx">Try the showcase ↗</a></p>
               </div>

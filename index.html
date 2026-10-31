@@ -100,15 +100,25 @@
             </div>
             <div class="trust"><span id="home-trust">Signed &amp; notarized</span><span>Local files stay local</span></div>
           </div>
-          <figure class="media">
-            <div class="window">
-              <div class="window-media">
-                <video muted loop playsinline poster="/assets/ouro-md-hero.png" width="1280" height="720"
-                       aria-label="Ouro MD: typing Markdown — a heading, bold, inline code, and an equation — and watching each render live in place as you write.">
-                  <source src="/assets/ouro-md-hero.mp4" type="video/mp4">
-                </video>
-              </div>
+<figure class="media clip">
+            <!-- Real Ouro MD recordings, the same clips ouroboros.bot shows (copied from
+                 ourostack/ouroboros-website public/images/workshop). One per theme. -->
+            <div class="window clip-frame">
+                <div class="clip-theme theme-light-only">
+                  <video class="clip-video" muted playsinline loop preload="none" poster="/assets/media/ouro-md-agent-edit-light-poster.png" width="840" height="630" aria-label="An agent fills in its test results, and a bar in the margin marks what changed.">
+                    <source src="/assets/media/ouro-md-agent-edit-light.webm" type="video/webm">
+                    <source src="/assets/media/ouro-md-agent-edit-light.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <div class="clip-theme theme-dark-only">
+                  <video class="clip-video" muted playsinline loop preload="none" poster="/assets/media/ouro-md-agent-edit-dark-poster.png" width="840" height="630" aria-label="An agent fills in its test results, and a bar in the margin marks what changed.">
+                    <source src="/assets/media/ouro-md-agent-edit-dark.webm" type="video/webm">
+                    <source src="/assets/media/ouro-md-agent-edit-dark.mp4" type="video/mp4">
+                  </video>
+                </div>
+              <button type="button" class="clip-toggle" hidden>Pause</button>
             </div>
+            <figcaption class="media-caption">An agent fills in its test results, and a bar in the margin marks what changed. <span class="tag tag-plain">Dramatization</span></figcaption>
           </figure>
         </div>
       </section>
@@ -141,7 +151,7 @@
               <img src="/assets/brand/ouro-hx-render-128.webp" srcset="/assets/brand/ouro-hx-render-128.webp 128w, /assets/brand/ouro-hx-render-256.webp 256w" sizes="64px" width="64" height="64" alt="" loading="lazy" class="mark-render shelf-mark">
               <div class="shelf-body">
                 <h3 class="shelf-name">Ouro HX</h3>
-                <p class="status"><span class="tag tag-alpha">Under construction</span> Component library in development</p>
+                <p class="status"><span class="tag tag-today">Use today</span> React component library</p>
                 <p>Ouro HX is a React component library that feels right to the people using it and is obvious to the agents building with it.</p>
                 <p class="shelf-links"><a class="link" href="https://ui.ouro.bot/voyage/" data-telemetry="card_ouro_hx">Try the showcase ↗</a></p>
               </div>
@@ -168,15 +178,8 @@
     </footer>
 
     <script src="/assets/site-shell.js" defer></script>
+    <script src="/assets/clips.js" defer></script>
     <script>
-      // Respect reduced motion: only play the clip when motion is welcome.
-      if (!window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('.window-media video').forEach(function (v) {
-          v.setAttribute('autoplay', '');
-          var p = v.play();
-          if (p && p.catch) p.catch(function () {});
-        });
-      }
       // Promote the live release: direct download link and signing truth.
       fetch('/apps/ouro-md/stable.json')
         .then(function (r) { return r.ok ? r.json() : null; })
