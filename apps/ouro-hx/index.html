@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ouro HX — React components designed down to the last tap</title>
+    <meta name="description" content="Ouro HX is a React component library that feels right to the people using it and is obvious to the agents building with it. Copy-in source for shadcn's CLI, already cooking in Spoonjoy.">
+    <link rel="canonical" href="https://ouro.bot/apps/ouro-hx/">
+    <meta property="og:title" content="Ouro HX — React components designed down to the last tap">
+    <meta property="og:description" content="A React component library that feels right to people and is obvious to agents. Already cooking in Spoonjoy.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ouro.bot/apps/ouro-hx/">
+    <meta property="og:image" content="https://ouro.bot/assets/media/ouro-hx-spoonjoy-xray-og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/svg+xml" href="/assets/brand/ouro.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="preload" href="/assets/fonts/cormorant-regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <script>
+      // Apply a saved theme before first paint, as ouroboros.bot does.
+      try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+    </script>
+    <script defer src="/assets/site-telemetry.js"></script>
+  </head>
+  <body class="app-page hx-page">
+    <a class="skip" href="#main">Skip to content</a>
+    <!-- Shared header: the same bar as ouroboros.bot (src/components/Nav.astro). -->
+    <header class="site-header" id="top">
+      <div class="wrap">
+        <a class="brand" href="https://ouroboros.bot/" aria-label="Ouro home" data-telemetry="nav_home">
+          <img src="/assets/brand/ouro-render-128.webp" srcset="/assets/brand/ouro-render-128.webp 128w, /assets/brand/ouro-render-256.webp 256w" sizes="32px" width="32" height="32" alt="" class="mark-render">
+          <span>ouro</span>
+        </a>
+        <nav class="nav" aria-label="Main">
+          <a href="https://ouroboros.bot/approach/">How I work</a>
+          <a href="https://ouroboros.bot/desk/">Desk</a>
+          <a href="https://ouroboros.bot/ouro-md/">Ouro MD</a>
+          <a href="https://ouroboros.bot/lab/">Lab</a>
+          <a href="https://ouroboros.bot/blog/">Blog</a>
+          <a href="https://ouro.bot/" aria-current="page" data-telemetry="nav_apps">Apps</a>
+          <a href="https://ouroboros.bot/#try">Try it</a>
+          <a class="gh" href="https://github.com/ourostack" aria-label="ourostack on GitHub" data-telemetry="nav_github"><svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+          <a href="https://mendelow.me">About me <span aria-hidden="true">↗</span></a>
+        </nav>
+        <div class="header-tools">
+          <button type="button" class="icon-btn theme-toggle" aria-label="Switch theme" title="Light or dark">
+            <svg class="theme-icon-sun" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            <svg class="theme-icon-moon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linejoin="round" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+          </button>
+          <button type="button" class="icon-btn menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu">
+            <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+      <nav class="menu" id="menu" aria-label="Menu">
+        <a href="https://ouroboros.bot/approach/">How I work</a>
+        <a href="https://ouroboros.bot/desk/">Desk</a>
+        <a href="https://ouroboros.bot/ouro-md/">Ouro MD</a>
+        <a href="https://ouroboros.bot/lab/">Lab</a>
+        <a href="https://ouroboros.bot/blog/">Blog</a>
+        <a href="https://ouro.bot/" aria-current="page">Apps</a>
+        <a href="https://ouroboros.bot/#try">Try it</a>
+        <a href="https://github.com/ourostack">GitHub ↗</a>
+        <a href="https://mendelow.me">About me <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="wrap">
+          <div class="hero-copy">
+            <p class="eyebrow">Ouro HX · React component library</p>
+            <h1 class="heading-lead">Designed down to the last tap.</h1>
+            <p class="status"><span class="tag tag-today">Use today</span> React 19 and Tailwind CSS v4</p>
+            <p class="lead">And down to the last prop. Ouro HX is a React component library that feels right to the people using it and is obvious to the agents building with it. It's copy-in source, not an npm package: shadcn's CLI drops each component into your app, where it's yours to read, keep and tinker with.</p>
+            <div class="actions">
+              <a class="btn primary" href="https://ui.ouro.bot/" data-telemetry="hx_showcase">See it live ↗</a>
+              <a class="btn" href="#install" data-telemetry="hx_install">Install it</a>
+            </div>
+          </div>
+
+          <div class="hero-media">
+            <!-- Real screenshots of spoonjoy.app/test-kitchen?xray (2026-10-31), one per theme.
+                 Provenance: assets/media/ouro-hx-spoonjoy-xray-provenance.json -->
+            <figure class="media">
+              <div class="window">
+                <img class="theme-light-only" src="/assets/media/ouro-hx-spoonjoy-xray-light.webp" width="1600" height="863" alt="Spoonjoy's Crispy Lemon Chickpeas recipe with X-ray on: the navbar, a number field, a button and a checklist are outlined and labeled with their Ouro HX component names.">
+                <img class="theme-dark-only" src="/assets/media/ouro-hx-spoonjoy-xray-dark.webp" width="1600" height="863" alt="Spoonjoy's Crispy Lemon Chickpeas recipe in dark mode with X-ray on: the navbar, a number field, a button and a checklist are outlined and labeled with their Ouro HX component names.">
+              </div>
+              <figcaption class="media-caption">Spoonjoy's Test Kitchen with X-ray on: every outline is an Ouro HX component, wearing its name tag. Real app, real recipe, real chickpeas. <a class="link" href="https://spoonjoy.app/test-kitchen?xray" data-telemetry="hx_xray">Turn on X-ray yourself ↗</a></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section tint">
+        <div class="wrap">
+          <div class="section-head">
+            <p class="eyebrow">In the wild</p>
+            <h2 class="heading-section">Already cooking in production.</h2>
+            <p class="lead"><a class="link" href="https://spoonjoy.app/" data-telemetry="hx_spoonjoy">Spoonjoy</a>, a recipe app, is built with Ouro HX. Each component's docs page links to where Spoonjoy uses it, so you can watch a component do its day job before you take it home.</p>
+          </div>
+          <div class="features">
+            <div class="feature"><h3>Yours to keep</h3><p>Copy-in source in the shadcn/ui registry format. Each component lands in <code>components/ouro/</code>, and your app's own Tailwind CSS v4 compiles it.</p></div>
+            <div class="feature"><h3>Keeps your theme</h3><p>Components read shadcn's theme variables (<code>--primary</code>, <code>--background</code>, <code>--radius</code>…), so your shadcn theme stays put. Want the Ouro look? Add <code>ouro-theme</code>.</p></div>
+            <div class="feature"><h3>Phones get sheets</h3><p>A dialog sits centered on wide screens and becomes a bottom sheet you can drag away on a phone.</p></div>
+            <div class="feature"><h3>Motion, minus the library</h3><p>Motion is CSS, and reduced motion is honored in CSS. No animation library comes along for the ride.</p></div>
+            <div class="feature"><h3>Tests, if you want them</h3><p>Each component's browser tests, stories and Playwright spec come as an optional <code>-tests</code> item, right beside it.</p></div>
+            <div class="feature"><h3>Agents read the manual too</h3><p><a class="link" href="https://ui.ouro.bot/llms.txt" data-telemetry="hx_llms">llms.txt</a> lists every item and the exact commands, so your coding agent installs components without guessing.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section install" id="install">
+        <div class="wrap">
+          <div>
+            <p class="eyebrow">Install</p>
+            <h2 class="heading-section">A few commands, then a dialog.</h2>
+            <p class="lead">In a Vite or Next.js app with Tailwind CSS v4 and an <code>@/*</code> path alias: run shadcn's init, add <code>ouro-base</code> once, then add any component. The <code>@ouro</code> namespace always serves the newest release.</p>
+            <div class="actions">
+              <a class="btn primary" href="https://ui.ouro.bot/docs/installing/" data-telemetry="hx_install_guide">Install guide ↗</a>
+              <a class="link" href="https://ui.ouro.bot/docs/" data-telemetry="hx_docs">Browse the docs ↗</a>
+            </div>
+          </div>
+          <pre class="codeblock"><code><span class="c-com"># once per app</span>
+<span class="c-cmd">npx</span> shadcn@latest init --base base --preset nova --yes --no-monorepo
+
+<span class="c-com"># once, in components.json</span>
+"registries": { "@ouro": "https://ui.ouro.bot/r/{name}.json" }
+
+<span class="c-com"># the tokens every component needs, then a component</span>
+<span class="c-cmd">npx</span> shadcn@latest add @ouro/ouro-base
+<span class="c-cmd">npx</span> shadcn@latest add @ouro/dialog</code></pre>
+        </div>
+        <div class="wrap">
+          <p class="app-links"><a class="link" href="https://github.com/ourostack/ouro-ui" data-telemetry="hx_source">Ouro HX source ↗</a><a class="link" href="https://ui.ouro.bot/storybook/" data-telemetry="hx_storybook">Storybook ↗</a><a class="link" href="https://github.com/ourostack/ouro-ui/releases" data-telemetry="hx_releases">Releases ↗</a><a class="link" href="https://ouroboros.bot/#ouro-ui" data-telemetry="hx_ouroboros">Ouro HX on ouroboros.bot →</a></p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Shared footer: the same kit as ouroboros.bot and mendelow.me (src/components/Footer.astro). -->
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <p class="footer-line"><span>You bring judgment.</span> <span>Your agents bring the rest.</span></p>
+        <p class="footer-row">
+          <span>© 2026 Ari Mendelow</span>
+          <span class="footer-sep" aria-hidden="true">·</span><a href="https://ouroboros.bot/" data-telemetry="footer_ouroboros">ouroboros.bot</a>
+          <span class="footer-sep" aria-hidden="true">·</span><a href="https://mendelow.me">mendelow.me</a>
+          <span class="footer-sep" aria-hidden="true">·</span><a href="https://github.com/ourostack" data-telemetry="footer_github">ourostack on GitHub</a>
+          <span class="footer-sep" aria-hidden="true">·</span><a href="https://www.linkedin.com/in/arimendelow">LinkedIn</a>
+          <span class="footer-sep" aria-hidden="true">·</span><a href="https://ouroboros.bot/privacy/">Privacy</a>
+          <span class="footer-sep" aria-hidden="true">·</span><a href="https://ouroboros.bot/terms/">Terms</a>
+        </p>
+      </div>
+    </footer>
+
+    <script src="/assets/site-shell.js" defer></script>
+  </body>
+</html>

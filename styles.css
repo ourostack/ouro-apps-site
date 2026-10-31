@@ -249,7 +249,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .mini-list { display: grid; gap: 0.5rem; margin-top: 0.5rem; }
 .mini-list li { position: relative; padding-left: 1.25rem; }
 .mini-list li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 0.4rem; height: 0.4rem; border-radius: 50%; background: var(--color-scale); }
-.prose code, .feature code, .mini-list code { color: var(--color-bone); background: var(--color-undergrowth); padding: 0.1em 0.4em; border-radius: 0.25rem; }
+.prose code, .feature code, .mini-list code, .lead code { color: var(--color-bone); background: var(--color-undergrowth); padding: 0.1em 0.4em; border-radius: 0.25rem; }
 
 .features { display: grid; gap: 2rem 3rem; }
 @media (min-width: 640px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
@@ -308,3 +308,10 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .clip-toggle[hidden] { display: none; }
 .media-caption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.6rem; }
 .tag-plain { --tag-tone: var(--color-mist); }
+
+/* Ouro HX page: real screenshots fill their frame. */
+.window > img { width: 100%; height: auto; }
+.media-caption .link { white-space: nowrap; }
+.shelf-name a { color: inherit; text-decoration: none; }
+.shelf-name a:hover { color: var(--color-scale); }
+.feature code, .lead code { white-space: nowrap; }
