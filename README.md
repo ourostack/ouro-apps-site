@@ -1,8 +1,14 @@
 # ouro-apps-site
 
-The marketing + distribution site for **[ouro.bot](https://ouro.bot)** — the
-home for Ouro's native Mac apps. The homepage is the Ouro app family; the
-`/apps/ouro-md/` page is the Ouro MD product page.
+The download and install site for **[ouro.bot](https://ouro.bot)**. It is the
+same family as [ouroboros.bot](https://ouroboros.bot) (ourostack/ouroboros-website):
+ouroboros.bot explains the tools, ouro.bot is where you get them. The homepage
+lists Ouro's tools (Ouro MD, Ouroboros, Ouro Shepherd, Ouro HX); the
+`/apps/ouro-md/` page is the Ouro MD download page.
+
+The header, footer, fonts and colour tokens mirror ouroboros.bot's
+`src/components/Nav.astro`, `Footer.astro` and `src/styles/global.css`. Change
+them in both repositories together.
 
 ## Local development
 
@@ -13,8 +19,9 @@ npm run build                 # contract check + assemble dist/
 python3 -m http.server 4178   # then open http://localhost:4178/
 ```
 
-`scripts/check-site.mjs` is a guardrail: it keeps the homepage the Ouro *family*
-home (Workbench + the family framing must survive), the app page the Ouro MD
+`scripts/check-site.mjs` is a guardrail: it keeps the homepage the place to
+install Ouro's tools (Shepherd, never the retired Workbench), the shared
+ouroboros.bot header and footer on every page, the app page the Ouro MD
 product page, the hero a real render, and telemetry lightweight. Change the IA
 freely — just update the contract to match, keeping that spirit.
 
