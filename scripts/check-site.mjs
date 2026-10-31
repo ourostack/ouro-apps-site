@@ -11,6 +11,10 @@ const requiredFiles = [
   ".nojekyll",
   "apps/ouro-md/index.html",
   "apps/ouro-md/stable.json",
+  "apps/ouro-hx/index.html",
+  "assets/media/ouro-hx-spoonjoy-xray-light.webp",
+  "assets/media/ouro-hx-spoonjoy-xray-dark.webp",
+  "assets/media/ouro-hx-spoonjoy-xray-og.png",
   "assets/ouro-md-icon.png",
   "assets/ouro-md-hero.png",
   "assets/ouro-md-hero.mp4",
@@ -55,7 +59,8 @@ if (!("notarized" in release) || !("signingMode" in release)) {
 }
 
 // Every page needs the SEO + telemetry + a real product image.
-for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
+const pages = ["index.html", "apps/ouro-md/index.html", "apps/ouro-hx/index.html"];
+for (const pagePath of pages) {
   const html = await readFile(pagePath, "utf8");
   const dom = new JSDOM(html);
   const doc = dom.window.document;
@@ -69,8 +74,8 @@ for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
   if (!title || !description || !canonical || !ogImage || !telemetry || !h1 || !img) {
     throw new Error(`${pagePath} is missing title, description, canonical, og image, telemetry, h1, or image`);
   }
-  // The hero must be a real Ouro MD render, not an abstract placeholder or mockup.
-  if (!html.includes("/assets/ouro-md-hero.png")) {
+  // The Ouro MD pages show the real Ouro MD render, not an abstract placeholder or mockup.
+  if (pagePath !== "apps/ouro-hx/index.html" && !html.includes("/assets/ouro-md-hero.png")) {
     throw new Error(`${pagePath} must show the real Ouro MD product shot (assets/ouro-md-hero.png)`);
   }
 }
@@ -89,7 +94,7 @@ for (const term of ["Ouro MD", "Ouro Shepherd", "npx ouro.bot", "Download Ouro M
 if (/under construction/i.test(home)) {
   throw new Error("homepage must not mark Ouro HX under construction; it is used in production");
 }
-for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
+for (const pagePath of pages) {
   const html = await readFile(pagePath, "utf8");
   // The product clips are real Ouro MD recordings with real posters.
   for (const src of html.matchAll(/(?:poster|src)="(\/assets\/media\/[^"]+)"/g)) await access(src[1].slice(1));
@@ -112,7 +117,7 @@ const sharedNav = [
   "https://ouroboros.bot/#try",
   "https://mendelow.me",
 ];
-for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
+for (const pagePath of pages) {
   const doc = new JSDOM(await readFile(pagePath, "utf8")).window.document;
   const nav = doc.querySelector("header .nav");
   const hrefs = [...(nav?.querySelectorAll("a") ?? [])].map((a) => a.getAttribute("href"));
@@ -144,6 +149,15 @@ for (const term of ["rendered document", "Download Ouro MD", "ouro-md-install.sh
     throw new Error(`app page must lead with the Ouro MD pitch: missing "${term}"`);
   }
 }
+
+// Ouro HX page: real screenshots of Spoonjoy (built with HX), the showcase,
+// and the install from the HX docs. The homepage's HX entry links to it.
+const hxPage = await readFile("apps/ouro-hx/index.html", "utf8");
+for (const term of ["https://ui.ouro.bot/", "@ouro/ouro-base", "Use today", "/assets/media/ouro-hx-spoonjoy-xray-light.webp", "https://spoonjoy.app/"]) {
+  if (!hxPage.includes(term)) throw new Error(`Ouro HX page is missing "${term}"`);
+}
+if (/under construction/i.test(hxPage)) throw new Error("Ouro HX page must not mark HX under construction");
+if (!home.includes('href="/apps/ouro-hx/"')) throw new Error("homepage must link the Ouro HX page");
 
 // Telemetry stays lightweight: page views + CTA clicks, no content capture.
 const telemetry = await readFile("assets/site-telemetry.js", "utf8");
