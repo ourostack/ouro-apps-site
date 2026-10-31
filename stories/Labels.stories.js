@@ -10,7 +10,7 @@ export const Tags = {
     <div style="display:flex;gap:12px;align-items:center">
       <span class="tag tag-today">Use today</span>
       <span class="tag tag-exp">Experimental</span>
-      <span class="tag tag-alpha">Under construction</span>
+      <span class="tag tag-alpha">Alpha</span>
     </div>`,
 };
 

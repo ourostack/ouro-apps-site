@@ -84,8 +84,15 @@ for (const term of ["Ouro MD", "Ouro Shepherd", "npx ouro.bot", "Download Ouro M
     throw new Error(`homepage must present Ouro's tools and route to Ouro MD: missing "${term}"`);
   }
 }
+// Ouro HX ships in production (Spoonjoy, ui.ouro.bot), so it is never marked
+// "Under construction" (Ari, 2026-10-30).
+if (/under construction/i.test(home)) {
+  throw new Error("homepage must not mark Ouro HX under construction; it is used in production");
+}
 for (const pagePath of ["index.html", "apps/ouro-md/index.html"]) {
   const html = await readFile(pagePath, "utf8");
+  // The product clips are real Ouro MD recordings with real posters.
+  for (const src of html.matchAll(/(?:poster|src)="(\/assets\/media\/[^"]+)"/g)) await access(src[1].slice(1));
   if (/workbench/i.test(html)) {
     throw new Error(`${pagePath} must not present Ouro Workbench; Ouro Shepherd superseded it`);
   }
