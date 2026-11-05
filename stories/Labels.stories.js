@@ -17,7 +17,7 @@ export const Tags = {
 export const TrustLine = {
   render: () => `
     <div class="trust">
-      <span>macOS 13+</span>
+      <span>macOS 15+</span>
       <span>Signed &amp; notarized</span>
       <span>Local files stay local</span>
     </div>`,
