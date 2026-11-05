@@ -17,7 +17,7 @@ export const Hero = {
             <a class="btn" href="#">Learn about Ouro MD</a>
           </div>
           <div class="trust">
-            <span>macOS 13+</span><span>Signed &amp; notarized</span><span>Local files stay local</span>
+            <span>macOS 15+</span><span>Signed &amp; notarized</span><span>Local files stay local</span>
           </div>
         </div>
         <div class="hero-media">
