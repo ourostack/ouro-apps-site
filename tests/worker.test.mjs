@@ -111,12 +111,13 @@ test("keeps the query string when it forwards", async () => {
   assert.equal((await get("/apps/shepherd/?ref=x")).headers.get("location"), "https://ouroboros.bot/apps/?ref=x#shepherd");
 });
 
-test("sends unknown paths to the ouroboros.bot homepage with a 302, never to a missing page", async () => {
-  for (const path of ["/terms/", "/no-such-page", "/apps/ouro-md/nope", "/apps/ouro-md/old.json", "/assets/nope.png", "/assets/", "/ouro-md-install.sh.bak", "/assetsx/a.png", "/apps/ouro-mdx/", "/styles.css/x"]) {
+test("sends any other path to the same path on ouroboros.bot with a 301, so a missing page is a real 404", async () => {
+  for (const path of ["/terms/", "/nope/", "/no-such-page", "/apps/ouro-md/nope", "/apps/ouro-md/old.json", "/assets/nope.png", "/assets/", "/ouro-md-install.sh.bak", "/assetsx/a.png", "/apps/ouro-mdx/", "/styles.css/x"]) {
     const response = await get(path);
-    assert.equal(response.status, 302, path);
-    assert.equal(response.headers.get("location"), "https://ouroboros.bot/", path);
+    assert.equal(response.status, 301, path);
+    assert.equal(response.headers.get("location"), `https://ouroboros.bot${path}`, path);
   }
+  assert.equal((await get("/nope/?ref=x&y=1")).headers.get("location"), "https://ouroboros.bot/nope/?ref=x&y=1");
   assert.equal(calls.length, 0);
 });
 
@@ -200,7 +201,11 @@ test("www.ouro.bot forwards each page where the apex does", async () => {
     assert.equal(www.headers.get("location"), bare.headers.get("location"), path);
   }
   assert.equal((await getWww("/privacy/")).headers.get("location"), "https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md");
-  assert.equal((await getWww("/no-such-page")).headers.get("location"), "https://ouroboros.bot/");
+  for (const path of ["/nope/", "/nope/?ref=x"]) {
+    const response = await getWww(path);
+    assert.equal(response.status, 301, path);
+    assert.equal(response.headers.get("location"), `https://ouroboros.bot${path}`, path);
+  }
   assert.equal(calls.length, 0);
 });
 
