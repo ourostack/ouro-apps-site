@@ -22,6 +22,7 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <link rel="preload" href="/assets/fonts/cormorant-regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/styles.css">
+    <noscript><style>video.clip-video { display: none; }</style></noscript>
     <link rel="preconnect" href="https://ouroboros.bot">
     <link rel="preload" as="image" type="image/avif" media="(max-width: 640px)" imagesrcset="https://ouroboros.bot/brand/storybook/phone/ouro-md-384.avif 384w, https://ouroboros.bot/brand/storybook/phone/ouro-md-768.avif 768w" imagesizes="100vw" fetchpriority="high">
     <link rel="preload" as="image" type="image/avif" media="(min-width: 641px)" imagesrcset="https://ouroboros.bot/brand/storybook/scenes/ouro-md-640.avif 640w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-960.avif 960w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-1536.avif 1536w" imagesizes="100vw" fetchpriority="high">
@@ -120,16 +121,18 @@
                  ourostack/ouroboros-website public/images/workshop). One per theme. -->
             <div class="window clip-frame">
                 <div class="clip-theme theme-light-only">
-                  <video class="clip-video" muted playsinline loop preload="none" poster="/assets/media/ouro-md-typing-light-poster.png" width="840" height="630" aria-label="Lists and flowcharts render as you type.">
+                  <video class="clip-video" muted playsinline loop preload="none" data-poster="/assets/media/ouro-md-typing-light-poster.png" width="840" height="630" aria-label="Lists and flowcharts render as you type.">
                     <source src="/assets/media/ouro-md-typing-light.webm" type="video/webm">
                     <source src="/assets/media/ouro-md-typing-light.mp4" type="video/mp4">
                   </video>
+                  <noscript><img class="clip-video" src="/assets/media/ouro-md-typing-light-poster.png" width="840" height="630" alt=""></noscript>
                 </div>
                 <div class="clip-theme theme-dark-only">
-                  <video class="clip-video" muted playsinline loop preload="none" poster="/assets/media/ouro-md-typing-dark-poster.png" width="840" height="630" aria-label="Lists and flowcharts render as you type.">
+                  <video class="clip-video" muted playsinline loop preload="none" data-poster="/assets/media/ouro-md-typing-dark-poster.png" width="840" height="630" aria-label="Lists and flowcharts render as you type.">
                     <source src="/assets/media/ouro-md-typing-dark.webm" type="video/webm">
                     <source src="/assets/media/ouro-md-typing-dark.mp4" type="video/mp4">
                   </video>
+                  <noscript><img class="clip-video" src="/assets/media/ouro-md-typing-dark-poster.png" width="840" height="630" alt=""></noscript>
                 </div>
               <button type="button" class="clip-toggle" hidden>Pause</button>
             </div>
@@ -154,7 +157,7 @@
           <div class="media">
             <figure class="window" style="margin:0">
               <div class="window-media">
-                <img src="/assets/ouro-md-editing.png" width="1720" height="1480"
+                <img src="/assets/ouro-md-editing.png" width="1720" height="1480" loading="lazy" decoding="async"
                      alt="Ouro MD rendering a table with emoji status, a KaTeX equation, and a checkbox task list.">
               </div>
             </figure>
