@@ -71,6 +71,13 @@ for path in / "/?ref=check" /index.html /apps/ /apps/ouro-hx/ /apps/shepherd/ /f
   probe FORWARD "$path"
 done
 
+# www.ouro.bot: pages forward like the apex; kept files 301 to ouro.bot.
+if [ "$base" = "https://ouro.bot" ]; then
+  for path in / /apps/ouro-hx/ /apps/ouro-md/ /ouro-md-install.sh; do
+    base=https://www.ouro.bot probe WWW "$path"
+  done
+fi
+
 # The installer's own dependencies are on GitHub, not ouro.bot. Check they answer.
 api="https://api.github.com/repos/ourostack/ouro-md/releases/latest"
 printf 'GITHUB\t%s\t%s\n' "$api" "$(curl -sS -o /dev/null -w '%{http_code}' "$api")"

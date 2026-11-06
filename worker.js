@@ -1,7 +1,7 @@
-// ouro-apex: fronts ouro.bot/*. routes.js says where each path goes;
+// ouro-apex: fronts ouro.bot/* and www.ouro.bot/*. routes.js says where each path goes;
 // tests/worker.test.mjs is the contract.
 
-import { origin, home, forwards, elsewhere, kept } from "./routes.js";
+import { origin, home, apex, forwards, elsewhere, kept } from "./routes.js";
 
 function redirect(location, status) {
   return new Response(null, {
@@ -26,6 +26,10 @@ export default {
       // An unknown path has no page to map to. 302, so a page added to the map
       // later is not hidden behind a cached redirect.
       return redirect(`${home}/`, 302);
+    }
+    if (url.hostname !== new URL(apex).hostname) {
+      // www.ouro.bot: the same file, from the one host that serves it.
+      return redirect(`${apex}${url.pathname}${url.search}`, 301);
     }
 
     const upstream = new URL(url.pathname + url.search, origin);

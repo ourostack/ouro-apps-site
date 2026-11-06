@@ -33,6 +33,7 @@ afterEach(() => {
 });
 
 const get = (path, init) => worker.fetch(new Request(`https://ouro.bot${path}`, init));
+const getWww = (path) => worker.fetch(new Request(`https://www.ouro.bot${path}`));
 
 // Every path the app, its installer, its App Store listing (marketing URL) or
 // the Ouro MD product page fetches today.
@@ -188,6 +189,26 @@ test("sends the App Store support URL to Ouro MD's GitHub issues", async () => {
     const response = await get(path);
     assert.equal(response.status, 302, path);
     assert.equal(response.headers.get("location"), "https://github.com/ourostack/ouro-md/issues", path);
+  }
+  assert.equal(calls.length, 0);
+});
+
+test("www.ouro.bot forwards each page where the apex does", async () => {
+  for (const path of ["/", "/apps/ouro-hx/", "/apps/shepherd/"]) {
+    const [www, bare] = [await getWww(path), await get(path)];
+    assert.equal(www.status, bare.status, path);
+    assert.equal(www.headers.get("location"), bare.headers.get("location"), path);
+  }
+  assert.equal((await getWww("/privacy/")).headers.get("location"), "https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md");
+  assert.equal((await getWww("/no-such-page")).headers.get("location"), "https://ouroboros.bot/");
+  assert.equal(calls.length, 0);
+});
+
+test("www.ouro.bot sends a kept file to ouro.bot, never serving a second copy", async () => {
+  for (const path of ["/apps/ouro-md/", "/ouro-md-install.sh", "/assets/ouro-md-icon.png"]) {
+    const response = await getWww(`${path}?v=1`);
+    assert.equal(response.status, 301, path);
+    assert.equal(response.headers.get("location"), `https://ouro.bot${path}?v=1`, path);
   }
   assert.equal(calls.length, 0);
 });
