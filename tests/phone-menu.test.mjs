@@ -73,3 +73,14 @@ test("a tap outside the links, or on a link, closes it", () => {
   assert.ok(!menu.classList.contains("is-open"), "a link");
   assert.equal(document.body.style.overflow, "");
 });
+
+test("while it is open, everything behind the menu is inert; closing wakes it and refocuses the toggle", () => {
+  const { dom, document, toggle, menu } = page();
+  const behind = [document.querySelector("main"), document.querySelector(".site-footer"), document.querySelector(".story-meadow"), document.querySelector(".site-header .brand")];
+  click(dom, toggle);
+  for (const el of behind) assert.ok(el.hasAttribute("inert"), `${el.className || el.tagName} is inert`);
+  assert.ok(!menu.hasAttribute("inert") && !toggle.hasAttribute("inert") && !toggle.closest("[inert]"), "the menu and its toggle stay live");
+  click(dom, toggle);
+  for (const el of behind) assert.ok(!el.hasAttribute("inert"), `${el.className || el.tagName} wakes`);
+  assert.equal(document.activeElement, toggle);
+});

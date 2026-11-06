@@ -1,5 +1,16 @@
 // The shared header's two buttons, matching ouroboros.bot's Nav.astro:
 // the theme toggle (remembered per site) and the phone menu.
+
+// The meadow above the footer is lazy, but a browser's own lazy margin is short
+// enough that a quick scroll met an empty band. Once the page has loaded, fetch
+// it, so it is there long before anyone reaches the foot (taste r4).
+(function () {
+  function wake() {
+    Array.prototype.forEach.call(document.querySelectorAll('.story-meadow img[loading="lazy"]'), function (img) { img.loading = 'eager'; });
+  }
+  if (document.readyState === 'complete') wake(); else window.addEventListener('load', wake, { once: true });
+})();
+
 (function () {
   var root = document.documentElement;
   var toggle = document.querySelector('.theme-toggle');
@@ -22,12 +33,25 @@
   // The phone menu: a full panel under the bar. The toggle (a hamburger that
   // turns into an X) opens and closes it; a link, Escape or a tap on the
   // panel outside its links closes it. While it is open the page behind does
-  // not scroll; closing hands focus back to the toggle.
+  // not scroll and cannot take focus; closing hands focus back to the toggle.
   var menuButton = document.querySelector('.menu-toggle');
   var menu = document.getElementById('menu');
   if (!menuButton || !menu) return;
   function isOpen() { return menu.classList.contains('is-open'); }
+  // While the menu is open, everything it covers is inert, so Tab walks the
+  // menu's own links and the bar's two buttons, never the page hidden behind
+  // the panel (taste review r4). The home mark beside the buttons goes inert
+  // too, so the keyboard stays inside the menu.
+  function behind() {
+    var els = Array.prototype.filter.call(document.body.children, function (el) {
+      return !el.contains(menu) && el.tagName !== 'SCRIPT';
+    });
+    var header = menu.parentElement;
+    if (header) Array.prototype.forEach.call(header.querySelectorAll('.brand, .nav'), function (el) { els.push(el); });
+    return els;
+  }
   function setOpen(open, refocus) {
+    behind().forEach(function (el) { if (open) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
     menu.classList.toggle('is-open', open);
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
@@ -37,7 +61,7 @@
     document.body.style.overflow = open ? 'hidden' : '';
     if (!open && refocus) menuButton.focus();
   }
-  menuButton.addEventListener('click', function () { setOpen(!isOpen(), false); });
+  menuButton.addEventListener('click', function () { setOpen(!isOpen(), true); });
   menu.addEventListener('click', function (event) {
     if (event.target.closest && event.target.closest('a')) { setOpen(false, false); return; }
     if (event.target === menu) setOpen(false, true);

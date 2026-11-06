@@ -221,8 +221,9 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
   .split.media-left > .media { order: -1; }
 }
 .app-page .hero .wrap { display: grid; gap: 2.5rem; }
-/* The demo lines up with the top of the words, not their middle (taste r3: at 1024 it sat far below the h1). */
-@media (min-width: 1024px) { .app-page .hero .wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--split-gap); align-items: start; } .app-page .hero-media { margin-top: 0.5rem; } }
+/* The demo lines up with the top of the words, not their middle (taste r3: at 1024 it sat far below the h1).
+   The words take the wider column, so the headline sets on two lines (taste r4). */
+@media (min-width: 1024px) { .app-page .hero .wrap { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 3rem; align-items: start; } .app-page .hero-media { margin-top: 0.5rem; } }
 
 /* Real product media: a plain frame, the picture is the content. */
 .window { margin: 0; border-radius: 0.9rem; overflow: hidden; border: 1px solid color-mix(in srgb, var(--color-canopy) 60%, transparent); background: var(--color-undergrowth); }
@@ -333,14 +334,32 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
    ------------------------------------------------------------------------- */
 .story-hero { position: relative; }
 .story-hero picture, .story-hero img { display: block; width: 100%; }
-.story-hero img {
-  height: auto; aspect-ratio: 1536 / 576; max-height: 72vh; object-fit: cover;
-  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
-  mask-image: linear-gradient(to bottom, #000 72%, transparent);
+/* The fade lives on the wrapper, so the placeholder behind a scene still on its
+   way fades with it (on the image alone, the wash showed as a hard band). */
+.story-hero {
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
 }
-@media (max-width: 640px) { .story-hero img { aspect-ratio: 4 / 3; max-height: none; } }
+.story-hero img { height: auto; aspect-ratio: 1536 / 576; max-height: 72vh; object-fit: cover; }
+@media (max-width: 640px) {
+  .story-hero img { aspect-ratio: 4 / 3; max-height: none; }
+  /* A phone crop is short and Ouro sits near its foot: a short, steep fade starts below him. */
+  .story-hero { -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent); mask-image: linear-gradient(to bottom, #000 88%, transparent); }
+}
 .story-hero + .hero { padding-top: 1.5rem; }
 @media (min-width: 768px) { .story-hero + .hero { padding-top: 2.5rem; } }
+/* On a wide screen the scene is capped as ouroboros.bot caps its own, and the
+   words rise into its faded foot, so the headline, the intro and Download all
+   sit above the fold at 1440x900 and 1024x768 (taste r4: the 540px scene
+   pushed the headline to the bottom of the screen). */
+@media (min-width: 641px) { .story-hero img { max-height: min(46vh, 420px); } }
+@media (min-width: 1024px) {
+  .story-hero + .hero { position: relative; margin-top: -4rem; padding-top: 0; }
+  .app-page .hero .heading-lead { font-size: clamp(3.4rem, 4.6vw, 4.4rem); }
+  .app-page .hero .lead { font-size: 1.125rem; }
+  .app-page .hero-copy { gap: 1rem; }
+  .app-page .hero .actions { margin-top: 0.75rem; }
+}
 @media (prefers-reduced-motion: no-preference) {
   .story-hero img { animation: story-drift 60s ease-in-out infinite alternate; transform-origin: 50% 60%; }
   @keyframes story-drift { from { transform: scale(1); } to { transform: scale(1.04); } }
@@ -353,7 +372,13 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .story-meadow img { height: clamp(11rem, 26vw, 24rem); object-fit: cover; object-position: 50% 72%; }
 .story-meadow + .site-footer { margin-top: 0; border-top: 0; }
 
-/* A scene still on its way shows a wash of dawn, never a broken-image glyph or a hairline. */
+/* A scene still on its way shows a wash of dawn, never a broken-image glyph or a hairline.
+   In the dark theme the wash is dusk: the page's own night with a faint warm
+   glow low down, so nothing flashes bright peach before the art lands (taste r4). */
 .story-scene { background: linear-gradient(180deg, #F7C9A8 0%, #F3DDB0 55%, #CFD9A0 100%); }
+:root[data-theme="dark"] .story-scene { background: radial-gradient(120% 90% at 50% 100%, color-mix(in srgb, var(--color-amber) 16%, transparent), transparent 70%), var(--color-deep); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .story-scene { background: radial-gradient(120% 90% at 50% 100%, color-mix(in srgb, var(--color-amber) 16%, transparent), transparent 70%), var(--color-deep); }
+}
 .story-scene img { border: 0; }
 .story-scene img:not([src]), .story-scene img[src=""] { visibility: hidden; }
