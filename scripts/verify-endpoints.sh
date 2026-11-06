@@ -66,14 +66,14 @@ if [ "$minute" -ge 12 ] && [ "$minute" -le 25 ]; then
 fi
 
 # Expected to change: 301 to each page's new home on ouroboros.bot, 302 to GitHub for
-# /support/ and /privacy/, and 302 to the ouroboros.bot homepage for unknown paths.
-for path in / "/?ref=check" /index.html /apps/ /apps/ouro-hx/ /apps/shepherd/ /favicon.ico /privacy/ /support/ /no-such-page /apps/ouro-md/nope /assets/nope.png; do
+# /support/ and /privacy/, and 301 to the same path on ouroboros.bot for any other path.
+for path in / "/?ref=check" /index.html /apps/ /apps/ouro-hx/ /apps/shepherd/ /favicon.ico /privacy/ /support/ /no-such-page /apps/ouro-md/nope /assets/nope.png /nope/; do
   probe FORWARD "$path"
 done
 
 # www.ouro.bot: pages forward like the apex; kept files 301 to ouro.bot.
 if [ "$base" = "https://ouro.bot" ]; then
-  for path in / /apps/ouro-hx/ /apps/ouro-md/ /ouro-md-install.sh; do
+  for path in / /apps/ouro-hx/ /apps/ouro-md/ /ouro-md-install.sh /nope/; do
     base=https://www.ouro.bot probe WWW "$path"
   done
 fi

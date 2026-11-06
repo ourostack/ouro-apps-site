@@ -23,9 +23,9 @@ export default {
       return redirect(elsewhere.get(url.pathname), 302);
     }
     if (!kept.has(url.pathname)) {
-      // An unknown path has no page to map to. 302, so a page added to the map
-      // later is not hidden behind a cached redirect.
-      return redirect(`${home}/`, 302);
+      // Any other path goes to the same path on ouroboros.bot, so a page that
+      // exists there opens, and a missing one gets that site's real 404.
+      return redirect(`${home}${url.pathname}${url.search}`, 301);
     }
     if (url.hostname !== new URL(apex).hostname) {
       // www.ouro.bot: the same file, from the one host that serves it.
