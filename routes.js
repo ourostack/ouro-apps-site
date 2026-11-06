@@ -7,6 +7,9 @@
 
 export const origin = "https://ouro-apps-site.pages.dev";
 export const home = "https://ouroboros.bot";
+// The one host that serves the kept files. www.ouro.bot forwards like the apex,
+// and sends a kept file here instead of serving a second copy.
+export const apex = "https://ouro.bot";
 
 // Old ouro.bot pages and their new homes. These are 301s: the move is permanent,
 // and no kept path is ever redirected, so a cached 301 can't hide Ouro MD's files.
