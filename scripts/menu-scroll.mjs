@@ -2,7 +2,8 @@
 // 2026-11-06: on ouro.bot/apps/ouro-md/, opening the menu after scrolling made
 // the sticky header jump up about 720px, taking the X and the theme toggle
 // with it). Serves dist/, scrolls a phone-sized page well down, opens the menu
-// and checks that the bar stays put and the X is visible and closes the menu.
+// and checks that the bar stays put and the X is visible and closes the menu,
+// then that Tab never leaves the open menu for the page behind it.
 //
 //   npm run build && node scripts/menu-scroll.mjs
 //
@@ -69,7 +70,29 @@ try {
     const closed = await page.evaluate(() => ({ y: scrollY, open: document.getElementById("menu").classList.contains("is-open") }));
     if (closed.open) failures.push(`${width}px: tapping the X did not close the menu`);
     if (Math.abs(closed.y - before.y) > 1) failures.push(`${width}px: closing the menu moved the page from ${before.y} to ${closed.y}`);
-    console.log(JSON.stringify({ width, before, open, closed }));
+    // Focus stays in the menu (taste review r4: Tab reached page links hidden
+    // behind the open panel). Open it from the keyboard, Tab through every stop,
+    // and check each one is in the bar or the menu; closing returns focus to the toggle.
+    await toggle.focus();
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(300);
+    const stops = [];
+    for (let i = 0; i < 16; i++) {
+      await page.keyboard.press("Tab");
+      stops.push(await page.evaluate(() => {
+        const el = document.activeElement;
+        if (!el || el === document.body) return "body";
+        return el.closest("#menu") ? "menu" : el.closest(".header-tools") ? "bar" : `page: ${el.tagName} ${(el.textContent || "").trim().slice(0, 30)}`;
+      }));
+    }
+    const strays = stops.filter((s) => s.startsWith("page"));
+    if (strays.length) failures.push(`${width}px: Tab left the open menu for ${strays[0]}`);
+    if (!stops.includes("menu")) failures.push(`${width}px: Tab never reached the menu's links`);
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(200);
+    const refocused = await page.evaluate(() => document.activeElement === document.querySelector(".menu-toggle") && !document.querySelector("main").hasAttribute("inert"));
+    if (!refocused) failures.push(`${width}px: closing did not return focus to the toggle and wake the page`);
+    console.log(JSON.stringify({ width, before, open, closed, stops: [...new Set(stops)] }));
     await context.close();
   }
 } finally {
