@@ -152,7 +152,11 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 
 /* ---- Header: the same bar as ouroboros.bot ----------------------------- */
 
-.site-header { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--color-deep) 75%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-bottom: 1px solid color-mix(in srgb, var(--color-canopy) 15%, transparent); }
+/* The frost lives on a layer behind the bar, not on the bar itself: a
+   backdrop-filter on .site-header would make it the containing block of the
+   fixed phone menu, trapping the panel inside the 4rem bar. */
+.site-header { position: sticky; top: 0; z-index: 40; border-bottom: 1px solid color-mix(in srgb, var(--color-canopy) 15%, transparent); }
+.site-header::before { content: ""; position: absolute; inset: 0; z-index: -1; background: color-mix(in srgb, var(--color-deep) 94%, transparent); -webkit-backdrop-filter: blur(10px) saturate(1.1); backdrop-filter: blur(10px) saturate(1.1); }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 4rem; }
 .brand { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--color-bone); text-decoration: none; font-family: var(--font-display); font-size: 1.25rem; }
 @media (min-width: 1280px) { .brand { font-size: 1.5rem; } }
@@ -175,6 +179,8 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .icon-btn:hover { color: var(--color-scale); }
 .icon-btn svg { width: 1.25rem; height: 1.25rem; }
 .menu-toggle svg { width: 1.5rem; height: 1.5rem; }
+.menu-toggle .menu-icon-close, .menu-toggle[aria-expanded="true"] .menu-icon-open { display: none; }
+.menu-toggle[aria-expanded="true"] .menu-icon-close { display: block; }
 @media (min-width: 1024px) { .menu-toggle { display: none; } }
 .theme-icon-sun { display: block; }
 .theme-icon-moon { display: none; }
@@ -184,7 +190,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
   :root:not([data-theme="dark"]) .theme-icon-sun { display: none; }
   :root:not([data-theme="dark"]) .theme-icon-moon { display: block; }
 }
-.menu { position: fixed; inset: 4rem 0 0; z-index: 30; display: none; flex-direction: column; align-items: center; gap: 1.75rem; padding: 3.5rem 1.5rem; background: color-mix(in srgb, var(--color-deep) 95%, transparent); -webkit-backdrop-filter: blur(40px); backdrop-filter: blur(40px); text-align: center; }
+.menu { position: fixed; inset: 4rem 0 0; z-index: 30; overscroll-behavior: contain; overflow-y: auto; display: none; flex-direction: column; align-items: center; gap: 1.75rem; padding: 3.5rem 1.5rem; background: color-mix(in srgb, var(--color-deep) 95%, transparent); -webkit-backdrop-filter: blur(40px); backdrop-filter: blur(40px); text-align: center; }
 .menu a { font-size: 1.875rem; }
 .menu.is-open { display: flex; }
 @media (min-width: 1024px) { .menu.is-open { display: none; } }
@@ -216,7 +222,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 @media (min-width: 1024px) { .app-page .hero .wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--split-gap); align-items: center; } }
 
 /* Real product media: a plain frame, the picture is the content. */
-.window { margin: 0; border-radius: 0.9rem; overflow: hidden; border: 1px solid color-mix(in srgb, var(--color-canopy) 60%, transparent); background: #fff; }
+.window { margin: 0; border-radius: 0.9rem; overflow: hidden; border: 1px solid color-mix(in srgb, var(--color-canopy) 60%, transparent); background: var(--color-undergrowth); }
 .window-media video, .window-media img { width: 100%; height: auto; }
 .media-caption { margin-top: 0.75rem; font-size: 0.875rem; color: var(--color-mist); }
 
@@ -335,3 +341,15 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
   .story-hero img { animation: story-drift 60s ease-in-out infinite alternate; transform-origin: 50% 60%; }
   @keyframes story-drift { from { transform: scale(1); } to { transform: scale(1.04); } }
 }
+
+/* The meadow at the foot of the page (ouroboros.bot's StoryScene variant="meadow"):
+   a low band of the open garden gate, fading in from the page. */
+.story-meadow { margin-top: 3rem; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 80%, transparent 100%); }
+.story-meadow picture, .story-meadow img { display: block; width: 100%; }
+.story-meadow img { height: clamp(11rem, 26vw, 24rem); object-fit: cover; object-position: 50% 72%; }
+.story-meadow + .site-footer { margin-top: 0; border-top: 0; }
+
+/* A scene still on its way shows a wash of dawn, never a broken-image glyph or a hairline. */
+.story-scene { background: linear-gradient(180deg, #F7C9A8 0%, #F3DDB0 55%, #CFD9A0 100%); }
+.story-scene img { border: 0; }
+.story-scene img:not([src]), .story-scene img[src=""] { visibility: hidden; }

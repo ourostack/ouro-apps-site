@@ -19,20 +19,37 @@
     });
   }
 
+  // The phone menu: a full panel under the bar. The toggle (a hamburger that
+  // turns into an X) opens and closes it; a link, Escape or a tap on the
+  // panel outside its links closes it. While it is open the page behind does
+  // not scroll; closing hands focus back to the toggle.
   var menuButton = document.querySelector('.menu-toggle');
   var menu = document.getElementById('menu');
-  if (menuButton && menu) {
-    menuButton.addEventListener('click', function () {
-      var open = menu.classList.toggle('is-open');
-      menuButton.setAttribute('aria-expanded', String(open));
-      document.body.style.overflow = open ? 'hidden' : '';
-    });
-    menu.querySelectorAll('a').forEach(function (link) {
-      link.addEventListener('click', function () {
-        menu.classList.remove('is-open');
-        menuButton.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
-    });
+  if (!menuButton || !menu) return;
+  function isOpen() { return menu.classList.contains('is-open'); }
+  function setOpen(open, refocus) {
+    menu.classList.toggle('is-open', open);
+    menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    root.style.overflow = open ? 'hidden' : '';
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (!open && refocus) menuButton.focus();
+  }
+  menuButton.addEventListener('click', function () { setOpen(!isOpen(), false); });
+  menu.addEventListener('click', function (event) {
+    if (event.target.closest && event.target.closest('a')) { setOpen(false, false); return; }
+    if (event.target === menu) setOpen(false, true);
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && isOpen()) setOpen(false, true);
+  });
+  document.addEventListener('click', function (event) {
+    if (isOpen() && !menu.contains(event.target) && !menuButton.contains(event.target)) setOpen(false, true);
+  });
+  // Widening past the phone layout hides the menu, so never leave the page locked.
+  if (window.matchMedia) {
+    var wide = window.matchMedia('(min-width: 1024px)');
+    var onWide = function (e) { if (e.matches && isOpen()) setOpen(false, false); };
+    if (wide.addEventListener) wide.addEventListener('change', onWide);
   }
 })();
