@@ -44,9 +44,9 @@ export const elsewhere = new Map([
   ["/privacy/", "https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md"],
 ]);
 
-// Only files that exist are kept. Pages answers any unknown path with the old
-// homepage and status 200, so an unknown path, even under /apps/ouro-md/ or
-// /assets/, goes to the ouroboros.bot homepage instead. A test checks that every
+// Only files that exist are kept. Pages has no page for an unknown path, so an
+// unknown path, even under /apps/ouro-md/ or /assets/, goes to the ouroboros.bot
+// homepage instead. A test checks that every
 // file in apps/ouro-md/ and assets/ is listed here, and that every file the kept
 // pages and styles.css load is too.
 export const kept = new Set([

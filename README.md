@@ -18,8 +18,8 @@
 >
 > **New work:** pages, copy and product content go in ourostack/ouroboros-website.
 > Change this repository only for Ouro MD's download page, its release metadata,
-> the installer, or the Worker's routing. `index.html` and `apps/ouro-hx/` are
-> no longer served on ouro.bot.
+> the installer, or the Worker's routing. The old homepage (`index.html`) and
+> `apps/ouro-hx/` were removed on 2026-11-06, after the forward went live.
 
 The header, footer, fonts and colour tokens mirror ouroboros.bot's
 `src/components/Nav.astro`, `Footer.astro` and `src/styles/global.css`. Change
@@ -31,13 +31,13 @@ them in both repositories together.
 npm ci
 npm test                      # runs the site contract (scripts/check-site.mjs)
 npm run build                 # contract check + assemble dist/
-python3 -m http.server 4178   # then open http://localhost:4178/
+python3 -m http.server 4178   # then open http://localhost:4178/apps/ouro-md/
 ```
 
-`scripts/check-site.mjs` is a guardrail: it keeps the homepage the place to
-install Ouro's tools (Shepherd, never the retired Workbench), the shared
-ouroboros.bot header and footer on every page, the app page the Ouro MD
-product page, the hero a real render, and telemetry lightweight. Change the IA
+`scripts/check-site.mjs` is a guardrail: it keeps the shared ouroboros.bot
+header and footer on Ouro MD's download page, the page the Ouro MD product page
+(Shepherd, never the retired Workbench), its media real, and telemetry
+lightweight. Change the IA
 freely — just update the contract to match, keeping that spirit.
 
 ## Product imagery
@@ -105,7 +105,7 @@ npm run deploy   # build + wrangler pages deploy dist
 - **`forwards`:** each old ouro.bot page and its new home on ouroboros.bot, with a 301. `/` and `/apps/` go to `/apps/`, `/apps/ouro-hx/` to `/ouro-hx/`, Shepherd and the retired Workbench to `/apps/#shepherd`. A test fails if any destination is missing from the live site (or from a built ouroboros-website `dist/`, with `OUROBOROS_DIST=<path>`); ouroboros-website's `tests/ouro-bot-forwards.test.mjs` checks the same list against its build.
 - **`elsewhere`:** Ouro MD's App Store support and privacy URLs, with a 302: `/support/` to its GitHub issues and `/privacy/` to its `PRIVACY.md`.
 - **`kept`:** the exact files proxied to Pages unchanged: the installer, Ouro MD's download page and `stable.json`, every file in `assets/`, `/styles.css`, `/robots.txt` and `/sitemap.xml`. When you add a file under `apps/ouro-md/` or `assets/`, add it here; a test fails until you do, and another fails if the download page or `styles.css` loads a file that is not kept.
-- **Anything else** gets a 302 to the ouroboros.bot homepage, because Pages would answer it with the old homepage and status 200.
+- **Anything else** gets a 302 to the ouroboros.bot homepage, so no old ouro.bot link ends on a Pages error page.
 
 Why 301 for the page forwards: the unified domain is Ari's decision (2026-11-06), the move is permanent, and search engines should carry the old pages' standing to ouroboros.bot. No kept path is ever redirected, so a cached 301 cannot hide Ouro MD's files. The App Store URLs and unknown paths stay 302s because they may still change.
 

@@ -1,20 +1,16 @@
 import { access, readFile } from "node:fs/promises";
 import { JSDOM } from "jsdom";
 
-// Guards the site's shape so a well-meaning edit can't quietly break the IA:
-// the homepage stays where Ouro's tools are installed, both pages share
-// ouroboros.bot's header and footer, the app page stays Ouro MD, the
-// product imagery stays a real render, and telemetry stays lightweight.
+// Guards the site's shape so a well-meaning edit can't quietly break it: the one
+// page left here, Ouro MD's download page, shares ouroboros.bot's header and
+// footer, stays Ouro MD, keeps its product imagery real, and telemetry stays
+// lightweight. The homepage and the Ouro HX page moved to ouroboros.bot on
+// 2026-11-06 and were removed from this repository.
 
 const requiredFiles = [
-  "index.html",
   ".nojekyll",
   "apps/ouro-md/index.html",
   "apps/ouro-md/stable.json",
-  "apps/ouro-hx/index.html",
-  "assets/media/ouro-hx-spoonjoy-xray-light.webp",
-  "assets/media/ouro-hx-spoonjoy-xray-dark.webp",
-  "assets/media/ouro-hx-spoonjoy-xray-og.png",
   "assets/ouro-md-icon.png",
   "assets/ouro-md-hero.png",
   "assets/ouro-md-hero.mp4",
@@ -59,7 +55,7 @@ if (!("notarized" in release) || !("signingMode" in release)) {
 }
 
 // Every page needs the SEO + telemetry + a real product image.
-const pages = ["index.html", "apps/ouro-md/index.html", "apps/ouro-hx/index.html"];
+const pages = ["apps/ouro-md/index.html"];
 for (const pagePath of pages) {
   const html = await readFile(pagePath, "utf8");
   const dom = new JSDOM(html);
@@ -86,25 +82,12 @@ for (const pagePath of pages) {
       throw new Error(`${pagePath} must open on the ouro-md storybook scene, loaded first`);
     }
     if (!html.includes("/assets/ouro-md-editing.png")) throw new Error(`${pagePath} must show the real Ouro MD editing shot`);
-  } else if (pagePath !== "apps/ouro-hx/index.html" && !html.includes("/assets/ouro-md-hero.png")) {
-    throw new Error(`${pagePath} must show the real Ouro MD product shot (assets/ouro-md-hero.png)`);
   }
 }
 
-// Homepage = where Ouro's tools are downloaded and installed, routing clearly
-// to Ouro MD. Ouro Workbench was superseded by Ouro Shepherd (Ari, 2026-10-31),
-// so the homepage names Shepherd and never Workbench.
-const home = await readFile("index.html", "utf8");
-for (const term of ["Ouro MD", "Ouro Shepherd", "npx ouro.bot", "Download Ouro MD", "ouro-md-install.sh"]) {
-  if (!home.includes(term)) {
-    throw new Error(`homepage must present Ouro's tools and route to Ouro MD: missing "${term}"`);
-  }
-}
-// Ouro HX ships in production (Spoonjoy, ui.ouro.bot), so it is never marked
-// "Under construction" (Ari, 2026-10-30).
-if (/under construction/i.test(home)) {
-  throw new Error("homepage must not mark Ouro HX under construction; it is used in production");
-}
+// Ouro Workbench was superseded by Ouro Shepherd (Ari, 2026-10-31), and Ouro HX
+// ships in production (Ari, 2026-10-30), so no page names Workbench or marks HX
+// "under construction".
 for (const pagePath of pages) {
   const html = await readFile(pagePath, "utf8");
   // The product clips are real Ouro MD recordings with real posters.
@@ -112,9 +95,12 @@ for (const pagePath of pages) {
   if (/workbench/i.test(html)) {
     throw new Error(`${pagePath} must not present Ouro Workbench; Ouro Shepherd superseded it`);
   }
+  if (/under construction/i.test(html)) {
+    throw new Error(`${pagePath} must not mark Ouro HX under construction; it is used in production`);
+  }
 }
 
-// One family with ouroboros.bot: every page carries the shared header and
+// One family with ouroboros.bot: the page carries the shared header and
 // footer (the same nav, mark, fonts and footer line as ouroboros.bot), and
 // links back to ouroboros.bot. Keep this in step with ourostack/ouroboros-website
 // src/data/site.mjs.
@@ -160,15 +146,6 @@ for (const term of ["rendered document", "Download Ouro MD", "ouro-md-install.sh
     throw new Error(`app page must lead with the Ouro MD pitch: missing "${term}"`);
   }
 }
-
-// Ouro HX page: real screenshots of Spoonjoy (built with HX), the showcase,
-// and the install from the HX docs. The homepage's HX entry links to it.
-const hxPage = await readFile("apps/ouro-hx/index.html", "utf8");
-for (const term of ["https://ui.ouro.bot/", "@ouro/ouro-base", "Use today", "/assets/media/ouro-hx-spoonjoy-xray-light.webp", "https://spoonjoy.app/"]) {
-  if (!hxPage.includes(term)) throw new Error(`Ouro HX page is missing "${term}"`);
-}
-if (/under construction/i.test(hxPage)) throw new Error("Ouro HX page must not mark HX under construction");
-if (!home.includes('href="/apps/ouro-hx/"')) throw new Error("homepage must link the Ouro HX page");
 
 // Telemetry stays lightweight: page views + CTA clicks, no content capture.
 const telemetry = await readFile("assets/site-telemetry.js", "utf8");

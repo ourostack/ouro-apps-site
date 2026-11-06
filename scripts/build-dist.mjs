@@ -10,7 +10,6 @@ const dist = `${root}/dist`;
 
 // Everything a browser needs, and nothing it doesn't.
 const include = [
-  "index.html",
   "styles.css",
   ".nojekyll",
   "robots.txt",

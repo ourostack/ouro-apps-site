@@ -10,7 +10,7 @@
 - The files those load (`assets/`, `styles.css`).
 - The `ouro-apex` Worker: `worker.js`, its routing table `routes.js`, and `wrangler.jsonc`. It is deployed only by hand; see the README.
 
-`index.html` and `apps/ouro-hx/` are no longer served on ouro.bot.
+The old homepage (`index.html`) and `apps/ouro-hx/` were removed on 2026-11-06, after the forward went live. Don't add pages here.
 
 ## The rule for new work
 
