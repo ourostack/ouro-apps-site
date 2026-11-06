@@ -315,3 +315,23 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .shelf-name a { color: inherit; text-decoration: none; }
 .shelf-name a:hover { color: var(--color-scale); }
 .feature code, .lead code { white-space: nowrap; }
+
+/* ---------------------------------------------------------------------------
+   The storybook scene (2026-11-06): the page opens on Ouro MD's scene, served
+   byte for byte from ouroboros.bot, the same hero ouroboros.bot/ouro-md/ has.
+   It fades at the foot into the page, in either theme.
+   ------------------------------------------------------------------------- */
+.story-hero { position: relative; }
+.story-hero picture, .story-hero img { display: block; width: 100%; }
+.story-hero img {
+  height: auto; aspect-ratio: 1536 / 576; max-height: 72vh; object-fit: cover;
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent);
+}
+@media (max-width: 640px) { .story-hero img { aspect-ratio: 4 / 3; max-height: none; } }
+.story-hero + .hero { padding-top: 1.5rem; }
+@media (min-width: 768px) { .story-hero + .hero { padding-top: 2.5rem; } }
+@media (prefers-reduced-motion: no-preference) {
+  .story-hero img { animation: story-drift 60s ease-in-out infinite alternate; transform-origin: 50% 60%; }
+  @keyframes story-drift { from { transform: scale(1); } to { transform: scale(1.04); } }
+}
