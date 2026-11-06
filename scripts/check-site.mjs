@@ -138,10 +138,11 @@ for (const pagePath of pages) {
   }
 }
 
-// App page = the Ouro MD product page, leading with the write-in-rendered-Markdown
-// pitch and keeping the auditable terminal install.
+// App page = the Ouro MD product page, leading with Ouro MD's one promise (the same
+// line ouroboros.bot/ouro-md/ and the share card carry, 2026-11-06) and keeping
+// the auditable terminal install.
 const appPage = await readFile("apps/ouro-md/index.html", "utf8");
-for (const term of ["rendered document", "Download Ouro MD", "ouro-md-install.sh"]) {
+for (const term of ["<h1 class=\"heading-lead\">Markdown that renders as you type.</h1>", "<title>Ouro MD: Markdown that renders as you type</title>", "Download Ouro MD", "ouro-md-install.sh"]) {
   if (!appPage.includes(term)) {
     throw new Error(`app page must lead with the Ouro MD pitch: missing "${term}"`);
   }
