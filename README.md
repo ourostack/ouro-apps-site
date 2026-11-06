@@ -1,6 +1,6 @@
 <!-- ourostack:brand:start -->
 <p align="center">
-  <a href="https://github.com/ourostack"><img src="https://raw.githubusercontent.com/ourostack/.github/main/brand/ouro.png" alt="Ourostack" width="96" height="96"></a>
+  <a href="https://github.com/ourostack"><img src="https://raw.githubusercontent.com/ourostack/.github/main/brand/headers/ouro-apps-site.webp" alt="Ouro beside a market stall with a green-and-cream awning full of wrapped gift boxes, one box glowing open" width="100%"></a>
 </p>
 <!-- ourostack:brand:end -->
 
