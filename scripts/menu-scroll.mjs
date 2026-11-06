@@ -42,13 +42,15 @@ try {
     // The art is served by ouroboros.bot; the check is about layout, so skip the network.
     await page.route(/^https:\/\//, (route) => route.abort());
     await page.goto(`http://localhost:${PORT}/apps/ouro-md/`, { waitUntil: "load" });
-    await page.evaluate(() => window.scrollTo(0, 1600));
+    // The page scrolls smoothly; jump instead, and wait until it has landed.
+    await page.evaluate(() => window.scrollTo({ top: 1600, behavior: "instant" }));
+    await page.waitForFunction(() => Math.abs(scrollY - 1600) < 2, null, { timeout: 5000 });
     await page.waitForTimeout(200);
     const before = await page.evaluate(() => ({ y: scrollY, top: document.querySelector(".site-header").getBoundingClientRect().top }));
     if (before.y < 1000) failures.push(`${width}px: the page did not scroll (scrollY ${before.y})`);
     const toggle = page.locator(".menu-toggle");
     await toggle.click();
-    await page.waitForTimeout(250);
+    await page.waitForTimeout(600);
     const open = await page.evaluate(() => {
       const header = document.querySelector(".site-header").getBoundingClientRect();
       const x = document.querySelector(".menu-toggle .menu-icon-close").getBoundingClientRect();
@@ -63,7 +65,7 @@ try {
     if (Math.abs(open.y - before.y) > 1) failures.push(`${width}px: the page scrolled from ${before.y} to ${open.y} when the menu opened`);
     // A real tap on the X, at its real position, closes the menu and keeps the scroll.
     await toggle.click();
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(600);
     const closed = await page.evaluate(() => ({ y: scrollY, open: document.getElementById("menu").classList.contains("is-open") }));
     if (closed.open) failures.push(`${width}px: tapping the X did not close the menu`);
     if (Math.abs(closed.y - before.y) > 1) failures.push(`${width}px: closing the menu moved the page from ${before.y} to ${closed.y}`);
