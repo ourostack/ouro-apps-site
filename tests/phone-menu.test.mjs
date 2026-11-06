@@ -37,6 +37,10 @@ test("the toggle opens the panel, shows an X and locks the page", () => {
   assert.equal(toggle.getAttribute("aria-expanded"), "true");
   assert.equal(toggle.getAttribute("aria-label"), "Close menu");
   assert.equal(document.body.style.overflow, "hidden");
+  // Body only: locking <html> too made the sticky bar jump off screen after a scroll
+  // (taste review r3). scripts/menu-scroll.mjs checks that in a real browser.
+  assert.equal(document.documentElement.style.overflow, "");
+  assert.doesNotMatch(css, /(^|\n)html \{[^}]*overflow/);
   assert.match(css, /\.menu-toggle\[aria-expanded="true"\] \.menu-icon-close \{ display: block; \}/);
   click(dom, toggle);
   assert.ok(!menu.classList.contains("is-open"));
