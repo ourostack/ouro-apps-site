@@ -6,11 +6,20 @@
 
 # ouro-apps-site
 
-The download and install site for **[ouro.bot](https://ouro.bot)**. It is the
-same family as [ouroboros.bot](https://ouroboros.bot) (ourostack/ouroboros-website):
-ouroboros.bot explains the tools, ouro.bot is where you get them. The homepage
-lists Ouro's tools (Ouro MD, Ouroboros, Ouro Shepherd, Ouro HX); the
-`/apps/ouro-md/` page is the Ouro MD download page.
+> **Moved: Ouro's public site is now [ouroboros.bot](https://ouroboros.bot)**
+> (ourostack/ouroboros-website), since 2026-11-06. The apps shelf that was this
+> site's homepage is at https://ouroboros.bot/apps/, and the Ouro HX page is at
+> https://ouroboros.bot/ouro-hx/. ouro.bot forwards each old page there.
+>
+> **What still lives here, on ouro.bot:** Ouro MD's download page
+> (`/apps/ouro-md/`, its App Store marketing URL), `apps/ouro-md/stable.json`,
+> the installer (`/ouro-md-install.sh`), the files those load, and the
+> `ouro-apex` Worker (`worker.js`, `routes.js`).
+>
+> **New work:** pages, copy and product content go in ourostack/ouroboros-website.
+> Change this repository only for Ouro MD's download page, its release metadata,
+> the installer, or the Worker's routing. `index.html` and `apps/ouro-hx/` are
+> no longer served on ouro.bot.
 
 The header, footer, fonts and colour tokens mirror ouroboros.bot's
 `src/components/Nav.astro`, `Footer.astro` and `src/styles/global.css`. Change
@@ -91,18 +100,24 @@ npm run deploy   # build + wrangler pages deploy dist
 
 ### The apex Worker (separate — only when it changes)
 
-`worker.js` + `wrangler.jsonc` define the `ouro-apex` Worker that fronts
-`ouro.bot/*`. The ouro.bot website forwards to https://ouroboros.bot: every path gets a 302 to the same path on ouroboros.bot, except Ouro MD's App Store support and privacy URLs, which go where the app already sends people: `/support/` to Ouro MD's GitHub issues and `/privacy/` to its `PRIVACY.md`.
+`worker.js`, `routes.js` and `wrangler.jsonc` define the `ouro-apex` Worker that fronts `ouro.bot/*` (not `ui.ouro.bot` or any other host). `routes.js` is the routing table:
 
-The Worker still proxies an exact list of files to the Pages deployment unchanged, because Ouro MD, its installer, its App Store listing and its product page depend on them: `/ouro-md-install.sh`, `/apps/ouro-md`, the product page and `stable.json` under `/apps/ouro-md/`, each file in `assets/`, `/styles.css`, `/robots.txt` and `/sitemap.xml`. Any other path, including an unknown one under `/apps/ouro-md/` or `/assets/`, is forwarded, because Pages would answer it with the old homepage and status 200. When you add a file under `apps/ouro-md/` or `assets/`, add it to the list in `worker.js`; a test fails until you do. `tests/worker.test.mjs` is the contract.
+- **`forwards`:** each old ouro.bot page and its new home on ouroboros.bot, with a 301. `/` and `/apps/` go to `/apps/`, `/apps/ouro-hx/` to `/ouro-hx/`, Shepherd and the retired Workbench to `/apps/#shepherd`. A test fails if any destination is missing from the live site (or from a built ouroboros-website `dist/`, with `OUROBOROS_DIST=<path>`); ouroboros-website's `tests/ouro-bot-forwards.test.mjs` checks the same list against its build.
+- **`elsewhere`:** Ouro MD's App Store support and privacy URLs, with a 302: `/support/` to its GitHub issues and `/privacy/` to its `PRIVACY.md`.
+- **`kept`:** the exact files proxied to Pages unchanged: the installer, Ouro MD's download page and `stable.json`, every file in `assets/`, `/styles.css`, `/robots.txt` and `/sitemap.xml`. When you add a file under `apps/ouro-md/` or `assets/`, add it here; a test fails until you do, and another fails if the download page or `styles.css` loads a file that is not kept.
+- **Anything else** gets a 302 to the ouroboros.bot homepage, because Pages would answer it with the old homepage and status 200.
 
-Merging to `main` does not deploy the Worker; the Pages deploy in CI never touches it. Until someone runs `npx wrangler deploy`, `worker.js` on `main` can differ from the deployed Worker, and anyone who deploys the Worker for another reason ships what is on `main`. Redeploy it by hand, only when you edit those two files, and check the kept paths before and after.
+Why 301 for the page forwards: the unified domain is Ari's decision (2026-11-06), the move is permanent, and search engines should carry the old pages' standing to ouroboros.bot. No kept path is ever redirected, so a cached 301 cannot hide Ouro MD's files. The App Store URLs and unknown paths stay 302s because they may still change.
+
+Merging to `main` does not deploy the Worker; the Pages deploy in CI never touches it. Until someone runs `npx wrangler deploy`, `worker.js` on `main` can differ from the deployed Worker. Redeploy it by hand, only when you edit those files, and check the kept paths before and after.
 
 The hourly refresh workflow (cron `17 * * * *`) rewrites `apps/ouro-md/stable.json` whenever Ouro MD ships, so the check compares that file's fields, not its hash. Take both snapshots within the same hour, away from :17 past the hour; the script warns between :12 and :25.
 
 ```sh
+npx wrangler deployments list --name ouro-apex   # record the current version id for rollback
 scripts/verify-endpoints.sh > before.txt
 npx wrangler deploy
 scripts/verify-endpoints.sh > after.txt
 diff <(grep -E '^(KEEP|SCHEMA)' before.txt) <(grep -E '^(KEEP|SCHEMA)' after.txt)   # must print nothing
+# If anything is wrong: npx wrangler rollback <version id>
 ```

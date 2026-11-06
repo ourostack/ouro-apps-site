@@ -113,7 +113,7 @@ const sharedNav = [
   "https://ouroboros.bot/ouro-md/",
   "https://ouroboros.bot/lab/",
   "https://ouroboros.bot/blog/",
-  "https://ouro.bot/",
+  "https://ouroboros.bot/apps/",
   "https://ouroboros.bot/#try",
   "https://mendelow.me",
 ];
@@ -125,7 +125,7 @@ for (const pagePath of pages) {
   if (JSON.stringify(navOnly) !== JSON.stringify(sharedNav)) {
     throw new Error(`${pagePath}: the header must carry the shared ouroboros.bot nav in order, got ${navOnly.join(", ")}`);
   }
-  if (nav.querySelector('a[aria-current="page"]')?.getAttribute("href") !== "https://ouro.bot/") {
+  if (nav.querySelector('a[aria-current="page"]')?.getAttribute("href") !== "https://ouroboros.bot/apps/") {
     throw new Error(`${pagePath}: Apps must be the current nav item on ouro.bot`);
   }
   if (!doc.querySelector('header .brand img[src^="/assets/brand/ouro-render"]')) {

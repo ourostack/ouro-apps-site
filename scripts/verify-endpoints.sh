@@ -35,8 +35,14 @@ for path in \
   /assets/ouro-md-hero.mp4 \
   /assets/ouro-md-editing.png \
   /assets/site-telemetry.js \
+  /assets/site-shell.js \
+  /assets/clips.js \
   /assets/favicon-32x32.png \
   /assets/apple-touch-icon.png \
+  /assets/brand/ouro.svg \
+  /assets/brand/ouro-render-128.webp \
+  /assets/fonts/cormorant-regular.woff2 \
+  /assets/media/ouro-md-typing-light-poster.png \
   /styles.css \
   /robots.txt \
   /sitemap.xml; do
@@ -59,8 +65,9 @@ if [ "$minute" -ge 12 ] && [ "$minute" -le 25 ]; then
   echo "warning: the hourly stable.json refresh runs at :17; take both snapshots away from it" >&2
 fi
 
-# Expected to change: 302 to ouroboros.bot, or to GitHub for /support/ and /privacy/.
-for path in / "/?ref=check" /index.html /privacy/ /support/ /no-such-page /apps/ /apps/ouro-md/nope /assets/nope.png; do
+# Expected to change: 301 to each page's new home on ouroboros.bot, 302 to GitHub for
+# /support/ and /privacy/, and 302 to the ouroboros.bot homepage for unknown paths.
+for path in / "/?ref=check" /index.html /apps/ /apps/ouro-hx/ /apps/shepherd/ /favicon.ico /privacy/ /support/ /no-such-page /apps/ouro-md/nope /assets/nope.png; do
   probe FORWARD "$path"
 done
 

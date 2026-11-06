@@ -1,11 +1,12 @@
 // Contract for the ouro-apex Worker (worker.js), which fronts ouro.bot/*.
-// The site forwards to ouroboros.bot, and the paths Ouro MD and its installer
-// depend on keep being served from the Pages project, byte for byte.
+// Each old page forwards to its new home on ouroboros.bot, and the paths Ouro MD
+// and its installer depend on keep being served from the Pages project, byte for byte.
 
 import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { readdir } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import worker from "../worker.js";
+import { forwards, kept as keptSet } from "../routes.js";
 
 const PAGES = "https://ouro-apps-site.pages.dev";
 
@@ -79,55 +80,97 @@ test("passes HEAD requests for the installer through", async () => {
   assert.equal(response.status, 200);
 });
 
-test("forwards the root to ouroboros.bot", async () => {
-  const response = await get("/");
+test("forwards the old homepage to the apps shelf on ouroboros.bot with a 301", async () => {
+  for (const path of ["/", "/index.html", "/apps", "/apps/", "/apps/index.html"]) {
+    const response = await get(path);
+    assert.equal(response.status, 301, path);
+    assert.equal(response.headers.get("location"), "https://ouroboros.bot/apps/", path);
+    assert.equal(response.headers.get("x-ouro-apps-site"), "cloudflare-worker-forward");
+  }
   assert.equal(calls.length, 0);
-  assert.equal(response.status, 302);
-  assert.equal(response.headers.get("location"), "https://ouroboros.bot/");
-  assert.equal(response.headers.get("x-ouro-apps-site"), "cloudflare-worker-forward");
+});
+
+test("forwards the Ouro HX page to its new home", async () => {
+  for (const path of ["/apps/ouro-hx", "/apps/ouro-hx/", "/apps/ouro-hx/index.html"]) {
+    const response = await get(path);
+    assert.equal(response.status, 301, path);
+    assert.equal(response.headers.get("location"), "https://ouroboros.bot/ouro-hx/", path);
+  }
+});
+
+test("sends Shepherd and the retired Workbench to Shepherd on the shelf", async () => {
+  for (const path of ["/apps/shepherd/", "/apps/ouro-shepherd/", "/apps/ouro-workbench/"]) {
+    const response = await get(path);
+    assert.equal(response.headers.get("location"), "https://ouroboros.bot/apps/#shepherd", path);
+  }
 });
 
 test("keeps the query string when it forwards", async () => {
-  const response = await get("/?ref=card");
-  assert.equal(response.headers.get("location"), "https://ouroboros.bot/?ref=card");
+  assert.equal((await get("/?ref=card")).headers.get("location"), "https://ouroboros.bot/apps/?ref=card");
+  assert.equal((await get("/apps/shepherd/?ref=x")).headers.get("location"), "https://ouroboros.bot/apps/?ref=x#shepherd");
 });
 
-test("forwards other paths to the same path on ouroboros.bot", async () => {
-  for (const path of ["/terms/", "/index.html", "/apps/", "/apps/ouro-workbench/", "/favicon.ico"]) {
+test("sends unknown paths to the ouroboros.bot homepage with a 302, never to a missing page", async () => {
+  for (const path of ["/terms/", "/no-such-page", "/apps/ouro-md/nope", "/apps/ouro-md/old.json", "/assets/nope.png", "/assets/", "/ouro-md-install.sh.bak", "/assetsx/a.png", "/apps/ouro-mdx/", "/styles.css/x"]) {
     const response = await get(path);
     assert.equal(response.status, 302, path);
-    assert.equal(response.headers.get("location"), `https://ouroboros.bot${path}`, path);
+    assert.equal(response.headers.get("location"), "https://ouroboros.bot/", path);
   }
   assert.equal(calls.length, 0);
 });
 
-test("does not keep lookalike paths", async () => {
-  for (const path of ["/ouro-md-install.sh.bak", "/assetsx/a.png", "/apps/ouro-mdx/", "/styles.css/x"]) {
-    const response = await get(path);
-    assert.equal(response.status, 302, path);
+async function walk(dir) {
+  const out = [];
+  for (const entry of await readdir(new URL(`../${dir}/`, import.meta.url), { withFileTypes: true })) {
+    const path = `${dir}/${entry.name}`;
+    out.push(...(entry.isDirectory() ? await walk(path) : [`/${path}`]));
   }
-  assert.equal(calls.length, 0);
-});
+  return out;
+}
 
-// Pages answers an unknown path with the old homepage and status 200, so the
-// Worker keeps only files that exist and forwards everything else.
-test("forwards unknown paths under /apps/ouro-md/ and /assets/ instead of serving the old homepage", async () => {
-  for (const path of ["/apps/ouro-md/nope", "/apps/ouro-md/old.json", "/assets/nope.png", "/assets/"]) {
-    const response = await get(path);
-    assert.equal(response.status, 302, path);
-    assert.equal(response.headers.get("location"), `https://ouroboros.bot${path}`, path);
-  }
-  assert.equal(calls.length, 0);
-});
-
-test("keeps every file the site publishes under /apps/ouro-md/ and /assets/", async () => {
-  const published = [
-    ...(await readdir(new URL("../apps/ouro-md/", import.meta.url))).map((name) => `/apps/ouro-md/${name}`),
-    ...(await readdir(new URL("../assets/", import.meta.url))).map((name) => `/assets/${name}`),
-  ];
+test("keeps every file the site publishes under /apps/ouro-md/ and /assets/, including /assets/brand/", async () => {
+  const published = [...(await walk("apps/ouro-md")), ...(await walk("assets"))];
+  assert.ok(published.includes("/assets/brand/ouro.svg"));
   for (const path of published) {
     const response = await get(path);
     assert.equal(response.headers.get("x-ouro-apps-site"), "cloudflare-worker-proxy", path);
+  }
+});
+
+test("keeps every local file the Ouro MD page and styles.css load", async () => {
+  const page = await readFile(new URL("../apps/ouro-md/index.html", import.meta.url), "utf8");
+  const styles = await readFile(new URL("../styles.css", import.meta.url), "utf8");
+  const refs = new Set();
+  for (const [, attr] of page.matchAll(/(?:href|src|poster|srcset|content)="([^"]+)"/g)) {
+    for (const part of attr.split(",")) {
+      const ref = part.trim().split(/\s+/)[0].replace(/^https:\/\/ouro\.bot(?=\/)/, "");
+      if (ref.startsWith("/") && !ref.startsWith("//")) refs.add(ref.split(/[?#]/)[0]);
+    }
+  }
+  for (const [, ref] of styles.matchAll(/url\(["']?(\/[^"')]+)/g)) refs.add(ref);
+  assert.ok(refs.size > 10, "found the page's references");
+  for (const ref of refs) assert.ok(keptSet.has(ref), `${ref} is loaded by the Ouro MD page but not kept`);
+});
+
+// Every forward lands on a page that exists. Set OUROBOROS_DIST to a built
+// ourostack/ouroboros-website dist/ to check it offline; otherwise this checks the live site.
+test("every forward destination exists on ouroboros.bot", async () => {
+  globalThis.fetch = realFetch;
+  const destinations = [...new Set(forwards.values())];
+  for (const destination of destinations) {
+    const url = new URL(destination);
+    assert.equal(url.origin, "https://ouroboros.bot", destination);
+    const fragment = url.hash.slice(1);
+    let body;
+    if (process.env.OUROBOROS_DIST) {
+      const file = url.pathname.endsWith("/") ? `${url.pathname}index.html` : url.pathname;
+      body = await readFile(`${process.env.OUROBOROS_DIST}${file}`, "utf8");
+    } else {
+      const response = await realFetch(`${url.origin}${url.pathname}`, { redirect: "manual" });
+      assert.equal(response.status, 200, `${destination} answers ${response.status}`);
+      body = await response.text();
+    }
+    if (fragment) assert.match(body, new RegExp(`id="${fragment}"`), `${destination} has no #${fragment}`);
   }
 });
 
