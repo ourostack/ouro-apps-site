@@ -4,6 +4,29 @@
 // plays, a visible Pause/Play button appears (WCAG 2.2.2). Only the clip for
 // the active theme is visible, and a hidden clip never intersects, so it never
 // loads.
+//
+// Posters wait in data-poster until the storybook hero has landed, and only the
+// shown theme's poster loads (a theme change loads the other), so a slow phone
+// spends its first bytes on the arrival. Without JS, a <noscript> image shows it.
+(function () {
+  function showPosters() {
+    document.querySelectorAll('video[data-poster]').forEach(function (video) {
+      if (video.getClientRects().length) { video.poster = video.getAttribute('data-poster'); video.removeAttribute('data-poster'); }
+    });
+  }
+  function arrived() {
+    showPosters();
+    new MutationObserver(showPosters).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    if (window.matchMedia) { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', showPosters); }
+  }
+  var hero = document.querySelector('.story-hero img');
+  if (!hero || hero.complete) arrived();
+  else {
+    var done = false;
+    var once = function () { if (!done) { done = true; arrived(); } };
+    hero.addEventListener('load', once); hero.addEventListener('error', once); setTimeout(once, 4000);
+  }
+})();
 (function () {
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var saveData = navigator.connection && navigator.connection.saveData === true;
