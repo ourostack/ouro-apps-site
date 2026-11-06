@@ -81,7 +81,9 @@
 @media (min-width: 2000px) { :root { --container: 84rem; } }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: clip; }
+/* Only body clips sideways, so its overflow passes up to the viewport and the
+   phone menu's scroll lock (body only) keeps the sticky bar in place. */
+html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
@@ -219,7 +221,8 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
   .split.media-left > .media { order: -1; }
 }
 .app-page .hero .wrap { display: grid; gap: 2.5rem; }
-@media (min-width: 1024px) { .app-page .hero .wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--split-gap); align-items: center; } }
+/* The demo lines up with the top of the words, not their middle (taste r3: at 1024 it sat far below the h1). */
+@media (min-width: 1024px) { .app-page .hero .wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--split-gap); align-items: start; } .app-page .hero-media { margin-top: 0.5rem; } }
 
 /* Real product media: a plain frame, the picture is the content. */
 .window { margin: 0; border-radius: 0.9rem; overflow: hidden; border: 1px solid color-mix(in srgb, var(--color-canopy) 60%, transparent); background: var(--color-undergrowth); }
@@ -284,7 +287,8 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .footer-row a { text-decoration: underline; text-decoration-color: var(--color-canopy); text-underline-offset: 4px; transition: color 0.2s; }
 .footer-row a:hover { color: var(--color-bone); }
 .footer-sep { color: var(--color-shadow); }
-@media (min-width: 1024px) {
+/* Side by side only where both fit on one row; at 1024 the line was squeezed to a word a line (taste r3). */
+@media (min-width: 1280px) {
   .footer-inner { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem var(--split-gap); text-align: left; }
   .footer-row { flex: none; margin-top: 0; justify-content: flex-end; }
 }
@@ -301,7 +305,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 
 .clip-frame { position: relative; aspect-ratio: 4 / 3; background: var(--color-undergrowth); }
 .clip-theme { height: 100%; }
-.clip-video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; transform: scale(1.04); }
+.clip-video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 .theme-light-only { display: none; }
 :root[data-theme="light"] .theme-light-only { display: block; }
 :root[data-theme="light"] .theme-dark-only { display: none; }

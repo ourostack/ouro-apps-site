@@ -31,7 +31,9 @@
     menu.classList.toggle('is-open', open);
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    root.style.overflow = open ? 'hidden' : '';
+    // Lock the body only, as ouroboros.bot does. Hiding overflow on <html> too
+    // resets the viewport's scroll, so the sticky bar (and the X in it) jumped
+    // off the top of the screen when the menu opened after scrolling.
     document.body.style.overflow = open ? 'hidden' : '';
     if (!open && refocus) menuButton.focus();
   }
