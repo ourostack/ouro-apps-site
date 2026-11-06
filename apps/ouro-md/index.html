@@ -10,13 +10,21 @@
     <meta property="og:description" content="A native macOS Markdown editor that renders as you type. No preview pane, no toggle — just the document.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ouro.bot/apps/ouro-md/">
-    <meta property="og:image" content="https://ouro.bot/assets/ouro-md-hero.png">
+    <!-- The storybook card ouroboros.bot builds for Ouro MD (2026-11-06): its scene, the lectern, with the title over it. -->
+    <meta property="og:image" content="https://ouroboros.bot/og/og-ouro-md.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Ouro MD: read and answer what your agent writes. A reading lectern holding a fresh page, a lamp and a cup of tea on a stool, and loose pages drifting in the breeze. Ouro peeks over the lectern to read along.">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ouroboros.bot/og/og-ouro-md.jpg">
     <link rel="icon" href="/assets/ouro-md-icon.png" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <link rel="preload" href="/assets/fonts/cormorant-regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://ouroboros.bot">
+    <link rel="preload" as="image" type="image/avif" media="(max-width: 640px)" imagesrcset="https://ouroboros.bot/brand/storybook/phone/ouro-md-384.avif 384w, https://ouroboros.bot/brand/storybook/phone/ouro-md-768.avif 768w" imagesizes="100vw" fetchpriority="high">
+    <link rel="preload" as="image" type="image/avif" media="(min-width: 641px)" imagesrcset="https://ouroboros.bot/brand/storybook/scenes/ouro-md-640.avif 640w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-960.avif 960w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-1536.avif 1536w" imagesizes="100vw" fetchpriority="high">
     <script>
       try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
     </script>
@@ -79,6 +87,16 @@
     </header>
 
     <main id="main">
+      <!-- The storybook scene, served byte for byte by ouroboros.bot (ourostack/.github brand/). -->
+      <div class="story-scene story-hero" data-brand-scene="ouro-md">
+        <picture>
+          <source media="(max-width: 640px)" type="image/avif" srcset="https://ouroboros.bot/brand/storybook/phone/ouro-md-384.avif 384w, https://ouroboros.bot/brand/storybook/phone/ouro-md-768.avif 768w" sizes="100vw" width="768" height="576">
+          <source media="(max-width: 640px)" type="image/webp" srcset="https://ouroboros.bot/brand/storybook/phone/ouro-md-384.webp 384w, https://ouroboros.bot/brand/storybook/phone/ouro-md-768.webp 768w" sizes="100vw" width="768" height="576">
+          <source type="image/avif" srcset="https://ouroboros.bot/brand/storybook/scenes/ouro-md-640.avif 640w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-960.avif 960w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-1536.avif 1536w" sizes="100vw" width="1536" height="576">
+          <source type="image/webp" srcset="https://ouroboros.bot/brand/storybook/scenes/ouro-md-640.webp 640w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-960.webp 960w, https://ouroboros.bot/brand/storybook/headers/ouro-md.webp 1536w" sizes="100vw" width="1536" height="576">
+          <img src="https://ouroboros.bot/brand/storybook/headers/ouro-md.webp" width="1536" height="576" alt="A reading lectern holding a fresh page, a lamp and a cup of tea on a stool, and loose pages drifting in the breeze. Ouro peeks over the lectern to read along." fetchpriority="high">
+        </picture>
+      </div>
       <section class="hero">
         <div class="wrap">
           <div class="hero-copy">

@@ -75,7 +75,18 @@ for (const pagePath of pages) {
     throw new Error(`${pagePath} is missing title, description, canonical, og image, telemetry, h1, or image`);
   }
   // The Ouro MD pages show the real Ouro MD render, not an abstract placeholder or mockup.
-  if (pagePath !== "apps/ouro-hx/index.html" && !html.includes("/assets/ouro-md-hero.png")) {
+  // Since the storybook brand (2026-11-06), Ouro MD's download page shares the card
+  // ouroboros.bot builds for it and opens on its scene from ouroboros.bot; its product
+  // media (the recordings and the editing shot) stay real.
+  if (pagePath === "apps/ouro-md/index.html") {
+    if (ogImage !== "https://ouroboros.bot/og/og-ouro-md.jpg") throw new Error(`${pagePath} must share the storybook card`);
+    if (doc.querySelector('meta[name="twitter:image"]')?.getAttribute("content") !== ogImage) throw new Error(`${pagePath}: twitter:image must equal og:image`);
+    const hero = doc.querySelector('main > .story-hero[data-brand-scene="ouro-md"]');
+    if (!hero || hero.querySelector("img")?.getAttribute("fetchpriority") !== "high" || hero.querySelector("img")?.hasAttribute("loading")) {
+      throw new Error(`${pagePath} must open on the ouro-md storybook scene, loaded first`);
+    }
+    if (!html.includes("/assets/ouro-md-editing.png")) throw new Error(`${pagePath} must show the real Ouro MD editing shot`);
+  } else if (pagePath !== "apps/ouro-hx/index.html" && !html.includes("/assets/ouro-md-hero.png")) {
     throw new Error(`${pagePath} must show the real Ouro MD product shot (assets/ouro-md-hero.png)`);
   }
 }
