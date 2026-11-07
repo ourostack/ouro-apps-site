@@ -11,7 +11,7 @@
     "refresh:ouro-md": "node scripts/refresh-ouromd-release.mjs",
     "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
-    "test-ui": "npm run build-storybook && node scripts/a11y.mjs && npm run build && node scripts/menu-scroll.mjs && node scripts/hero-crop.mjs && node scripts/text-breaks.mjs && node scripts/phone-column.mjs && node scripts/section-seams.mjs && node scripts/image-fallback.mjs",
+    "test-ui": "npm run build-storybook && node scripts/a11y.mjs && npm run build && node scripts/menu-scroll.mjs && node scripts/hero-crop.mjs && node scripts/text-breaks.mjs && node scripts/phone-column.mjs && node scripts/section-seams.mjs && node scripts/image-fallback.mjs && node scripts/hit-areas.mjs",
     "check:seams": "npm run build && node scripts/section-seams.mjs"
   },
   "devDependencies": {
