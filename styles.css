@@ -37,7 +37,9 @@
   --ease-expo: cubic-bezier(.19, 1, .22, 1);
 
   --container: 72rem;
-  --gutter: 1.25rem;
+  /* One phone gutter on both sites: 24px, ouroboros.bot's px-6 (taste
+     review r12 ruling). */
+  --gutter: 1.5rem;
   --split-gap: 4rem;
 
   /* Legacy names kept so older stories and pages resolve. */
@@ -73,7 +75,6 @@
     --color-amber: #7A5308;
   }
 }
-@media (min-width: 640px) { :root { --gutter: 1.5rem; } }
 @media (min-width: 768px) { :root { --gutter: 3rem; } }
 @media (min-width: 1024px) { :root { --gutter: 4rem; } }
 /* Wide screens scale like ouroboros.bot and mendelow.me. */
@@ -102,6 +103,9 @@ h1, h2, h3, h4, p, figure, ul { margin: 0; }
 h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; color: var(--color-bone); }
 ul { padding: 0; list-style: none; }
 code { font-family: var(--font-mono); font-size: 0.85em; }
+/* Controls take the page's font, not the browser's Arial (taste review r12:
+   the Copy label fell back to Arial). Classes below set their own weight. */
+button, input, select, textarea { font: inherit; letter-spacing: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--color-scale); outline-offset: 3px; border-radius: 4px; }
 
 .wrap { width: 100%; max-width: calc(var(--container) + 2 * var(--gutter)); margin: 0 auto; padding-inline: var(--gutter); }
