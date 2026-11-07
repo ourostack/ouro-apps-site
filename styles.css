@@ -314,7 +314,8 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 /* URLs, paths and inline code break only where a reader expects (taste
    reviews r8 and r9, the same rule as ouroboros.bot): scripts/text-wrap.mjs
    splits every URL and path into pieces at build time, with a <wbr> after
-   each "/" and before a host or file name's ".". A short piece never breaks;
+   each "/" and before a file name's ".", and never inside a scheme and
+   domain (taste review r10: "https://github" / ".com"). A short piece never breaks;
    a long one moves to the next line whole, and breaks inside only when it is
    wider than its whole column. Short inline code stays whole. */
 .code-whole { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
@@ -358,17 +359,18 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
    ------------------------------------------------------------------------- */
 .story-hero { position: relative; }
 .story-hero picture, .story-hero img { display: block; width: 100%; }
-/* The fade lives on the wrapper, so the placeholder behind a scene still on its
-   way fades with it (on the image alone, the wash showed as a hard band). */
+/* The fade lives on the wrapper, so the painted dawn behind a scene still on its
+   way fades with it. It starts below Ouro's lowest point, so no part of him
+   dissolves (taste review r10): ouroboros.bot heroFrame('ouro-md') sets it at
+   88%, and scripts/hero-crop.mjs fails if his foot keeps less than 80%. */
 .story-hero {
-  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
-  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  --hero-fade: 88%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 var(--hero-fade), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 var(--hero-fade), transparent 100%);
 }
 .story-hero img { height: auto; aspect-ratio: 1536 / 576; max-height: 72vh; object-fit: cover; }
 @media (max-width: 640px) {
   .story-hero img { aspect-ratio: 4 / 3; max-height: none; }
-  /* A phone crop is short and Ouro sits near its foot: a short, steep fade starts below him. */
-  .story-hero { -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent); mask-image: linear-gradient(to bottom, #000 88%, transparent); }
 }
 .story-hero + .hero { padding-top: 1.5rem; }
 @media (min-width: 768px) { .story-hero + .hero { padding-top: 2.5rem; } }
@@ -377,16 +379,13 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
    on Ouro at the lectern (ouroboros.bot heroFrame('ouro-md'): y 60.7%). A
    tighter cap cut Ouro's body away at 1440 and 1920 (taste review r8);
    scripts/hero-crop.mjs fails if the crop passes 20% at 1024, 1440 or 1920.
-   The words rise into its faded foot. */
+   The words rise into its faded foot, as on ouroboros.bot. */
 @media (min-width: 641px) { .story-hero img { max-height: max(55vh, calc(0.82 * 0.375 * 100vw)); object-position: 50% 60.7%; } }
 @media (min-width: 1024px) {
-  .story-hero + .hero { position: relative; margin-top: -4rem; padding-top: 0; }
-  /* The words rise 4rem into the scene, so the fade finishes before they start:
-     the red eyebrow sat on busy grass at 1440 (taste r5) and must read at AA. */
-  .story-hero {
-    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent calc(100% - 4.25rem));
-    mask-image: linear-gradient(to bottom, #000 45%, transparent calc(100% - 4.25rem));
-  }
+  /* ouroboros.bot's rise: the box overlaps the fade by 3.5rem and the words start
+     3rem down it, so the red eyebrow sits where the art has all but gone and
+     reads at AA (taste r5). */
+  .story-hero + .hero { position: relative; margin-top: -3.5rem; padding-top: 3rem; }
   .app-page .hero .heading-lead { font-size: clamp(3.4rem, 4.6vw, 4.4rem); }
   .app-page .hero-copy { gap: 1rem; }
   .app-page .hero .actions { margin-top: 0.75rem; }
@@ -394,9 +393,10 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 /* ouroboros.bot's drift, wide screens only: on a phone the hero shows the whole
    4:3 crop, and a zoom would trim the characters at its edges. */
 @media (prefers-reduced-motion: no-preference) and (min-width: 641px) {
-  .story-hero img { animation: story-drift 60s ease-in-out infinite alternate; transform-origin: 58% 50%; }
+  .story-hero img { animation: story-drift 60s ease-in-out infinite alternate; transform-origin: 58% var(--hero-fade); }
 }
-@keyframes story-drift { from { transform: scale(1); } to { transform: scale(1.03) translateX(-0.6%); } }
+/* A 2% zoom about the fade line, so it never carries a character down into the fade. */
+@keyframes story-drift { from { transform: scale(1); } to { transform: scale(1.02) translateX(-0.4%); } }
 
 /* The meadow at the foot of the page (ouroboros.bot's StoryScene variant="meadow"):
    the open garden gate, fading in from the page. It takes the file's own aspect
@@ -414,13 +414,14 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
    last 6rem instead. */
 main > .section.tint:last-child { background: linear-gradient(to bottom, color-mix(in srgb, var(--color-deep) 40%, transparent) calc(100% - 6rem), transparent); }
 
-/* A scene still on its way shows a wash of dawn, never a broken-image glyph or a hairline.
-   In the dark theme the wash is dusk: the page's own night with a faint warm
-   glow low down, so nothing flashes bright peach before the art lands (taste r4). */
-.story-scene { background: linear-gradient(180deg, #F7C9A8 0%, #F3DDB0 55%, #CFD9A0 100%); }
-:root[data-theme="dark"] .story-scene { background: radial-gradient(120% 90% at 50% 100%, color-mix(in srgb, var(--color-amber) 16%, transparent), transparent 70%), var(--color-deep); }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .story-scene { background: radial-gradient(120% 90% at 50% 100%, color-mix(in srgb, var(--color-amber) 16%, transparent), transparent 70%), var(--color-deep); }
-}
-.story-scene img { border: 0; }
-.story-scene img:not([src]), .story-scene img[src=""] { visibility: hidden; }
+/* A scene that is slow, or fails outright, still shows its own dawn: each scene
+   carries a 16px-wide preview of its art (--paint, the phone crop in
+   --paint-phone; ouroboros.bot's src/data/scene-paint.json), which the browser
+   blurs into the scene's sky, hills and meadow (taste review r10: a Cloudflare
+   503 left a hero showing alt text on a beige box). A failed image is marked
+   data-failed by the head script and steps aside; its alt text never shows. */
+.story-scene { background: var(--paint, none) 50% 50% / cover no-repeat, #E9C9A0; }
+.story-hero { background-position: 50% 60.7%; }
+@media (max-width: 640px) { .story-scene { background-image: var(--paint-phone, none); background-size: 100% 100%; } }
+.story-scene img { border: 0; color: transparent; }
+.story-scene img:not([src]), .story-scene img[src=""], .story-scene img[data-failed] { visibility: hidden; }
