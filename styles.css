@@ -150,8 +150,10 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
    review r14: the Copy button was 38px tall). The button keeps its size; an
    invisible ::after, centred on it, reaches out to 44px where it is smaller.
    scripts/hit-areas.mjs checks it, the same as ouroboros.bot. */
-.btn { position: relative; }
-.btn::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 2.75rem); height: max(100%, 2.75rem); transform: translate(-50%, -50%); }
+/* .hit gives the same 44px reach to a control that is not a .btn, such as a
+   demo's Pause/Play, as ouroboros.bot's .hit does. */
+.btn, .hit { position: relative; }
+.btn::after, .hit::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 2.75rem); height: max(100%, 2.75rem); transform: translate(-50%, -50%); }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.75rem; }
 
 .tag { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; padding: 0.4rem 0.65rem; border-radius: 999px; white-space: nowrap; color: var(--color-bone); background: color-mix(in srgb, var(--tag-tone) 14%, transparent); }
@@ -241,7 +243,11 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
 .section-head { display: grid; gap: 1rem; margin-bottom: 2.5rem; }
 .section-head .eyebrow { margin-bottom: 0.25rem; }
 
-.hero { padding-block: 3.5rem 3rem; }
+/* On a phone the body opens one even step below the hero text: 96px (6rem)
+   to a titled section, the same rhythm as ouroboros.bot (taste review r16,
+   2026-11-07; its scripts/hero-gap.mjs measures both). 2.5rem here plus the
+   section's 3.5rem top padding. */
+.hero { padding-block: 3.5rem 2.5rem; }
 @media (min-width: 768px) { .hero { padding-block: 6rem 4.5rem; } }
 /* On the homepage the first tool sits right under the heading. */
 .home-page .hero { padding-bottom: 1rem; }
@@ -341,15 +347,16 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
   .footer-inner { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem var(--split-gap); text-align: left; }
   .footer-row { flex: none; margin-top: 0; justify-content: flex-end; }
 }
-/* On a phone the links stand in two even columns of finger-sized rows (44px;
-   taste review r15), with the copyright line beneath them; an odd last link
-   takes the whole row. The same sizes and spacing as ouroboros.bot's
+/* On a phone the links stand in even rows of finger-sized links (44px;
+   taste review r15), with the copyright line beneath them. Rows hold two
+   links; with an odd count the last row holds three, so no link stands alone
+   (taste review r16). The same rule, sizes and spacing as ouroboros.bot's
    Footer.astro; ouro.bot keeps its extra "ouroboros.bot" link. */
 @media (max-width: 639.98px) {
   .footer-sep { display: none; }
-  .footer-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; justify-items: center; align-items: center; }
-  .footer-row a { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; min-width: 2.75rem; }
-  .footer-row a:last-of-type:nth-of-type(odd) { grid-column: 1 / -1; }
+  .footer-row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 1rem; justify-items: center; align-items: center; }
+  .footer-row a { grid-column: span 3; display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; min-width: 2.75rem; }
+  .footer-row:has(> a:last-of-type:nth-of-type(odd)) > a:nth-last-of-type(-n + 3) { grid-column: span 2; }
   .footer-row > span:first-child { grid-column: 1 / -1; order: 1; margin-top: 0.75rem; }
 }
 
@@ -387,7 +394,12 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
   :root:not([data-theme="dark"]) .theme-light-only { display: block; }
   :root:not([data-theme="dark"]) .theme-dark-only { display: none; }
 }
-.clip-toggle { position: absolute; right: 0.6rem; bottom: 0.6rem; padding: 0.3rem 0.75rem; border-radius: 999px; font: 500 0.8125rem var(--font-body); color: var(--color-bone); background: color-mix(in srgb, var(--color-void) 85%, transparent); border: 1px solid color-mix(in srgb, var(--color-canopy) 80%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); cursor: pointer; }
+/* The demo's Pause/Play: one size on both sites (taste review r16: it was
+   51x28 here and 60x31 on ouroboros.bot). A fixed box, so Pause and Play are
+   the same width, and the shared .hit area reaches out to 44x44 for a finger
+   while staying inside the frame. ouroboros.bot's WorkshopVideo.astro has the
+   same rule; scripts/hit-areas.mjs probes it on both sites. */
+.clip-toggle { position: absolute; right: 0.6rem; bottom: 0.6rem; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 4.25rem; height: 2rem; padding: 0 0.85rem; border-radius: 999px; font: 500 0.8125rem/1 var(--font-body); color: var(--color-bone); background: color-mix(in srgb, var(--color-void) 85%, transparent); border: 1px solid color-mix(in srgb, var(--color-canopy) 80%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); cursor: pointer; }
 @media (hover: hover) { .clip-toggle:hover { color: var(--color-scale); } }
 .clip-toggle[hidden] { display: none; }
 .media-caption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.6rem; }
