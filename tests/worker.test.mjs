@@ -1,14 +1,12 @@
 // Contract for the ouro-apex Worker (worker.js), which fronts ouro.bot/*.
-// Each old page forwards to its new home on ouroboros.bot, and the paths Ouro MD
-// and its installer depend on keep being served from the Pages project, byte for byte.
+// Every path redirects: each old page and file to its new home on ouroboros.bot,
+// with a 301, in one hop, keeping the query. Nothing is fetched or served here.
 
 import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { readdir, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import worker from "../worker.js";
-import { forwards, kept as keptSet } from "../routes.js";
-
-const PAGES = "https://ouro-apps-site.pages.dev";
+import { forwards } from "../routes.js";
 
 let calls;
 const realFetch = globalThis.fetch;
@@ -17,14 +15,7 @@ beforeEach(() => {
   calls = [];
   globalThis.fetch = async (request) => {
     calls.push(request);
-    const url = new URL(request.url);
-    if (url.pathname === "/apps/ouro-md") {
-      return new Response(null, { status: 308, headers: { location: "/apps/ouro-md/" } });
-    }
-    return new Response(`body for ${url.pathname}${url.search}`, {
-      status: 200,
-      headers: { "content-type": "application/x-test", etag: '"abc"' },
-    });
+    return new Response("unexpected upstream fetch", { status: 500 });
   };
 });
 
@@ -35,50 +26,57 @@ afterEach(() => {
 const get = (path, init) => worker.fetch(new Request(`https://ouro.bot${path}`, init));
 const getWww = (path) => worker.fetch(new Request(`https://www.ouro.bot${path}`));
 
-// Every path the app, its installer, its App Store listing (marketing URL) or
-// the Ouro MD product page fetches today.
-const kept = [
-  "/ouro-md-install.sh",
-  "/apps/ouro-md/stable.json",
-  "/apps/ouro-md/",
-  "/apps/ouro-md/index.html",
-  "/assets/ouro-md-icon.png",
-  "/assets/ouro-md-hero.png",
-  "/assets/ouro-md-hero.mp4",
-  "/assets/ouro-md-editing.png",
-  "/assets/site-telemetry.js",
-  "/assets/favicon-32x32.png",
-  "/assets/apple-touch-icon.png",
-  "/styles.css",
-  "/robots.txt",
-  "/sitemap.xml",
+// Every path the app, its installer, its App Store listing or the Ouro MD
+// product page used to fetch here, and where it lives now (2026-11-07).
+const ouroMd = [
+  ["/apps/ouro-md", "/ouro-md/download/"],
+  ["/apps/ouro-md/", "/ouro-md/download/"],
+  ["/apps/ouro-md/index.html", "/ouro-md/download/"],
+  ["/apps/ouro-md/stable.json", "/ouro-md/stable.json"],
+  ["/ouro-md-install.sh", "/ouro-md-install.sh"],
+  ["/assets/ouro-md-editing.png", "/images/workshop/ouro-md-editing.png"],
+  ["/assets/media/ouro-md-typing-light-poster.png", "/images/workshop/ouro-md-typing-light-poster.png"],
+  ["/assets/media/ouro-md-agent-edit-dark.webm", "/images/workshop/ouro-md-agent-edit-dark.webm"],
+  ["/assets/fonts/cormorant-regular.woff2", "/fonts/cormorant-regular.woff2"],
+  ["/assets/brand/ouro-render-128.webp", "/brand/ouro-render-128.webp"],
+  ["/assets/brand/ouro.svg", "/brand/ouro.svg"],
+  ["/assets/ouro-md-icon.png", "/brand/ouro-md-icon.png"],
+  ["/assets/apple-touch-icon.png", "/brand/ouro-md-icon.png"],
+  ["/assets/favicon-32x32.png", "/brand/ouro-md-icon.png"],
+  ["/assets/ouro-md-hero.png", "/images/workshop/ouro-md-typing-light-poster.png"],
+  ["/assets/ouro-md-hero.mp4", "/images/workshop/ouro-md-typing-light.mp4"],
+  ["/assets/media/ouro-hx-spoonjoy-xray-og.png", "/og/og-ouro-hx.jpg"],
+  ["/styles.css", "/ouro-md/download/"],
+  ["/assets/site-shell.js", "/ouro-md/download/"],
+  ["/assets/clips.js", "/ouro-md/download/"],
+  ["/assets/site-telemetry.js", "/ouro-md/download/"],
+  ["/robots.txt", "/robots.txt"],
+  ["/sitemap.xml", "/sitemap-index.xml"],
 ];
 
-for (const path of kept) {
-  test(`keeps serving ${path} from Pages unchanged`, async () => {
-    const response = await get(`${path}?v=1`);
-    assert.equal(calls.length, 1);
-    assert.equal(calls[0].url, `${PAGES}${path}?v=1`);
-    assert.equal(response.status, 200);
-    assert.equal(response.headers.get("content-type"), "application/x-test");
-    assert.equal(response.headers.get("etag"), '"abc"');
-    assert.equal(response.headers.get("x-ouro-apps-site"), "cloudflare-worker-proxy");
-    assert.equal(await response.text(), `body for ${path}?v=1`);
+for (const [path, to] of ouroMd) {
+  test(`forwards ${path} to ouroboros.bot${to} in one 301, keeping the query`, async () => {
+    for (const query of ["", "?v=1&x=2"]) {
+      const response = await get(`${path}${query}`);
+      assert.equal(response.status, 301, path);
+      assert.equal(response.headers.get("location"), `https://ouroboros.bot${to}${query}`, path);
+      assert.equal(response.headers.get("x-ouro-apps-site"), "cloudflare-worker-forward");
+    }
+    assert.equal(calls.length, 0);
   });
 }
 
-test("passes the Pages trailing-slash redirect for /apps/ouro-md through", async () => {
-  const response = await get("/apps/ouro-md");
-  assert.equal(calls.length, 1);
-  assert.equal(response.status, 308);
-  assert.equal(response.headers.get("location"), "/apps/ouro-md/");
+test("forwards HEAD requests for the installer too", async () => {
+  const response = await get("/ouro-md-install.sh", { method: "HEAD" });
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get("location"), "https://ouroboros.bot/ouro-md-install.sh");
+  assert.equal(calls.length, 0);
 });
 
-test("passes HEAD requests for the installer through", async () => {
-  const response = await get("/ouro-md-install.sh", { method: "HEAD" });
-  assert.equal(calls.length, 1);
-  assert.equal(calls[0].method, "HEAD");
-  assert.equal(response.status, 200);
+test("every file ouro.bot used to keep has an explicit home", async () => {
+  // The kept list as it stood before the move (routes.js, 2026-11-07).
+  const before = ["/ouro-md-install.sh", "/apps/ouro-md", "/apps/ouro-md/", "/apps/ouro-md/index.html", "/apps/ouro-md/stable.json", "/assets/apple-touch-icon.png", "/assets/brand/ouro-hx-render-128.webp", "/assets/brand/ouro-hx-render-256.webp", "/assets/brand/ouro-render-128.webp", "/assets/brand/ouro-render-256.webp", "/assets/brand/ouro-render.webp", "/assets/brand/ouro.svg", "/assets/brand/shepherd-render-128.webp", "/assets/brand/shepherd-render-256.webp", "/assets/brand/shepherd-render.webp", "/assets/clips.js", "/assets/favicon-32x32.png", "/assets/fonts/cormorant-regular.woff2", "/assets/fonts/jetbrains-mono.woff2", "/assets/fonts/outfit.woff2", "/assets/media/ouro-hx-spoonjoy-xray-dark.webp", "/assets/media/ouro-hx-spoonjoy-xray-light.webp", "/assets/media/ouro-hx-spoonjoy-xray-og.png", "/assets/media/ouro-hx-spoonjoy-xray-provenance.json", "/assets/media/ouro-md-agent-edit-dark-poster.png", "/assets/media/ouro-md-agent-edit-dark.mp4", "/assets/media/ouro-md-agent-edit-dark.webm", "/assets/media/ouro-md-agent-edit-light-poster.png", "/assets/media/ouro-md-agent-edit-light.mp4", "/assets/media/ouro-md-agent-edit-light.webm", "/assets/media/ouro-md-typing-dark-poster.png", "/assets/media/ouro-md-typing-dark.mp4", "/assets/media/ouro-md-typing-dark.webm", "/assets/media/ouro-md-typing-light-poster.png", "/assets/media/ouro-md-typing-light.mp4", "/assets/media/ouro-md-typing-light.webm", "/assets/ouro-md-editing.png", "/assets/ouro-md-hero.mp4", "/assets/ouro-md-hero.png", "/assets/ouro-md-icon.png", "/assets/site-shell.js", "/assets/site-telemetry.js", "/styles.css", "/robots.txt", "/sitemap.xml"];
+  for (const path of before) assert.ok(forwards.has(path), `${path} has no forward`);
 });
 
 test("forwards the old homepage to the apps shelf on ouroboros.bot with a 301", async () => {
@@ -112,46 +110,13 @@ test("keeps the query string when it forwards", async () => {
 });
 
 test("sends any other path to the same path on ouroboros.bot with a 301, so a missing page is a real 404", async () => {
-  for (const path of ["/terms/", "/nope/", "/no-such-page", "/apps/ouro-md/nope", "/apps/ouro-md/old.json", "/assets/nope.png", "/assets/", "/ouro-md-install.sh.bak", "/assetsx/a.png", "/apps/ouro-mdx/", "/styles.css/x"]) {
+  for (const path of ["/terms/", "/nope/", "/no-such-page", "/apps/ouro-md/nope", "/apps/ouro-md/old.json", "/assets/nope.png", "/assets/", "/ouro-md-install.sh.bak", "/assetsx/a.png", "/apps/ouro-mdx/", "/styles.css/x", "/ouro-md/download/"]) {
     const response = await get(path);
     assert.equal(response.status, 301, path);
     assert.equal(response.headers.get("location"), `https://ouroboros.bot${path}`, path);
   }
   assert.equal((await get("/nope/?ref=x&y=1")).headers.get("location"), "https://ouroboros.bot/nope/?ref=x&y=1");
   assert.equal(calls.length, 0);
-});
-
-async function walk(dir) {
-  const out = [];
-  for (const entry of await readdir(new URL(`../${dir}/`, import.meta.url), { withFileTypes: true })) {
-    const path = `${dir}/${entry.name}`;
-    out.push(...(entry.isDirectory() ? await walk(path) : [`/${path}`]));
-  }
-  return out;
-}
-
-test("keeps every file the site publishes under /apps/ouro-md/ and /assets/, including /assets/brand/", async () => {
-  const published = [...(await walk("apps/ouro-md")), ...(await walk("assets"))];
-  assert.ok(published.includes("/assets/brand/ouro.svg"));
-  for (const path of published) {
-    const response = await get(path);
-    assert.equal(response.headers.get("x-ouro-apps-site"), "cloudflare-worker-proxy", path);
-  }
-});
-
-test("keeps every local file the Ouro MD page and styles.css load", async () => {
-  const page = await readFile(new URL("../apps/ouro-md/index.html", import.meta.url), "utf8");
-  const styles = await readFile(new URL("../styles.css", import.meta.url), "utf8");
-  const refs = new Set();
-  for (const [, attr] of page.matchAll(/(?:href|src|poster|srcset|content)="([^"]+)"/g)) {
-    for (const part of attr.split(",")) {
-      const ref = part.trim().split(/\s+/)[0].replace(/^https:\/\/ouro\.bot(?=\/)/, "");
-      if (ref.startsWith("/") && !ref.startsWith("//")) refs.add(ref.split(/[?#]/)[0]);
-    }
-  }
-  for (const [, ref] of styles.matchAll(/url\(["']?(\/[^"')]+)/g)) refs.add(ref);
-  assert.ok(refs.size > 10, "found the page's references");
-  for (const ref of refs) assert.ok(keptSet.has(ref), `${ref} is loaded by the Ouro MD page but not kept`);
 });
 
 // Every forward lands on a page that exists. Set OUROBOROS_DIST to a built
@@ -209,11 +174,11 @@ test("www.ouro.bot forwards each page where the apex does", async () => {
   assert.equal(calls.length, 0);
 });
 
-test("www.ouro.bot sends a kept file to ouro.bot, never serving a second copy", async () => {
-  for (const path of ["/apps/ouro-md/", "/ouro-md-install.sh", "/assets/ouro-md-icon.png"]) {
-    const response = await getWww(`${path}?v=1`);
-    assert.equal(response.status, 301, path);
-    assert.equal(response.headers.get("location"), `https://ouro.bot${path}?v=1`, path);
+test("www.ouro.bot forwards Ouro MD's paths where the apex does", async () => {
+  for (const path of ["/apps/ouro-md/?v=1", "/ouro-md-install.sh", "/assets/ouro-md-icon.png", "/apps/ouro-md/stable.json"]) {
+    const [www, bare] = [await getWww(path), await get(path)];
+    assert.equal(www.status, 301, path);
+    assert.equal(www.headers.get("location"), bare.headers.get("location"), path);
   }
   assert.equal(calls.length, 0);
 });
