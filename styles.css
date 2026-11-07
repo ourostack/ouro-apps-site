@@ -335,7 +335,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .media-caption .link { white-space: nowrap; }
 .shelf-name a { color: inherit; text-decoration: none; }
 @media (hover: hover) { .shelf-name a:hover { color: var(--color-scale); } }
-.feature code, .lead code { white-space: nowrap; }
+.feature code, .lead code, .mini-list code, .prose code { white-space: nowrap; }
 
 /* ---------------------------------------------------------------------------
    The storybook scene (2026-11-06): the page opens on Ouro MD's scene, served
@@ -358,11 +358,13 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 }
 .story-hero + .hero { padding-top: 1.5rem; }
 @media (min-width: 768px) { .story-hero + .hero { padding-top: 2.5rem; } }
-/* On a wide screen the scene is capped as ouroboros.bot caps its own, and the
-   words rise into its faded foot, so the headline, the intro and Download all
-   sit above the fold at 1440x900 and 1024x768 (taste r4: the 540px scene
-   pushed the headline to the bottom of the screen). */
-@media (min-width: 641px) { .story-hero img { max-height: min(46vh, 420px); } }
+/* On a wide screen the scene has ouroboros.bot/ouro-md/'s own size and focus:
+   capped at 55vh, but never showing less than 82% of the art's height, framed
+   on Ouro at the lectern (ouroboros.bot heroFrame('ouro-md'): y 60.7%). A
+   tighter cap cut Ouro's body away at 1440 and 1920 (taste review r8);
+   scripts/hero-crop.mjs fails if the crop passes 20% at 1024, 1440 or 1920.
+   The words rise into its faded foot. */
+@media (min-width: 641px) { .story-hero img { max-height: max(55vh, calc(0.82 * 0.375 * 100vw)); object-position: 50% 60.7%; } }
 @media (min-width: 1024px) {
   .story-hero + .hero { position: relative; margin-top: -4rem; padding-top: 0; }
   /* The words rise 4rem into the scene, so the fade finishes before they start:
@@ -376,10 +378,12 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
   .app-page .hero-copy { gap: 1rem; }
   .app-page .hero .actions { margin-top: 0.75rem; }
 }
-@media (prefers-reduced-motion: no-preference) {
-  .story-hero img { animation: story-drift 60s ease-in-out infinite alternate; transform-origin: 50% 60%; }
-  @keyframes story-drift { from { transform: scale(1); } to { transform: scale(1.04); } }
+/* ouroboros.bot's drift, wide screens only: on a phone the hero shows the whole
+   4:3 crop, and a zoom would trim the characters at its edges. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 641px) {
+  .story-hero img { animation: story-drift 60s ease-in-out infinite alternate; transform-origin: 58% 50%; }
 }
+@keyframes story-drift { from { transform: scale(1); } to { transform: scale(1.03) translateX(-0.6%); } }
 
 /* The meadow at the foot of the page (ouroboros.bot's StoryScene variant="meadow"):
    the open garden gate, fading in from the page. It takes the file's own aspect
