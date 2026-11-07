@@ -3,7 +3,8 @@
 // the sticky header jump up about 720px, taking the X and the theme toggle
 // with it). Serves dist/, scrolls a phone-sized page well down, opens the menu
 // and checks that the bar stays put and the X is visible and closes the menu,
-// then that Tab never leaves the open menu for the page behind it.
+// then that Tab never leaves the open menu for the page behind it, and that
+// all nine links fit, each 44px tall, on a 320x568 phone (taste review r14).
 //
 //   npm run build && node scripts/menu-scroll.mjs
 //
@@ -93,6 +94,30 @@ try {
     const refocused = await page.evaluate(() => document.activeElement === document.querySelector(".menu-toggle") && !document.querySelector("main").hasAttribute("inert"));
     if (!refocused) failures.push(`${width}px: closing did not return focus to the toggle and wake the page`);
     console.log(JSON.stringify({ width, before, open, closed, stops: [...new Set(stops)] }));
+    await context.close();
+  }
+  // All nine links fit without scrolling down to a 320x568 phone, each a
+  // 44px tap target (Ari's ruling, taste review r14: the last two hid below
+  // the fold with no cue). The panel's own scroll is only the fallback.
+  for (const [width, height] of [[320, 568], [375, 667], [390, 844]]) {
+    const context = await browser.newContext({ viewport: { width, height }, isMobile: true, hasTouch: true });
+    const page = await context.newPage();
+    await page.route(/^https:\/\//, (route) => route.abort());
+    await page.goto(`http://localhost:${PORT}/apps/ouro-md/`, { waitUntil: "load" });
+    await page.locator(".menu-toggle").click();
+    await page.waitForTimeout(300);
+    const m = await page.evaluate(() => {
+      const menu = document.getElementById("menu");
+      return { scroll: menu.scrollHeight - menu.clientHeight, vh: innerHeight, links: [...menu.querySelectorAll("a")].map((a) => { const r = a.getBoundingClientRect(); return { text: a.textContent.trim(), bottom: r.bottom, width: r.width, height: r.height }; }) };
+    });
+    const at = `${width}x${height}`;
+    if (m.links.length !== 9) failures.push(`${at}: ${m.links.length} menu links, not nine`);
+    if (m.scroll > 0) failures.push(`${at}: the menu scrolls by ${m.scroll}px`);
+    for (const l of m.links) {
+      if (l.bottom > m.vh + 0.5) failures.push(`${at}: "${l.text}" ends at ${Math.round(l.bottom)}, below the screen`);
+      if (l.height < 43.5 || l.width < 43.5) failures.push(`${at}: "${l.text}" is ${Math.round(l.width)}x${Math.round(l.height)}, under 44px`);
+    }
+    console.log(JSON.stringify({ at, lastBottom: Math.round(m.links.at(-1)?.bottom), scroll: m.scroll }));
     await context.close();
   }
 } finally {

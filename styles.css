@@ -143,6 +143,12 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
 @media (hover: hover) { .btn.primary:hover { background: var(--color-glow); border-color: var(--color-glow); color: var(--color-void); box-shadow: 0 0 30px color-mix(in srgb, var(--color-scale) 35%, transparent); } }
 .btn.ghost { background: transparent; }
 .btn.block { width: 100%; }
+/* Every button can be hit over at least 44x44, whatever its look (taste
+   review r14: the Copy button was 38px tall). The button keeps its size; an
+   invisible ::after, centred on it, reaches out to 44px where it is smaller.
+   scripts/hit-areas.mjs checks it, the same as ouroboros.bot. */
+.btn { position: relative; }
+.btn::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 2.75rem); height: max(100%, 2.75rem); transform: translate(-50%, -50%); }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.75rem; }
 
 .tag { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; padding: 0.4rem 0.65rem; border-radius: 999px; white-space: nowrap; color: var(--color-bone); background: color-mix(in srgb, var(--tag-tone) 14%, transparent); }
@@ -212,9 +218,15 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
   :root:not([data-theme="dark"]) .theme-icon-sun { display: none; }
   :root:not([data-theme="dark"]) .theme-icon-moon { display: block; }
 }
-.menu { position: fixed; inset: 4rem 0 0; z-index: 30; overscroll-behavior: contain; overflow-y: auto; display: none; flex-direction: column; align-items: center; gap: 1.75rem; padding: 3.5rem 1.5rem; background: var(--color-deep); text-align: center; }
+/* All nine links fit without scrolling down to a 320x568 phone (Ari's
+   ruling, taste review r14). Each link is a 44px tap target; the space left
+   in the panel goes to the padding and the gaps, which tighten on short
+   screens and open up to 3.5rem / 1.75rem on tall ones. The panel's own
+   scroll stays the fallback for anything shorter. Same rule as
+   ouroboros.bot's Nav.astro. */
+.menu { --menu-spare: calc(100dvh - 4rem - 9 * 2.75rem); --menu-pad: clamp(1.5rem, calc(var(--menu-spare) / 6), 3.5rem); position: fixed; inset: 4rem 0 0; z-index: 30; overscroll-behavior: contain; overflow-y: auto; display: none; flex-direction: column; align-items: center; gap: clamp(0.25rem, calc((var(--menu-spare) - 2 * var(--menu-pad)) / 9), 1.75rem); padding: var(--menu-pad) 1.5rem; background: var(--color-deep); text-align: center; }
 /* Rows as ouroboros.bot sets them: 30px words on a 36px line, 28px apart (taste review r7 ruling). */
-.menu a { font-size: 1.875rem; line-height: 2.25rem; }
+.menu a { font-size: 1.875rem; line-height: 2.25rem; display: inline-block; padding-block: 0.25rem; min-height: 2.75rem; }
 .menu.is-open { display: flex; }
 @media (min-width: 1024px) { .menu.is-open { display: none; } }
 
