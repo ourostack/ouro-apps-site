@@ -15,6 +15,7 @@
 // copies in step.
 import fs from 'node:fs';
 import path from 'node:path';
+import { glueArrows } from './glue-arrows.mjs';
 
 export const WHOLE_MAX = 16;
 const NOWRAP_MAX = 16;
@@ -219,7 +220,7 @@ export function wrapDir(dir) {
   let changed = 0;
   for (const file of htmlFiles(dir)) {
     const html = fs.readFileSync(file, 'utf8');
-    const next = wrapCode(html);
+    const next = glueArrows(wrapCode(html));
     if (next !== html) {
       fs.writeFileSync(file, next);
       changed++;
