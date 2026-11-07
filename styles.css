@@ -122,6 +122,10 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .eyebrow { font-family: var(--font-mono); color: var(--color-fang); text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.75rem; }
 .lead, .dek { color: var(--color-mist); font-size: 1.125rem; line-height: 1.7; max-width: 46rem; }
 @media (min-width: 768px) { .lead, .dek { font-size: 1.25rem; } }
+/* The hero lede is ouroboros.bot's product-hero lede (.product-lede): Cormorant,
+   20px on a phone and 24px from 768px, in bone (taste review r9). */
+.hero .lead { font-family: var(--font-display); color: var(--color-bone); font-size: 1.25rem; line-height: 1.375; }
+@media (min-width: 768px) { .hero .lead { font-size: 1.5rem; } }
 
 .link { color: var(--color-scale); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, var(--color-scale) 40%, transparent); transition: color 0.2s, text-decoration-color 0.2s; }
 @media (hover: hover) { .link:hover { color: var(--color-glow); text-decoration-color: currentColor; text-decoration-thickness: 2px; } }
@@ -307,6 +311,16 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 
 /* A one-line command wraps on a phone so the whole URL stays visible. */
 .install-line .codeblock { white-space: pre-wrap; overflow-wrap: anywhere; }
+/* URLs, paths and inline code break only where a reader expects (taste
+   reviews r8 and r9, the same rule as ouroboros.bot): scripts/text-wrap.mjs
+   splits every URL and path into pieces at build time, with a <wbr> after
+   each "/" and before a host or file name's ".". A short piece never breaks;
+   a long one moves to the next line whole, and breaks inside only when it is
+   wider than its whole column. Short inline code stays whole. */
+.code-whole { white-space: nowrap; overflow-wrap: normal; word-break: normal; }
+.code-long { overflow-wrap: normal; word-break: normal; }
+.tok { white-space: nowrap; }
+.tok-long { display: inline-block; max-width: 100%; white-space: normal; overflow-wrap: anywhere; word-break: normal; text-decoration: inherit; }
 @media (max-width: 639.98px) { .codeblock { white-space: pre-wrap; overflow-wrap: anywhere; } }
 
 /* Keep a command such as npx ouro.bot on one line inside prose. */
@@ -374,7 +388,6 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
     mask-image: linear-gradient(to bottom, #000 45%, transparent calc(100% - 4.25rem));
   }
   .app-page .hero .heading-lead { font-size: clamp(3.4rem, 4.6vw, 4.4rem); }
-  .app-page .hero .lead { font-size: 1.125rem; }
   .app-page .hero-copy { gap: 1rem; }
   .app-page .hero .actions { margin-top: 0.75rem; }
 }
@@ -395,6 +408,11 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .story-meadow img { height: auto; aspect-ratio: 1536 / 576; object-fit: cover; }
 @media (max-width: 640px) { .story-meadow img { aspect-ratio: 768 / 576; } }
 .story-meadow + .site-footer { margin-top: 0; border-top: 0; }
+/* The page flows into the meadow, as on ouroboros.bot (taste review r9: the
+   tinted install section ended hard, leaving a strip of page colour above the
+   meadow's fade). A tinted section that ends the page fades out over its
+   last 6rem instead. */
+main > .section.tint:last-child { background: linear-gradient(to bottom, color-mix(in srgb, var(--color-deep) 40%, transparent) calc(100% - 6rem), transparent); }
 
 /* A scene still on its way shows a wash of dawn, never a broken-image glyph or a hairline.
    In the dark theme the wash is dusk: the page's own night with a faint warm
