@@ -124,15 +124,15 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 @media (min-width: 768px) { .lead, .dek { font-size: 1.25rem; } }
 
 .link { color: var(--color-scale); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, var(--color-scale) 40%, transparent); transition: color 0.2s, text-decoration-color 0.2s; }
-.link:hover { color: var(--color-glow); text-decoration-color: currentColor; text-decoration-thickness: 2px; }
+@media (hover: hover) { .link:hover { color: var(--color-glow); text-decoration-color: currentColor; text-decoration-thickness: 2px; } }
 .text-link { color: var(--color-scale); text-decoration: underline; text-underline-offset: 4px; }
 
 /* ---- Buttons and tags (ouroboros.bot kit) -------------------------------- */
 
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border-radius: 0.75rem; padding: 0.75rem 1.25rem; font-weight: 500; text-decoration: none; white-space: nowrap; border: 1px solid var(--color-canopy); color: var(--color-bone); background: transparent; transition: background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.3s; }
-.btn:hover { border-color: var(--color-scale); color: var(--color-scale); }
+@media (hover: hover) { .btn:hover { border-color: var(--color-scale); color: var(--color-scale); } }
 .btn.primary { background: var(--color-scale); border-color: var(--color-scale); color: var(--color-void); }
-.btn.primary:hover { background: var(--color-glow); border-color: var(--color-glow); color: var(--color-void); box-shadow: 0 0 30px color-mix(in srgb, var(--color-scale) 35%, transparent); }
+@media (hover: hover) { .btn.primary:hover { background: var(--color-glow); border-color: var(--color-glow); color: var(--color-void); box-shadow: 0 0 30px color-mix(in srgb, var(--color-scale) 35%, transparent); } }
 .btn.ghost { background: transparent; }
 .btn.block { width: 100%; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.75rem; }
@@ -162,6 +162,10 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 /* While the phone menu is open the bar is solid too, so the bar and the panel read as one sheet (taste review r6). */
 .site-header:has(.menu-toggle[aria-expanded="true"])::before { background: var(--color-deep); }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 4rem; }
+/* ouroboros.bot's bar sits 16px in on a phone (Tailwind px-4), so the mark and
+   the buttons line up across both sites (taste review r7 ruling). */
+@media (max-width: 639.98px) { .site-header .wrap { padding-inline: 1rem; } }
+.brand span { line-height: 1.75rem; }
 .brand { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--color-bone); text-decoration: none; font-family: var(--font-display); font-size: 1.25rem; }
 @media (min-width: 1280px) { .brand { font-size: 1.5rem; } }
 .brand img { width: 2rem; height: 2rem; }
@@ -175,7 +179,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .nav a, .menu a { font-family: var(--font-display); letter-spacing: 0.025em; color: var(--color-mist); text-decoration: none; transition: color 0.2s; }
 .nav a { font-size: 1rem; }
 @media (min-width: 1280px) { .nav a { font-size: 1.125rem; } }
-.nav a:hover, .menu a:hover { color: var(--color-scale); }
+@media (hover: hover) { .nav a:hover, .menu a:hover { color: var(--color-scale); } }
 /* The current page reads as ouroboros.bot marks it, in both themes: full-strength
    ink with a green bar under it (taste r5: a colour shift alone barely showed). */
 .nav a[aria-current="page"], .menu a[aria-current="page"] { color: var(--color-bone); text-decoration-line: underline; text-decoration-color: var(--color-scale); text-decoration-thickness: 2px; text-underline-offset: 0.5em; }
@@ -183,7 +187,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .header-tools { display: flex; align-items: center; gap: 0.5rem; margin-right: -0.5rem; }
 @media (min-width: 1024px) { .header-tools { margin-right: 0; } }
 .icon-btn { padding: 0.5rem; background: none; border: 0; color: var(--color-mist); cursor: pointer; transition: color 0.2s; }
-.icon-btn:hover { color: var(--color-scale); }
+@media (hover: hover) { .icon-btn:hover { color: var(--color-scale); } }
 .icon-btn svg { width: 1.25rem; height: 1.25rem; }
 .menu-toggle svg { width: 1.5rem; height: 1.5rem; }
 .menu-toggle .menu-icon-close, .menu-toggle[aria-expanded="true"] .menu-icon-open { display: none; }
@@ -198,7 +202,8 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
   :root:not([data-theme="dark"]) .theme-icon-moon { display: block; }
 }
 .menu { position: fixed; inset: 4rem 0 0; z-index: 30; overscroll-behavior: contain; overflow-y: auto; display: none; flex-direction: column; align-items: center; gap: 1.75rem; padding: 3.5rem 1.5rem; background: var(--color-deep); text-align: center; }
-.menu a { font-size: 1.875rem; }
+/* Rows as ouroboros.bot sets them: 30px words on a 36px line, 28px apart (taste review r7 ruling). */
+.menu a { font-size: 1.875rem; line-height: 2.25rem; }
 .menu.is-open { display: flex; }
 @media (min-width: 1024px) { .menu.is-open { display: none; } }
 
@@ -291,7 +296,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .footer-line span { display: inline-block; }
 .footer-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0.35rem 0.6rem; margin-top: 1.5rem; font-size: 0.875rem; color: var(--color-mist); }
 .footer-row a { text-decoration: underline; text-decoration-color: var(--color-canopy); text-underline-offset: 4px; transition: color 0.2s; }
-.footer-row a:hover { color: var(--color-bone); }
+@media (hover: hover) { .footer-row a:hover { color: var(--color-bone); } }
 .footer-sep { color: var(--color-shadow); }
 /* Side by side only where both fit on one row; at 1024 the line was squeezed to a word a line (taste r3). */
 @media (min-width: 1280px) {
@@ -320,7 +325,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
   :root:not([data-theme="dark"]) .theme-dark-only { display: none; }
 }
 .clip-toggle { position: absolute; right: 0.6rem; bottom: 0.6rem; padding: 0.3rem 0.75rem; border-radius: 999px; font: 500 0.8125rem var(--font-body); color: var(--color-bone); background: color-mix(in srgb, var(--color-void) 85%, transparent); border: 1px solid color-mix(in srgb, var(--color-canopy) 80%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); cursor: pointer; }
-.clip-toggle:hover { color: var(--color-scale); }
+@media (hover: hover) { .clip-toggle:hover { color: var(--color-scale); } }
 .clip-toggle[hidden] { display: none; }
 .media-caption { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.6rem; }
 .tag-plain { --tag-tone: var(--color-mist); }
@@ -329,7 +334,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .window > img { width: 100%; height: auto; }
 .media-caption .link { white-space: nowrap; }
 .shelf-name a { color: inherit; text-decoration: none; }
-.shelf-name a:hover { color: var(--color-scale); }
+@media (hover: hover) { .shelf-name a:hover { color: var(--color-scale); } }
 .feature code, .lead code { white-space: nowrap; }
 
 /* ---------------------------------------------------------------------------
@@ -377,10 +382,14 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 }
 
 /* The meadow at the foot of the page (ouroboros.bot's StoryScene variant="meadow"):
-   a low band of the open garden gate, fading in from the page. */
-.story-meadow { margin-top: 3rem; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 30%, #000 80%, transparent 100%); }
+   the open garden gate, fading in from the page. It takes the file's own aspect
+   (the wide art, or the 4:3 phone crop below 640px), so nothing is cropped, and
+   the fades stay clear of Ouro, whose head starts about 27% down the art
+   (taste review r7: a fixed-height band and a 30% fade cut the top of his head). */
+.story-meadow { margin-top: 3rem; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 91%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 91%, transparent 100%); }
 .story-meadow picture, .story-meadow img { display: block; width: 100%; }
-.story-meadow img { height: clamp(11rem, 26vw, 24rem); object-fit: cover; object-position: 50% 72%; }
+.story-meadow img { height: auto; aspect-ratio: 1536 / 576; object-fit: cover; }
+@media (max-width: 640px) { .story-meadow img { aspect-ratio: 768 / 576; } }
 .story-meadow + .site-footer { margin-top: 0; border-top: 0; }
 
 /* A scene still on its way shows a wash of dawn, never a broken-image glyph or a hairline.
