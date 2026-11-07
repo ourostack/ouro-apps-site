@@ -195,7 +195,7 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
   :root:not([data-theme="dark"]) .theme-icon-sun { display: none; }
   :root:not([data-theme="dark"]) .theme-icon-moon { display: block; }
 }
-.menu { position: fixed; inset: 4rem 0 0; z-index: 30; overscroll-behavior: contain; overflow-y: auto; display: none; flex-direction: column; align-items: center; gap: 1.75rem; padding: 3.5rem 1.5rem; background: color-mix(in srgb, var(--color-deep) 95%, transparent); -webkit-backdrop-filter: blur(40px); backdrop-filter: blur(40px); text-align: center; }
+.menu { position: fixed; inset: 4rem 0 0; z-index: 30; overscroll-behavior: contain; overflow-y: auto; display: none; flex-direction: column; align-items: center; gap: 1.75rem; padding: 3.5rem 1.5rem; background: var(--color-deep); text-align: center; }
 .menu a { font-size: 1.875rem; }
 .menu.is-open { display: flex; }
 @media (min-width: 1024px) { .menu.is-open { display: none; } }
