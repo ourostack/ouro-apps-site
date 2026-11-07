@@ -88,7 +88,13 @@ for (const pagePath of pages) {
         throw new Error(`${pagePath}: the ${scene.getAttribute("data-brand-scene")} scene must carry its --paint and --paint-phone`);
       }
     }
-    if (!/addEventListener\('error'[^\n]*\.story-scene'\)\) t\.setAttribute\('data-failed'/.test(html)) throw new Error(`${pagePath} must mark failed scene images data-failed`);
+    // A failed scene image steps down a size, then to the 960 WebP, and steps
+    // aside for the paint only when every size has failed (taste review r12;
+    // scripts/image-fallback.mjs proves it in a browser).
+    if (!/addEventListener\('error', function \(e\) \{\s+var img = e\.target[\s\S]{0,400}closest\('\.story-scene'\)/.test(html)
+      || !/c\.f === 'webp' && c\.w === 960[\s\S]{0,300}if \(!next\) \{ img\.setAttribute\('data-failed', ''\); return; \}/.test(html)) {
+      throw new Error(`${pagePath} must step a failed scene image down a size before marking it data-failed`);
+    }
     if (!html.includes("/assets/ouro-md-editing.png")) throw new Error(`${pagePath} must show the real Ouro MD editing shot`);
   }
 }
