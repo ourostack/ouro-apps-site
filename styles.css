@@ -170,9 +170,9 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
 /* While the phone menu is open the bar is solid too, so the bar and the panel read as one sheet (taste review r6). */
 .site-header:has(.menu-toggle[aria-expanded="true"])::before { background: var(--color-deep); }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 4rem; }
-/* ouroboros.bot's bar sits 16px in on a phone (Tailwind px-4), so the mark and
-   the buttons line up across both sites (taste review r7 ruling). */
-@media (max-width: 639.98px) { .site-header .wrap { padding-inline: 1rem; } }
+/* The bar keeps the page's gutter (24px on a phone), as ouroboros.bot's does,
+   so the mark and the buttons line up across both sites (taste review r7
+   ruling; r13 moved both bars from 16px onto the 24px gutter). */
 .brand span { line-height: 1.75rem; }
 .brand { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--color-bone); text-decoration: none; font-family: var(--font-display); font-size: 1.25rem; }
 @media (min-width: 1280px) { .brand { font-size: 1.5rem; } }
@@ -192,12 +192,15 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
    ink with a green bar under it (taste r5: a colour shift alone barely showed). */
 .nav a[aria-current="page"], .menu a[aria-current="page"] { color: var(--color-bone); text-decoration-line: underline; text-decoration-color: var(--color-scale); text-decoration-thickness: 2px; text-underline-offset: 0.5em; }
 .nav .gh svg { width: 1.25rem; height: 1.25rem; }
-.header-tools { display: flex; align-items: center; gap: 0.5rem; margin-right: -0.5rem; }
+.header-tools { display: flex; align-items: center; gap: 0.5rem; margin-right: -0.625rem; }
 @media (min-width: 1024px) { .header-tools { margin-right: 0; } }
 .icon-btn { padding: 0.5rem; background: none; border: 0; color: var(--color-mist); cursor: pointer; transition: color 0.2s; }
 @media (hover: hover) { .icon-btn:hover { color: var(--color-scale); } }
 .icon-btn svg { width: 1.25rem; height: 1.25rem; }
 .menu-toggle svg { width: 1.5rem; height: 1.5rem; }
+/* Below the desktop nav each button is a 44px tap target, and the menu icon's
+   right edge sits on the gutter: its padding hangs into it (taste review r13). */
+@media (max-width: 1023.98px) { .theme-toggle { padding: 0.75rem; } .menu-toggle { padding: 0.625rem; } }
 .menu-toggle .menu-icon-close, .menu-toggle[aria-expanded="true"] .menu-icon-open { display: none; }
 .menu-toggle[aria-expanded="true"] .menu-icon-close { display: block; }
 @media (min-width: 1024px) { .menu-toggle { display: none; } }
@@ -444,3 +447,31 @@ main > .section.tint:last-child { background: linear-gradient(to bottom, color-m
 @media (max-width: 640px) { .story-scene { background-image: var(--paint-phone, none); background-size: 100% 100%; } }
 .story-scene img { border: 0; color: transparent; }
 .story-scene img:not([src]), .story-scene img[src=""], .story-scene img[data-failed] { visibility: hidden; }
+
+/* The trail of light on a change of section, as on ouroboros.bot (taste review
+   r13, 2026-11-06: no section change may show as a seam). It replaces the
+   hairline on every section in main; the tinted ground may step only on the
+   trail's own row. Drawn in CSS, decoration only, inside the section's own
+   top padding, so it never moves layout. */
+:root {
+  --trail-path: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='36' viewBox='0 0 1200 36'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23F4B63F'/%3E%3Cstop offset='.5' stop-color='%23FFE7A3'/%3E%3Cstop offset='1' stop-color='%23F4B63F'/%3E%3C/linearGradient%3E%3Cfilter id='b' x='-5%25' y='-100%25' width='110%25' height='300%25'%3E%3CfeGaussianBlur stdDeviation='3.2'/%3E%3C/filter%3E%3C/defs%3E%3Cpath d='M0 18 C150 6 250 30 400 18 S650 6 800 18 S1050 30 1200 18' fill='none' stroke='%23F4B63F' stroke-width='7' stroke-linecap='round' opacity='.55' filter='url(%23b)'/%3E%3Cpath d='M0 18 C150 6 250 30 400 18 S650 6 800 18 S1050 30 1200 18' fill='none' stroke='url(%23g)' stroke-width='2' stroke-linecap='round'/%3E%3Cg fill='%23FFF6D6'%3E%3Ccircle cx='96' cy='8' r='1.6'/%3E%3Ccircle cx='312' cy='29' r='1.2'/%3E%3Ccircle cx='520' cy='7' r='1.4'/%3E%3Ccircle cx='705' cy='27' r='1.8'/%3E%3Ccircle cx='930' cy='9' r='1.3'/%3E%3Ccircle cx='1110' cy='28' r='1.5'/%3E%3C/g%3E%3C/svg%3E");
+}
+main > .section { position: relative; border-top-color: transparent; }
+main > .section::before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: 0;
+  right: 0;
+  height: 36px;
+  pointer-events: none;
+  background: var(--trail-path) center / 1200px 36px repeat-x;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  opacity: 0.9;
+}
+.home-page .hero + .section::before { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  main > .section::before { animation: trail-breathe 7s ease-in-out infinite alternate; }
+}
+@keyframes trail-breathe { from { opacity: 0.6; } to { opacity: 1; } }
