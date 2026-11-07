@@ -84,3 +84,11 @@ test("while it is open, everything behind the menu is inert; closing wakes it an
   for (const el of behind) assert.ok(!el.hasAttribute("inert"), `${el.className || el.tagName} wakes`);
   assert.equal(document.activeElement, toggle);
 });
+
+// Taste review r6: page text read through the bottom of the open menu at 390,
+// light theme most of all. The panel is a solid sheet, so nothing shows through.
+test("the open phone menu is fully opaque", () => {
+  const rule = ruleFor(".menu");
+  assert.match(rule, /background: var\(--color-deep\);/);
+  assert.doesNotMatch(rule, /backdrop-filter|opacity|transparent/);
+});

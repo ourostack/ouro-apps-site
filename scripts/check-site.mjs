@@ -122,8 +122,13 @@ for (const pagePath of pages) {
   if (JSON.stringify(navOnly) !== JSON.stringify(sharedNav)) {
     throw new Error(`${pagePath}: the header must carry the shared ouroboros.bot nav in order, got ${navOnly.join(", ")}`);
   }
-  if (nav.querySelector('a[aria-current="page"]')?.getAttribute("href") !== "https://ouroboros.bot/apps/") {
-    throw new Error(`${pagePath}: Apps must be the current nav item on ouro.bot`);
+  // The same product page marks the same item on both sites (Ari, round 7):
+  // ouroboros.bot/ouro-md/ marks "Ouro MD", so ouro.bot/apps/ouro-md/ does too.
+  for (const scope of ["header .nav", "#menu"]) {
+    const current = [...doc.querySelectorAll(`${scope} a[aria-current="page"]`)].map((a) => a.getAttribute("href"));
+    if (JSON.stringify(current) !== JSON.stringify(["https://ouroboros.bot/ouro-md/"])) {
+      throw new Error(`${pagePath}: Ouro MD must be the only current item in ${scope}, got ${current.join(", ") || "none"}`);
+    }
   }
   if (!doc.querySelector('header .brand img[src^="/assets/brand/ouro-render"]')) {
     throw new Error(`${pagePath}: the header must show the Ouro render mark`);
