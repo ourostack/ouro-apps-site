@@ -10,6 +10,10 @@ export const home = "https://ouroboros.bot";
 // The one host that serves the kept files. www.ouro.bot forwards like the apex,
 // and sends a kept file here instead of serving a second copy.
 export const apex = "https://ouro.bot";
+// Ouro UI's site moved from ui.ouro.bot to ui.ouroboros.bot (Ari, 2026-11-07); every path
+// on the old host forwards to the same path there. ourostack/ouro-ui site/host serves it.
+export const uiOld = "ui.ouro.bot";
+export const uiHome = "https://ui.ouroboros.bot";
 
 // Old ouro.bot pages and their new homes. These are 301s: the move is permanent,
 // and no kept path is ever redirected, so a cached 301 can't hide Ouro MD's files.

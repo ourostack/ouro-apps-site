@@ -100,7 +100,7 @@ npm run deploy   # build + wrangler pages deploy dist
 
 ### The apex Worker (separate — only when it changes)
 
-`worker.js`, `routes.js` and `wrangler.jsonc` define the `ouro-apex` Worker that fronts `ouro.bot/*` and `www.ouro.bot/*` (not `ui.ouro.bot` or any other host). `www.ouro.bot` is a proxied CNAME to `ouro.bot`; it forwards each page where the apex does, and sends a kept file to the same path on `ouro.bot` with a 301. `routes.js` is the routing table:
+`worker.js`, `routes.js` and `wrangler.jsonc` define the `ouro-apex` Worker that fronts `ouro.bot/*`, `www.ouro.bot/*` and `ui.ouro.bot/*` (no other host). `www.ouro.bot` is a proxied CNAME to `ouro.bot`; it forwards each page where the apex does, and sends a kept file to the same path on `ouro.bot` with a 301. `ui.ouro.bot` was Ouro UI's site, which now lives at `ui.ouroboros.bot` (served by `site/host` in ourostack/ouro-ui); every path on it 301s to the same path, query included, there. `routes.js` is the routing table:
 
 - **`forwards`:** each old ouro.bot page and its new home on ouroboros.bot, with a 301. `/` and `/apps/` go to `/apps/`, `/apps/ouro-hx/` to `/ouro-hx/`, Shepherd and the retired Workbench to `/apps/#shepherd`. A test fails if any destination is missing from the live site (or from a built ouroboros-website `dist/`, with `OUROBOROS_DIST=<path>`); ouroboros-website's `tests/ouro-bot-forwards.test.mjs` checks the same list against its build.
 - **`elsewhere`:** Ouro MD's App Store support and privacy URLs, with a 302: `/support/` to its GitHub issues and `/privacy/` to its `PRIVACY.md`.

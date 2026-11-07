@@ -1,7 +1,7 @@
-// ouro-apex: fronts ouro.bot/* and www.ouro.bot/*. routes.js says where each path goes;
+// ouro-apex: fronts ouro.bot/*, www.ouro.bot/* and ui.ouro.bot/*. routes.js says where each path goes;
 // tests/worker.test.mjs is the contract.
 
-import { origin, home, apex, forwards, elsewhere, kept } from "./routes.js";
+import { origin, home, apex, uiOld, uiHome, forwards, elsewhere, kept } from "./routes.js";
 
 function redirect(location, status) {
   return new Response(null, {
@@ -13,6 +13,10 @@ function redirect(location, status) {
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+
+    if (url.hostname === uiOld) {
+      return redirect(`${uiHome}${url.pathname}${url.search}`, 301);
+    }
 
     if (forwards.has(url.pathname)) {
       const target = new URL(forwards.get(url.pathname));

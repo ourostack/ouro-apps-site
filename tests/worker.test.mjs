@@ -217,3 +217,19 @@ test("www.ouro.bot sends a kept file to ouro.bot, never serving a second copy", 
   }
   assert.equal(calls.length, 0);
 });
+
+test("ui.ouro.bot forwards every path, with its query, to the same place on ui.ouroboros.bot", async () => {
+  for (const path of ["/", "/docs/dialog/", "/storybook/?path=/story/x", "/r/registry.json", "/llms.txt", "/apps/ouro-md/stable.json", "/nope/"]) {
+    const response = await worker.fetch(new Request(`https://ui.ouro.bot${path}`));
+    assert.equal(response.status, 301, path);
+    assert.equal(response.headers.get("location"), `https://ui.ouroboros.bot${path}`, path);
+  }
+  assert.equal(calls.length, 0);
+});
+
+test("wrangler routes cover the apex, www and ui hosts", async () => {
+  const config = await readFile(new URL("../wrangler.jsonc", import.meta.url), "utf8");
+  for (const pattern of ["ouro.bot/*", "www.ouro.bot/*", "ui.ouro.bot/*"]) {
+    assert.ok(config.includes(`"pattern": "${pattern}"`), pattern);
+  }
+});
