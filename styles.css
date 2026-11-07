@@ -120,6 +120,13 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
 .heading-lead { line-height: 1.02; letter-spacing: -0.015em; font-size: 2.6rem; text-wrap: balance; }
 @media (min-width: 640px) { .heading-lead { font-size: 3.4rem; } }
 @media (min-width: 1024px) { .heading-lead { font-size: 4.4rem; } }
+/* On a phone no h1 line holds one word unless it is a whole clause (Ari's
+   ruling on taste review r17, 2026-11-07): an h1 breaks only between its
+   phrases (.t-ph never breaks inside), and under 360px it scales with the
+   screen so each phrase fits. The same rules as ouroboros.bot's global.css;
+   scripts/h1-lines.mjs checks them at 320, 390 and 430. */
+.t-ph { white-space: nowrap; }
+@media (max-width: 359.98px) { h1, h1.heading-lead { font-size: min(2.5rem, 10.5vw); } }
 .heading-section { line-height: 1; letter-spacing: -0.01em; font-size: 2rem; text-wrap: balance; }
 @media (min-width: 640px) { .heading-section { font-size: 2.5rem; } }
 @media (min-width: 768px) { .heading-section { font-size: 3.25rem; } }
@@ -155,6 +162,17 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
 .btn, .hit { position: relative; }
 .btn::after, .hit::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 2.75rem); height: max(100%, 2.75rem); transform: translate(-50%, -50%); }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin-top: 1.75rem; }
+/* A button's label never wraps (.btn is nowrap). On a phone two buttons share
+   the row while they fit and stack, each full width, when they don't (Ari's
+   ruling on taste review r17; ouroboros.bot's .btn-row). */
+@media (max-width: 639.98px) { .actions > .btn { flex: 1 1 auto; } }
+/* A control keeps one box when its label swaps (taste review r17): a Copy
+   label is as wide as the longer of its own words and "Copied", held by an
+   invisible, zero-height copy of each. The same rule as ouroboros.bot's
+   global.css; scripts/label-swap.mjs swaps every label and measures. */
+[data-copy-label] { display: inline-flex; flex-direction: column; align-items: center; }
+[data-copy-label]::after { content: "Copied"; height: 0; overflow: hidden; visibility: hidden; white-space: nowrap; }
+[data-copy-label]::before { content: attr(data-copy-label); height: 0; overflow: hidden; visibility: hidden; white-space: nowrap; }
 
 .tag { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1; padding: 0.4rem 0.65rem; border-radius: 999px; white-space: nowrap; color: var(--color-bone); background: color-mix(in srgb, var(--tag-tone) 14%, transparent); }
 .tag::before { content: ""; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--tag-tone); }
@@ -327,7 +345,12 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
 .c-cmd { color: var(--color-scale); }
 /* Every link that is not inline in a sentence stands a finger tall (44px;
    taste review r15, the same rule as ouroboros.bot's product links). */
-.app-links a, .actions .link { display: inline-flex; align-items: center; min-height: 2.75rem; }
+/* An inline-block, never a flex box: a flex box makes each run of its text a
+   flex item and drops the spaces between them, so "Ouro MD on
+   ouroboros.bot →", whose host sits in a <span>, read "Ouro MD
+   onouroboros.bot→" (taste review r17). The padding centres one line in the
+   44px. scripts/link-spaces.mjs checks every link. */
+.app-links a, .actions .link { display: inline-block; box-sizing: border-box; min-height: 2.75rem; padding-block: max(0px, calc((2.75rem - 1lh) / 2)); }
 .app-links { display: flex; flex-wrap: wrap; gap: 0 1.5rem; margin-top: 1.5rem; font-size: 0.9375rem; color: var(--color-mist); }
 
 /* ---- Footer: the same kit as ouroboros.bot and mendelow.me ---------------- */
@@ -355,7 +378,7 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
 @media (max-width: 639.98px) {
   .footer-sep { display: none; }
   .footer-row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0 1rem; justify-items: center; align-items: center; }
-  .footer-row a { grid-column: span 3; display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; min-width: 2.75rem; }
+  .footer-row a { grid-column: span 3; display: inline-block; box-sizing: border-box; text-align: center; min-height: 2.75rem; min-width: 2.75rem; padding-block: max(0px, calc((2.75rem - 1lh) / 2)); }
   .footer-row:has(> a:last-of-type:nth-of-type(odd)) > a:nth-last-of-type(-n + 3) { grid-column: span 2; }
   .footer-row > span:first-child { grid-column: 1 / -1; order: 1; margin-top: 0.75rem; }
 }
