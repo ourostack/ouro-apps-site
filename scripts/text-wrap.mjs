@@ -1,7 +1,10 @@
 // URLs, paths and inline code break only where a reader expects them to.
 // The same rule as ouroboros.bot (ourostack/ouroboros-website,
 // src/lib/code-wrap.mjs; taste reviews r9 and r10, 2026-11-06): a URL's
-// scheme and domain never break ("https://github.com/" is one piece); after
+// scheme and domain never break ("https://github.com/" is one piece), except
+// that a scheme and host too long to fit a line together break right after
+// the "//", keeping the host whole (taste review r11); a hyphenated word in a
+// heading never breaks at its hyphen (r11); after
 // it a URL or path breaks only right after a "/" or right before a file
 // name's ".", using
 // <wbr> between pieces; a short piece never breaks; a long one moves to the
@@ -41,8 +44,9 @@ const TLD = /^(?:com|org|net|io|dev|ai|app|bot|me|co|gg|xyz|so|to|us|uk|ca|de|fr
  * src/lib/code-wrap.mjs is the other copy.
  */
 export function hostEnd(word) {
-  // The word is HTML-escaped: a leading quote arrives as "&quot;".
-  const m = word.match(/^(?:[("'[]|&quot;|&#39;|&#x27;|&lt;)*((?:[a-z][a-z0-9+.-]*:\/\/)?)((?:[A-Za-z0-9-]+\.)+([A-Za-z]{2,}))(?::\d+)?/);
+  // The word is HTML-escaped: a leading quote arrives as "&quot;". An
+  // attribute name may come first, as in quoted markup: href="https://...".
+  const m = word.match(/^(?:[A-Za-z-]+=)?(?:[("'[]|&quot;|&#39;|&#x27;|&lt;)*((?:[a-z][a-z0-9+.-]*:\/\/)?)((?:[A-Za-z0-9-]+\.)+([A-Za-z]{2,}))(?::\d+)?/);
   if (!m) return 0;
   const [all, scheme, , tld] = m;
   const next = word[all.length];
@@ -53,6 +57,12 @@ export function hostEnd(word) {
   if (!TLD.test(tld) || (next !== '/' && FILE_EXT.test(tld))) return 0;
   if (next !== undefined && !/[/?#:)"'\].,;!]/.test(next) && !word.startsWith('&', all.length)) return 0;
   return all.length;
+}
+
+/** Where a word's scheme ends, just after its "//" ("https://" in "https://x.io/a"); 0 when it has none. */
+export function schemeEnd(word) {
+  const m = word.match(/^(?:[A-Za-z-]+=)?(?:[("'[]|&quot;|&#39;|&#x27;|&lt;)*[a-z][a-z0-9+.-]*:\/\//);
+  return m ? m[0].length : 0;
 }
 
 /** The inner HTML for one token's text (already HTML-escaped). */
@@ -78,7 +88,18 @@ export function wrapToken(raw) {
         else pieces.splice(i, 2, pieces[i] + pieces[i + 1]);
       }
       return pieces
-        .map((piece) => `<span class="${entityLength(piece) > NOWRAP_MAX ? 'tok tok-long' : 'tok'}">${piece}</span>`)
+        .map((piece, i) => {
+          if (entityLength(piece) <= NOWRAP_MAX) return `<span class="tok">${piece}</span>`;
+          // A scheme and host too long to promise a line together (taste
+          // review r11: "https://hermes-agent.nousresearch.com/" split inside
+          // the host at 320) offer one break, right after the "//", and keep
+          // the host itself whole. The piece is an inline-block, so it moves
+          // to the next line whole whenever the scheme and host fit there
+          // together; it breaks after the "//" only when they do not.
+          const scheme = i === 0 && head ? schemeEnd(piece) : 0;
+          if (scheme) return `<span class="tok tok-long tok-url">${piece.slice(0, scheme)}<wbr><span class="tok-host">${piece.slice(scheme)}</span></span>`;
+          return `<span class="tok tok-long">${piece}</span>`;
+        })
         .join('<wbr>');
     })
     .join('');
@@ -89,7 +110,15 @@ const addClass = (attrs, cls) =>
 
 // Elements whose text is never touched, and those already marked.
 const RAW = /^(?:script|style|textarea|title|svg|template|noscript|head|math)$/i;
-const DONE = /\b(?:code-whole|code-long|tok)\b/;
+const DONE = /\b(?:code-whole|code-long|tok|nobr)\b/;
+const HEADING = /^h[1-6]$/i;
+// A hyphenated word in a heading ("to-do", "follow-up"). A heading never
+// breaks at its hyphen (taste review r11: the /lab/how-desk-started/ h1 broke
+// as "to-" / "do" at 320); the word is held whole in a .nobr span, which
+// keeps the font's own hyphen. (A real non-breaking hyphen, U+2011, is not in
+// the self-hosted Cormorant, Outfit or JetBrains Mono, so it would render in
+// a fallback face.)
+const HYPHENATED = /[\p{L}\p{N}][-\u2010][\p{L}\p{N}]/u;
 const TAG = /(<!--[\s\S]*?-->|<(?:[^>"']|"[^"]*"|'[^']*')*>)/;
 const VOID = /^(?:area|base|br|col|embed|hr|img|input|link|meta|source|track|wbr)$/i;
 
@@ -99,12 +128,14 @@ function wrapText(html) {
   const held = [];
   const parts = html.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, (block) => `\u0000RAW${held.push(block) - 1}\u0000`).split(TAG);
   const skip = []; // [{ name, depth }]
+  let heading = 0;
   for (let i = 0; i < parts.length; i++) {
     const part = parts[i];
     if (i % 2 === 1) {
       const m = part.match(/^<(\/?)([a-zA-Z][\w-]*)/);
       if (!m) continue;
       const [, close, name] = m;
+      if (HEADING.test(name)) heading = Math.max(0, heading + (close ? -1 : 1));
       const top = skip[skip.length - 1];
       if (close) {
         if (top && top.name === name.toLowerCase()) top.depth ? top.depth-- : skip.pop();
@@ -115,7 +146,9 @@ function wrapText(html) {
       continue;
     }
     if (skip.length || !part.trim()) continue;
-    parts[i] = part.replace(/[^\s<>]+/g, (word) => (isPathy(word) ? wrapToken(word) : word));
+    parts[i] = part.replace(/[^\s<>]+/g, (word) =>
+      isPathy(word) ? wrapToken(word) : heading && HYPHENATED.test(word) ? `<span class="nobr">${word}</span>` : word,
+    );
   }
   return parts.join('').replace(/\u0000RAW(\d+)\u0000/g, (_, i) => held[Number(i)]);
 }

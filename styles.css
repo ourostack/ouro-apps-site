@@ -285,6 +285,15 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .install .wrap { display: grid; gap: 2.5rem; }
 @media (min-width: 1024px) { .install .wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--split-gap); align-items: center; } }
 .install .lead { margin-top: 1rem; }
+/* The install block, the same as ouroboros.bot/ouro-md/'s (taste review r11:
+   ouro.bot had no Copy button and a different padding, background and
+   corner): .agent-text and the small ghost button, as there. */
+.install-block { display: grid; gap: 0.5rem; min-width: 0; }
+.agent-text { font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; color: var(--color-bone); background: var(--color-undergrowth); border-radius: 0.75rem; padding: 1.1rem 1.25rem; margin: 0; }
+.install-copy { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.copy-btn { padding-block: 0.5rem; font-size: 0.875rem; line-height: 1.25rem; }
+.install-note { font-size: 0.875rem; line-height: 1.25rem; color: var(--color-mist); }
+.install-note code { font-family: var(--font-mono); }
 .codeblock { margin: 0; padding: 1.25rem 1.5rem; border-radius: 0.9rem; background: var(--color-deep); border: 1px solid color-mix(in srgb, var(--color-canopy) 60%, transparent); color: var(--color-bone); font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.7; overflow-x: auto; white-space: pre; }
 .c-com { color: var(--color-mist); }
 .c-cmd { color: var(--color-scale); }
@@ -322,6 +331,10 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 .code-long { overflow-wrap: normal; word-break: normal; }
 .tok { white-space: nowrap; }
 .tok-long { display: inline-block; max-width: 100%; white-space: normal; overflow-wrap: anywhere; word-break: normal; text-decoration: inherit; }
+/* A long scheme and host breaks, if at all, only right after its "//"; the host stays whole (taste review r11). */
+.tok-host { white-space: nowrap; }
+/* A hyphenated word in a heading never breaks at its hyphen (taste review r11). */
+.nobr { white-space: nowrap; }
 @media (max-width: 639.98px) { .codeblock { white-space: pre-wrap; overflow-wrap: anywhere; } }
 
 /* Keep a command such as npx ouro.bot on one line inside prose. */
@@ -362,9 +375,11 @@ code { font-family: var(--font-mono); font-size: 0.85em; }
 /* The fade lives on the wrapper, so the painted dawn behind a scene still on its
    way fades with it. It starts below Ouro's lowest point, so no part of him
    dissolves (taste review r10): ouroboros.bot heroFrame('ouro-md') sets it at
-   88%, and scripts/hero-crop.mjs fails if his foot keeps less than 80%. */
+   89.3%, and scripts/hero-crop.mjs fails if his foot keeps less than 90%
+   (raised from 80% in r11, when the picnic robots' shoes on ouroboros.bot
+   still read as softened). */
 .story-hero {
-  --hero-fade: 88%;
+  --hero-fade: 89.3%;
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 var(--hero-fade), transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0%, #000 var(--hero-fade), transparent 100%);
 }
