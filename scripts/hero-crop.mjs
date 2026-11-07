@@ -3,6 +3,9 @@
 // 1440 and 1920). Serves dist/, measures each page's hero box at 1024, 1440
 // and 1920 and fails if it shows less than 80% of the art's own height at that
 // width (object-fit: cover at the full width, so the rest is cropped away).
+// It also fails if the bottom fade reaches Ouro (taste review r10): his lowest
+// point, FOOT of the art's height (ouroboros.bot castFoot['ouro-md']), must keep
+// at least 80% opacity under the mask, with the drift at its fullest.
 // Also checks that nothing on the page scrolls sideways at 320.
 //
 //   npm run build && node scripts/hero-crop.mjs
@@ -20,6 +23,10 @@ const DIST = fileURLToPath(new URL("../dist", import.meta.url));
 const PORT = 6199;
 const PAGES = ["/apps/ouro-md/"];
 const MAX_CROP = 0.2;
+// Ouro's lowest point on the lectern, as a share of the art's height.
+const FOOT = 0.85;
+const FOOT_ALPHA = 0.8;
+const DRIFT = 1.02;
 const types = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".woff2": "font/woff2" };
 
 const server = createServer(async (req, res) => {
@@ -51,13 +58,25 @@ try {
         if (!img) return null;
         const r = img.getBoundingClientRect();
         const natural = (r.width * Number(img.getAttribute("height"))) / Number(img.getAttribute("width"));
-        return { box: r.height, natural, overflow: document.documentElement.scrollWidth - window.innerWidth };
+        const cs = getComputedStyle(img);
+        const y = parseFloat(cs.objectPosition.split(" ")[1]) / 100;
+        const fade = parseFloat(getComputedStyle(img.closest(".story-hero")).getPropertyValue("--hero-fade")) / 100;
+        const mask = getComputedStyle(img.closest(".story-hero")).maskImage || getComputedStyle(img.closest(".story-hero")).webkitMaskImage;
+        return { box: r.height, natural, y, fade, mask, overflow: document.documentElement.scrollWidth - window.innerWidth };
       });
       if (!m) failures.push(`${path}: no hero`);
       else if (width > 640) {
         const crop = 1 - m.box / m.natural;
         console.log(JSON.stringify({ path, width, height, box: Math.round(m.box), natural: Math.round(m.natural), crop: +(crop * 100).toFixed(1) }));
         if (crop > MAX_CROP) failures.push(`${path} at ${width}x${height}: the hero crops ${(crop * 100).toFixed(1)}% of its scene`);
+        // Where his foot lands in the box, then pushed down by the drift about the fade line.
+        const share = Math.min(1, m.box / m.natural);
+        const at = (FOOT - m.y * (1 - share)) / share;
+        const drifted = m.fade + (at - m.fade) * DRIFT;
+        const alpha = drifted <= m.fade ? 1 : 1 - (drifted - m.fade) / (1 - m.fade);
+        console.log(JSON.stringify({ path, width, foot: +at.toFixed(3), fade: m.fade, alpha: +alpha.toFixed(3) }));
+        if (!(m.fade > 0) || !m.mask.includes(`rgb(0, 0, 0) ${+(m.fade * 100).toFixed(1)}%`)) failures.push(`${path} at ${width}: the hero's fade must start at --hero-fade (got ${m.mask})`);
+        if (alpha < FOOT_ALPHA - 0.005) failures.push(`${path} at ${width}x${height}: Ouro's foot keeps only ${(alpha * 100).toFixed(0)}% under the fade`);
       } else if (m.overflow > 0) failures.push(`${path} at ${width}px scrolls ${m.overflow}px sideways`);
       await context.close();
     }

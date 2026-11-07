@@ -28,6 +28,9 @@
     <link rel="preload" as="image" type="image/avif" media="(min-width: 641px)" imagesrcset="https://ouroboros.bot/brand/storybook/scenes/ouro-md-640.avif 640w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-960.avif 960w, https://ouroboros.bot/brand/storybook/scenes/ouro-md-1536.avif 1536w" imagesizes="100vw" fetchpriority="high">
     <script>
       try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+      // A scene image that fails (a 503, a dropped connection) steps aside for
+      // the scene's painted dawn behind it, instead of showing its alt text.
+      document.addEventListener('error', function(e) { var t = e.target; if (t && t.tagName === 'IMG' && t.closest && t.closest('.story-scene')) t.setAttribute('data-failed', ''); }, true);
     </script>
     <script defer src="/assets/site-telemetry.js"></script>
     <script type="application/ld+json">
@@ -90,7 +93,7 @@
 
     <main id="main">
       <!-- The storybook scene, served byte for byte by ouroboros.bot (ourostack/.github brand/). -->
-      <div class="story-scene story-hero" data-brand-scene="ouro-md">
+      <div class="story-scene story-hero" data-brand-scene="ouro-md" style="--paint: url(data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAAAwAgCdASoQAAYAAkA4JbACdLoAAv4yWOu3QAD+apbDx+Fx1hV2yoGkmhsQTnOGoeQfBVvJFbFBOEqiccu89aSko8EF5IIJf/k/QTQlGeDsoJ8St3HmfiMteufv3uGiEHnrTdW3gDAAAA==); --paint-phone: url(data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAADQAgCdASoQAAwAAkA4JbACdFKATiIRB5f7rDCsJzAAAP7uPyrOaeEhZPV6L/hqUrcqyXr1aXl+X9GQlN8ZvZxV3zYkx6HVaYm6EgekMF3G4ct/YK2QUyXWnoqiQG2mKMPISKUHNQ1xljvF+9VxU0/mWuf/z/TKV7fvrZu34wncVtUbgCi77tNpfg8SPOfdJaYgAA==)">
         <picture>
           <source media="(max-width: 640px)" type="image/avif" srcset="https://ouroboros.bot/brand/storybook/phone/ouro-md-384.avif 384w, https://ouroboros.bot/brand/storybook/phone/ouro-md-768.avif 768w" sizes="100vw" width="768" height="576">
           <source media="(max-width: 640px)" type="image/webp" srcset="https://ouroboros.bot/brand/storybook/phone/ouro-md-384.webp 384w, https://ouroboros.bot/brand/storybook/phone/ouro-md-768.webp 768w" sizes="100vw" width="768" height="576">
@@ -212,7 +215,7 @@
     </main>
 
     <!-- The meadow at the foot of the page: the open garden gate, the same band ouroboros.bot ends on. -->
-    <div class="story-scene story-meadow" data-brand-scene="ouroboros-website">
+    <div class="story-scene story-meadow" data-brand-scene="ouroboros-website" style="--paint: url(data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAACwAgCdASoQAAYAAkA4JbACdLoAyv8Wt9q/OG1kKgAA/kVrYWEK55AAeJau/y/HReTIUKtXUPXOzBssVJGHefTYv11auh3GVvhHzwX/9yOWZfdQ7mnMjHP/laUFOLq/I1CM6E84VCHDz0YcAAAAAA==); --paint-phone: url(data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAACQAgCdASoQAAwAAkA4JbACdD3/8kwIicm9moM4QAD+sjHaTPsmxno4BM4+YbmHw8pVLS3WatuEvFnwbSWM68gqz28c94XZ8xDWQLBXET5YIKiR8WQXT5cM/MX4u11BFdbzwzt4EmzkNj6b/TRr37jscb7W4AEyuAP/jJARFu9rd8MD+sTDldB4vObjdIzflbccix+lC/bIAA==)">
       <picture>
         <source media="(max-width: 640px)" type="image/avif" srcset="https://ouroboros.bot/brand/storybook/phone/ouroboros-website-384.avif 384w, https://ouroboros.bot/brand/storybook/phone/ouroboros-website-768.avif 768w" sizes="100vw" width="768" height="576">
         <source media="(max-width: 640px)" type="image/webp" srcset="https://ouroboros.bot/brand/storybook/phone/ouroboros-website-384.webp 384w, https://ouroboros.bot/brand/storybook/phone/ouroboros-website-768.webp 768w" sizes="100vw" width="768" height="576">

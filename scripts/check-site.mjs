@@ -81,6 +81,14 @@ for (const pagePath of pages) {
     if (!hero || hero.querySelector("img")?.getAttribute("fetchpriority") !== "high" || hero.querySelector("img")?.hasAttribute("loading")) {
       throw new Error(`${pagePath} must open on the ouro-md storybook scene, loaded first`);
     }
+    // Every scene carries its painted dawn, and a failed image steps aside for it (taste review r10).
+    for (const scene of doc.querySelectorAll(".story-scene")) {
+      const style = scene.getAttribute("style") || "";
+      if (!/--paint: url\(data:image\/webp;base64,[A-Za-z0-9+/=]+\)/.test(style) || !/--paint-phone: url\(data:image\/webp;base64,[A-Za-z0-9+/=]+\)/.test(style)) {
+        throw new Error(`${pagePath}: the ${scene.getAttribute("data-brand-scene")} scene must carry its --paint and --paint-phone`);
+      }
+    }
+    if (!/addEventListener\('error'[^\n]*\.story-scene'\)\) t\.setAttribute\('data-failed'/.test(html)) throw new Error(`${pagePath} must mark failed scene images data-failed`);
     if (!html.includes("/assets/ouro-md-editing.png")) throw new Error(`${pagePath} must show the real Ouro MD editing shot`);
   }
 }
