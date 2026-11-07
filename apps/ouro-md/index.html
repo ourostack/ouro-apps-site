@@ -205,8 +205,14 @@
               <a class="link" href="/apps/ouro-md/stable.json" data-telemetry="app_release_json">Release metadata</a>
             </div>
           </div>
-          <pre class="codeblock"><code><span class="c-com"># installs Ouro MD.app to /Applications, verified</span>
-<span class="c-cmd">curl</span> -fsSL https://ouro.bot/ouro-md-install.sh | bash</code></pre>
+          <!-- ouroboros.bot/ouro-md/'s install block, the same on both sites (taste review r11): the command, a Copy button that copies it, and the alias note. -->
+          <div class="install-block">
+            <pre id="ouro-md-install" class="agent-text">curl -fsSL https://ouro.bot/ouro-md-install.sh | bash</pre>
+            <div class="install-copy">
+              <button type="button" data-copy-target="ouro-md-install" class="btn copy-btn"><span data-copy-label>Copy</span></button>
+              <span class="install-note">Also adds an <code class="font-mono">md</code> shell alias.</span>
+            </div>
+          </div>
         </div>
         <div class="wrap">
           <p class="app-links"><a class="link" href="https://github.com/ourostack/ouro-md" data-telemetry="footer_source">Ouro MD source ↗</a><a class="link" href="https://github.com/ourostack/ouro-md/issues/new" data-telemetry="footer_support">Support ↗</a><a class="link" href="https://github.com/ourostack/ouro-md/blob/main/PRIVACY.md" data-telemetry="footer_privacy">Ouro MD privacy ↗</a><a class="link" href="https://ouroboros.bot/ouro-md/" data-telemetry="footer_ouroboros_ouro_md">Ouro MD on ouroboros.bot →</a></p>

@@ -5,8 +5,13 @@
 // width (object-fit: cover at the full width, so the rest is cropped away).
 // It also fails if the bottom fade reaches Ouro (taste review r10): his lowest
 // point, FOOT of the art's height (ouroboros.bot castFoot['ouro-md']), must keep
-// at least 80% opacity under the mask, with the drift at its fullest.
-// Also checks that nothing on the page scrolls sideways at 320.
+// at least 90% opacity under the mask, with the drift at its fullest (80%
+// until taste review r11). It fails, too, when a frame, video or screenshot
+// starts above the foot of the hero (taste review r11: ouroboros.bot's demo
+// windows started 8px inside the meadow; this page's window starts just below
+// it, and must stay there), the same check as ouroboros.bot's
+// scripts/hero-joins.mjs. Also checks that nothing on the page scrolls
+// sideways at 320.
 //
 //   npm run build && node scripts/hero-crop.mjs
 //
@@ -25,7 +30,7 @@ const PAGES = ["/apps/ouro-md/"];
 const MAX_CROP = 0.2;
 // Ouro's lowest point on the lectern, as a share of the art's height.
 const FOOT = 0.85;
-const FOOT_ALPHA = 0.8;
+const FOOT_ALPHA = 0.9;
 const DRIFT = 1.02;
 const types = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".webp": "image/webp", ".woff2": "font/woff2" };
 
@@ -62,7 +67,25 @@ try {
         const y = parseFloat(cs.objectPosition.split(" ")[1]) / 100;
         const fade = parseFloat(getComputedStyle(img.closest(".story-hero")).getPropertyValue("--hero-fade")) / 100;
         const mask = getComputedStyle(img.closest(".story-hero")).maskImage || getComputedStyle(img.closest(".story-hero")).webkitMaskImage;
-        return { box: r.height, natural, y, fade, mask, overflow: document.documentElement.scrollWidth - window.innerWidth };
+        // Every frame (a video, an iframe, an image, or a box with an edge of its
+        // own, at least 120px each way) that starts above the hero's foot.
+        const foot = img.closest(".story-hero").getBoundingClientRect().bottom;
+        const edged = (s) =>
+          (parseFloat(s.borderTopWidth) > 0 && s.borderTopStyle !== "none") || (s.boxShadow && s.boxShadow !== "none") ||
+          (s.backgroundColor && !/rgba\(0, 0, 0, 0\)|transparent/.test(s.backgroundColor)) || s.backgroundImage !== "none";
+        const early = [];
+        for (const el of document.querySelectorAll("main *")) {
+          if (el.closest(".story-scene, [aria-hidden='true'], [hidden]")) continue;
+          const q = el.getBoundingClientRect();
+          if (q.width < 120 || q.height < 120) continue;
+          const s = getComputedStyle(el);
+          if (s.display === "none" || s.visibility === "hidden") continue;
+          if ((s.position === "absolute" || s.position === "fixed") && !el.textContent.trim() && !el.querySelector("img,video,iframe,canvas")) continue;
+          const tag = el.tagName.toLowerCase();
+          if (!(tag === "video" || tag === "iframe" || tag === "img" || tag === "canvas" || edged(s))) continue;
+          if (q.top < foot - 0.5) early.push(`${tag}.${String(el.className).trim().split(/\s+/).slice(0, 2).join(".")} starts ${(foot - q.top).toFixed(1)}px above the hero's foot`);
+        }
+        return { box: r.height, natural, y, fade, mask, early, overflow: document.documentElement.scrollWidth - window.innerWidth };
       });
       if (!m) failures.push(`${path}: no hero`);
       else if (width > 640) {
@@ -77,6 +100,8 @@ try {
         console.log(JSON.stringify({ path, width, foot: +at.toFixed(3), fade: m.fade, alpha: +alpha.toFixed(3) }));
         if (!(m.fade > 0) || !m.mask.includes(`rgb(0, 0, 0) ${+(m.fade * 100).toFixed(1)}%`)) failures.push(`${path} at ${width}: the hero's fade must start at --hero-fade (got ${m.mask})`);
         if (alpha < FOOT_ALPHA - 0.005) failures.push(`${path} at ${width}x${height}: Ouro's foot keeps only ${(alpha * 100).toFixed(0)}% under the fade`);
+        console.log(JSON.stringify({ path, width, framesInsideHero: m.early.length }));
+        for (const e of m.early) failures.push(`${path} at ${width}x${height}: ${e}`);
       } else if (m.overflow > 0) failures.push(`${path} at ${width}px scrolls ${m.overflow}px sideways`);
       await context.close();
     }

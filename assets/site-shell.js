@@ -11,6 +11,37 @@
   if (document.readyState === 'complete') wake(); else window.addEventListener('load', wake, { once: true });
 })();
 
+// Copy buttons, as on ouroboros.bot (Layout.astro): <button data-copy-target="id">
+// copies that element's text. Without the Clipboard API, select the text so the
+// visitor can copy it.
+(function () {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy-target]'), function (button) {
+    button.addEventListener('click', function () {
+      var target = document.getElementById(button.getAttribute('data-copy-target'));
+      var label = button.querySelector('[data-copy-label]') || button;
+      if (!target) return;
+      var original = label.textContent;
+      function done(text) {
+        label.textContent = text;
+        setTimeout(function () { label.textContent = original; }, 1600);
+      }
+      function select() {
+        var range = document.createRange();
+        range.selectNodeContents(target);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        done('Selected, now copy it');
+      }
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(target.textContent).then(function () { done('Copied'); }, select);
+      } else {
+        select();
+      }
+    });
+  });
+})();
+
 (function () {
   var root = document.documentElement;
   var toggle = document.querySelector('.theme-toggle');
