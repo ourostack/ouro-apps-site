@@ -10,8 +10,11 @@
 // starts above the foot of the hero (taste review r11: ouroboros.bot's demo
 // windows started 8px inside the meadow; this page's window starts just below
 // it, and must stay there), the same check as ouroboros.bot's
-// scripts/hero-joins.mjs. Also checks that nothing on the page scrolls
-// sideways at 320.
+// scripts/hero-joins.mjs. It fails when the hero's box runs past its
+// rendered image on any side, and when the scene's painted placeholder is
+// still set once the image has landed (Ari's ruling on taste review r15: no
+// hero box ever extends past its art). Also checks that nothing on the page
+// scrolls sideways at 320.
 //
 //   npm run build && node scripts/hero-crop.mjs
 //
@@ -85,7 +88,10 @@ try {
           if (!(tag === "video" || tag === "iframe" || tag === "img" || tag === "canvas" || edged(s))) continue;
           if (q.top < foot - 0.5) early.push(`${tag}.${String(el.className).trim().split(/\s+/).slice(0, 2).join(".")} starts ${(foot - q.top).toFixed(1)}px above the hero's foot`);
         }
-        return { box: r.height, natural, y, fade, mask, early, overflow: document.documentElement.scrollWidth - window.innerWidth };
+        const sb = img.closest(".story-hero").getBoundingClientRect();
+        const past = { top: r.top - sb.top, bottom: sb.bottom - r.bottom, left: r.left - sb.left, right: sb.right - r.right };
+        const overrun = Object.entries(past).filter(([, d]) => d > 0.5).map(([side, d]) => `${side} ${d.toFixed(1)}px`);
+        return { box: r.height, natural, y, fade, mask, early, overrun, overflow: document.documentElement.scrollWidth - window.innerWidth };
       });
       if (!m) failures.push(`${path}: no hero`);
       else if (width > 640) {
@@ -102,9 +108,29 @@ try {
         if (alpha < FOOT_ALPHA - 0.005) failures.push(`${path} at ${width}x${height}: Ouro's foot keeps only ${(alpha * 100).toFixed(0)}% under the fade`);
         console.log(JSON.stringify({ path, width, framesInsideHero: m.early.length }));
         for (const e of m.early) failures.push(`${path} at ${width}x${height}: ${e}`);
+        if (m.overrun.length) failures.push(`${path} at ${width}x${height}: the hero's box runs past its image: ${m.overrun.join(", ")}`);
       } else if (m.overflow > 0) failures.push(`${path} at ${width}px scrolls ${m.overflow}px sideways`);
       await context.close();
     }
+  }
+  // Once the hero's image lands, its painted placeholder must be gone. The
+  // scene's bytes come from ouroboros.bot; a tiny stand-in image lands here.
+  const tiny = Buffer.from("UklGRjQAAABXRUJQVlA4ICgAAACQAQCdASoCAAIAAUAmJZACdLoAA5gA/vhQv/2Ka+LaZfbZg+gtAAAA", "base64");
+  for (const path of PAGES) {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    // Playwright tries the last route first.
+    await page.route(/^https:\/\/ouroboros\.bot\//, (route) => route.abort());
+    await page.route(/^https:\/\/ouroboros\.bot\/.*\.(?:avif|webp)$/, (route) => route.fulfill({ status: 200, contentType: "image/webp", body: tiny }));
+    await page.goto(`http://localhost:${PORT}${path}`, { waitUntil: "load" });
+    const paint = await page.evaluate(() => {
+      const img = document.querySelector(".story-hero img");
+      const scene = img && img.closest(".story-hero");
+      return img && img.naturalWidth ? getComputedStyle(scene).backgroundImage : "the hero image never landed";
+    });
+    console.log(JSON.stringify({ path, placeholderAfterLanding: paint }));
+    if (paint !== "none") failures.push(`${path}: the hero's placeholder is still set after the image landed (${String(paint).slice(0, 60)})`);
+    await context.close();
   }
 } finally {
   await browser.close();

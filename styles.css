@@ -101,6 +101,9 @@ img, svg, video { display: block; max-width: 100%; }
 a { color: inherit; }
 h1, h2, h3, h4, p, figure, ul { margin: 0; }
 h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; color: var(--color-bone); }
+/* Headings balance their lines, so a phone never leaves one word hanging
+   (taste review r15; ouroboros.bot balances its headings the same way). */
+h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
 ul { padding: 0; list-style: none; }
 code { font-family: var(--font-mono); font-size: 0.85em; }
 /* Controls take the page's font, not the browser's Arial (taste review r12:
@@ -180,7 +183,7 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
    so the mark and the buttons line up across both sites (taste review r7
    ruling; r13 moved both bars from 16px onto the 24px gutter). */
 .brand span { line-height: 1.75rem; }
-.brand { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--color-bone); text-decoration: none; font-family: var(--font-display); font-size: 1.25rem; }
+.brand { display: inline-flex; align-items: center; min-height: 2.75rem; gap: 0.75rem; color: var(--color-bone); text-decoration: none; font-family: var(--font-display); font-size: 1.25rem; }
 @media (min-width: 1280px) { .brand { font-size: 1.5rem; } }
 .brand img { width: 2rem; height: 2rem; }
 @media (prefers-reduced-motion: no-preference) and (hover: hover) {
@@ -316,7 +319,10 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
 .codeblock { margin: 0; padding: 1.25rem 1.5rem; border-radius: 0.9rem; background: var(--color-deep); border: 1px solid color-mix(in srgb, var(--color-canopy) 60%, transparent); color: var(--color-bone); font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.7; overflow-x: auto; white-space: pre; }
 .c-com { color: var(--color-mist); }
 .c-cmd { color: var(--color-scale); }
-.app-links { display: flex; flex-wrap: wrap; gap: 0.35rem 1.5rem; margin-top: 1.5rem; font-size: 0.9375rem; color: var(--color-mist); }
+/* Every link that is not inline in a sentence stands a finger tall (44px;
+   taste review r15, the same rule as ouroboros.bot's product links). */
+.app-links a, .actions .link { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.app-links { display: flex; flex-wrap: wrap; gap: 0 1.5rem; margin-top: 1.5rem; font-size: 0.9375rem; color: var(--color-mist); }
 
 /* ---- Footer: the same kit as ouroboros.bot and mendelow.me ---------------- */
 
@@ -335,7 +341,17 @@ button, input, select, textarea { font: inherit; letter-spacing: inherit; color:
   .footer-inner { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem var(--split-gap); text-align: left; }
   .footer-row { flex: none; margin-top: 0; justify-content: flex-end; }
 }
-@media (max-width: 639.98px) { .footer-sep { display: none; } .footer-row { column-gap: 1.1rem; } }
+/* On a phone the links stand in two even columns of finger-sized rows (44px;
+   taste review r15), with the copyright line beneath them; an odd last link
+   takes the whole row. The same sizes and spacing as ouroboros.bot's
+   Footer.astro; ouro.bot keeps its extra "ouroboros.bot" link. */
+@media (max-width: 639.98px) {
+  .footer-sep { display: none; }
+  .footer-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; justify-items: center; align-items: center; }
+  .footer-row a { display: inline-flex; align-items: center; justify-content: center; min-height: 2.75rem; min-width: 2.75rem; }
+  .footer-row a:last-of-type:nth-of-type(odd) { grid-column: 1 / -1; }
+  .footer-row > span:first-child { grid-column: 1 / -1; order: 1; margin-top: 0.75rem; }
+}
 
 /* A one-line command wraps on a phone so the whole URL stays visible. */
 .install-line .codeblock { white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -456,6 +472,10 @@ main > .section.tint:last-child { background: linear-gradient(to bottom, color-m
    data-failed by the head script and steps aside; its alt text never shows. */
 .story-scene { background: var(--paint, none) 50% 50% / cover no-repeat, #E9C9A0; }
 .story-hero { background-position: 50% 60.7%; }
+/* Once the art has landed, its paint goes: nothing of the placeholder shows
+   anywhere (Ari's ruling, taste review r15; the same rule as ouroboros.bot).
+   The head script marks a scene [data-landed] when its image loads. */
+.story-scene[data-landed] { background: none; }
 @media (max-width: 640px) { .story-scene { background-image: var(--paint-phone, none); background-size: 100% 100%; } }
 .story-scene img { border: 0; color: transparent; }
 .story-scene img:not([src]), .story-scene img[src=""], .story-scene img[data-failed] { visibility: hidden; }
