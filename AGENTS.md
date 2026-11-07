@@ -1,6 +1,6 @@
 # AGENTS.md
 
-**Moved:** Ouro's public site is [ouroboros.bot](https://ouroboros.bot) (ourostack/ouroboros-website) since 2026-11-06 (Ari: "we need a unified domain"). The apps shelf moved to https://ouroboros.bot/apps/ and the Ouro HX page to https://ouroboros.bot/ouro-hx/. ouro.bot forwards each old page there.
+**Moved:** Ouro's public site is [ouroboros.bot](https://ouroboros.bot) (ourostack/ouroboros-website) since 2026-11-06 (Ari: "we need a unified domain"). The apps shelf moved to https://ouroboros.bot/apps/ and the Ouro HX page to https://ui.ouroboros.bot/, the Ouro UI site, its one home with UI and AX since 2026-11-07. ouro.bot forwards each old page straight to its home.
 
 **Moved, 2026-11-07:** Ouro MD's download page moved from https://ouro.bot/apps/ouro-md/ to https://ouroboros.bot/ouro-md/download/ (Ari: "move every surface to ouroboros.bot and have ouro.bot forward"), with its release metadata (https://ouroboros.bot/ouro-md/stable.json and its hourly refresh workflow), the one-line installer (https://ouroboros.bot/ouro-md-install.sh) and the files the page loaded. They were removed from this repository after the forward went live; every old path 301s to its new home.
 
