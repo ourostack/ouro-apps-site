@@ -116,16 +116,14 @@
     var THRESHOLD = 64, FLICK = 0.5, SLOP = 10;
     var start = null, dy = 0, dragging = false;
     function reset(animate) {
-      menu.style.transition = animate && !reduce.matches ? 'transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.28s' : '';
+      menu.style.transition = animate && !reduce.matches ? 'transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2)' : '';
       menu.style.transform = '';
-      menu.style.opacity = '';
       if (animate) setTimeout(function () { menu.style.transition = ''; }, 300);
     }
     function close() {
       if (reduce.matches) { reset(false); setOpen(false, true); return; }
-      menu.style.transition = 'transform 0.2s ease-in, opacity 0.2s ease-in';
+      menu.style.transition = 'transform 0.2s ease-in';
       menu.style.transform = 'translateY(' + (dy > 0 ? '100%' : '-100%') + ')';
-      menu.style.opacity = '0';
       setTimeout(function () { setOpen(false, true); reset(false); }, 200);
     }
     menu.addEventListener('touchstart', function (e) {
@@ -148,7 +146,6 @@
       if (!reduce.matches) {
         menu.style.transition = '';
         menu.style.transform = 'translateY(' + dy + 'px)';
-        menu.style.opacity = String(Math.max(0.4, 1 - Math.abs(dy) / 600));
       }
     }, { passive: false });
     menu.addEventListener('touchend', function () {
