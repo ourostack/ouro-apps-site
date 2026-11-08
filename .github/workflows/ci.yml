@@ -6,6 +6,12 @@ on:
   pull_request:
   workflow_dispatch:
 
+# A newer push to a pull request cancels its older run. Runs not triggered by a pull request each
+# get their own group, so they are never cancelled.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   # The ouro-apex Worker's contract (tests/worker.test.mjs). One test checks
   # every forward destination against the live ouroboros.bot.
