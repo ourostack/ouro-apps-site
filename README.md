@@ -10,7 +10,7 @@
 > (ourostack/ouroboros-website). ouro.bot forwards every path there.
 >
 > - 2026-11-06: the apps shelf that was this site's homepage moved to
->   https://ouroboros.bot/apps/, and the Ouro HX page to https://ouroboros.bot/ouro-hx/.
+>   https://ouroboros.bot/apps/, and the Ouro HX page to https://ui.ouroboros.bot/, the Ouro UI site.
 > - 2026-11-07: Ouro MD's download page moved from `/apps/ouro-md/` to
 >   https://ouroboros.bot/ouro-md/download/, its release metadata to
 >   https://ouroboros.bot/ouro-md/stable.json (refreshed hourly there), and
@@ -26,7 +26,7 @@
 
 `worker.js`, `routes.js` and `wrangler.jsonc` define the `ouro-apex` Worker that fronts `ouro.bot/*`, `www.ouro.bot/*` and `ui.ouro.bot/*` (no other host). It serves nothing itself; every path redirects. `routes.js` is the routing table:
 
-- **`forwards`:** each old ouro.bot page or file and its new home on ouroboros.bot, with a 301 that keeps the query: `/` and `/apps/` to `/apps/`, `/apps/ouro-hx/` to `/ouro-hx/`, Shepherd and the retired Workbench to `/apps/#shepherd`, `/apps/ouro-md/` to `/ouro-md/download/`, `/apps/ouro-md/stable.json` to `/ouro-md/stable.json`, `/ouro-md-install.sh` to the same path, and each old `/assets/` file to its copy there. A test fails if any destination is missing from the live site (or from a built ouroboros-website `dist/`, with `OUROBOROS_DIST=<path>`); ouroboros-website's `tests/ouro-bot-forwards.test.mjs` checks the same list against its build.
+- **`forwards`:** each old ouro.bot page or file and its new home on ouroboros.bot, with a 301 that keeps the query: `/` and `/apps/` to `/apps/`, `/apps/ouro-hx/` straight to https://ui.ouroboros.bot/ (Ouro HX's home since 2026-11-07), Shepherd and the retired Workbench to `/apps/#shepherd`, `/apps/ouro-md/` to `/ouro-md/download/`, `/apps/ouro-md/stable.json` to `/ouro-md/stable.json`, `/ouro-md-install.sh` to the same path, and each old `/assets/` file to its copy there. A test fails if any destination is missing from the live site (or from a built ouroboros-website `dist/`, with `OUROBOROS_DIST=<path>`); ouroboros-website's `tests/ouro-bot-forwards.test.mjs` checks the same list against its build.
 - **`elsewhere`:** Ouro MD's App Store support and privacy URLs, with a 302: `/support/` to its GitHub issues and `/privacy/` to its `PRIVACY.md`.
 - **Anything else** gets a 301 to the same path (and query) on ouroboros.bot. A page that exists there opens; a missing one gets ouroboros.bot's "Lost in the coils" page with a real 404.
 - **`www.ouro.bot`** forwards exactly like the apex. **`ui.ouro.bot`** was Ouro UI's site, which now lives at `ui.ouroboros.bot` (served by `site/host` in ourostack/ouro-ui); every path on it 301s to the same path, query included, there.

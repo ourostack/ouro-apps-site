@@ -24,9 +24,10 @@ export const forwards = new Map([
   ["/apps", `${home}/apps/`],
   ["/apps/", `${home}/apps/`],
   ["/apps/index.html", `${home}/apps/`],
-  ["/apps/ouro-hx", `${home}/ouro-hx/`],
-  ["/apps/ouro-hx/", `${home}/ouro-hx/`],
-  ["/apps/ouro-hx/index.html", `${home}/ouro-hx/`],
+  // Ouro HX's page lives on the Ouro UI site, its one home with UI and AX (Ari, 2026-11-07: "let's unify"); straight there, one hop.
+  ["/apps/ouro-hx", `${uiHome}/`],
+  ["/apps/ouro-hx/", `${uiHome}/`],
+  ["/apps/ouro-hx/index.html", `${uiHome}/`],
   // Shepherd superseded Workbench (Ari, 2026-10-31); neither ever had its own page here.
   ["/apps/shepherd", `${home}/apps/#shepherd`],
   ["/apps/shepherd/", `${home}/apps/#shepherd`],
@@ -52,12 +53,14 @@ export const forwards = new Map([
     [`/assets/media/ouro-md-${clip}-${theme}.webm`, `${home}/images/workshop/ouro-md-${clip}-${theme}.webm`],
     [`/assets/media/ouro-md-${clip}-${theme}-poster.png`, `${home}/images/workshop/ouro-md-${clip}-${theme}-poster.png`],
   ])),
-  ["/assets/media/ouro-hx-spoonjoy-xray-dark.webp", `${home}/images/workshop/ouro-hx-spoonjoy-xray-dark.webp`],
-  ["/assets/media/ouro-hx-spoonjoy-xray-light.webp", `${home}/images/workshop/ouro-hx-spoonjoy-xray-light.webp`],
-  ["/assets/media/ouro-hx-spoonjoy-xray-provenance.json", `${home}/images/workshop/ouro-hx-spoonjoy-xray-provenance.json`],
-  // The Ouro HX page's old share image: its card on ouroboros.bot.
-  ["/assets/media/ouro-hx-spoonjoy-xray-og.png", `${home}/og/og-ouro-hx.jpg`],
-  ...["ouro.svg", "ouro-render.webp", "ouro-render-128.webp", "ouro-render-256.webp", "ouro-hx-render-128.webp", "ouro-hx-render-256.webp", "shepherd-render.webp", "shepherd-render-128.webp", "shepherd-render-256.webp"]
+  // The Ouro HX page's files: the X-ray shots and the mark on the Ouro UI site (byte for byte at 1600 wide),
+  // their provenance in its repository, and its old share image the site's own card.
+  ["/assets/media/ouro-hx-spoonjoy-xray-dark.webp", `${uiHome}/showcase/spoonjoy-xray-dark-1600.webp`],
+  ["/assets/media/ouro-hx-spoonjoy-xray-light.webp", `${uiHome}/showcase/spoonjoy-xray-light-1600.webp`],
+  ["/assets/media/ouro-hx-spoonjoy-xray-provenance.json", "https://github.com/ourostack/ouro-ui/blob/main/site/showcase/provenance.json"],
+  ["/assets/media/ouro-hx-spoonjoy-xray-og.png", `${uiHome}/og/home.jpg`],
+  ...["ouro-hx-render-128.webp", "ouro-hx-render-256.webp"].map((file) => [`/assets/brand/${file}`, `${uiHome}/brand/${file}`]),
+  ...["ouro.svg", "ouro-render.webp", "ouro-render-128.webp", "ouro-render-256.webp", "shepherd-render.webp", "shepherd-render-128.webp", "shepherd-render-256.webp"]
     .map((file) => [`/assets/brand/${file}`, `${home}/brand/${file}`]),
   ...["cormorant-regular.woff2", "jetbrains-mono.woff2", "outfit.woff2"].map((file) => [`/assets/fonts/${file}`, `${home}/fonts/${file}`]),
   // Ouro MD's icon, at the sizes ouro.bot served it: the same art, at 256px.

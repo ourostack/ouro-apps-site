@@ -45,7 +45,6 @@ const ouroMd = [
   ["/assets/favicon-32x32.png", "/brand/ouro-md-icon.png"],
   ["/assets/ouro-md-hero.png", "/images/workshop/ouro-md-typing-light-poster.png"],
   ["/assets/ouro-md-hero.mp4", "/images/workshop/ouro-md-typing-light.mp4"],
-  ["/assets/media/ouro-hx-spoonjoy-xray-og.png", "/og/og-ouro-hx.jpg"],
   ["/styles.css", "/ouro-md/download/"],
   ["/assets/site-shell.js", "/ouro-md/download/"],
   ["/assets/clips.js", "/ouro-md/download/"],
@@ -89,12 +88,32 @@ test("forwards the old homepage to the apps shelf on ouroboros.bot with a 301", 
   assert.equal(calls.length, 0);
 });
 
-test("forwards the Ouro HX page to its new home", async () => {
+test("forwards the Ouro HX page straight to the Ouro UI site, its one home, keeping the query", async () => {
   for (const path of ["/apps/ouro-hx", "/apps/ouro-hx/", "/apps/ouro-hx/index.html"]) {
+    for (const query of ["", "?x=1"]) {
+      const response = await get(`${path}${query}`);
+      assert.equal(response.status, 301, path);
+      assert.equal(response.headers.get("location"), `https://ui.ouroboros.bot/${query}`, path);
+    }
+  }
+  assert.equal(calls.length, 0);
+});
+
+test("forwards the Ouro HX page's files to their homes on the Ouro UI site", async () => {
+  const files = [
+    ["/assets/media/ouro-hx-spoonjoy-xray-dark.webp", "https://ui.ouroboros.bot/showcase/spoonjoy-xray-dark-1600.webp"],
+    ["/assets/media/ouro-hx-spoonjoy-xray-light.webp", "https://ui.ouroboros.bot/showcase/spoonjoy-xray-light-1600.webp"],
+    ["/assets/media/ouro-hx-spoonjoy-xray-provenance.json", "https://github.com/ourostack/ouro-ui/blob/main/site/showcase/provenance.json"],
+    ["/assets/media/ouro-hx-spoonjoy-xray-og.png", "https://ui.ouroboros.bot/og/home.jpg"],
+    ["/assets/brand/ouro-hx-render-128.webp", "https://ui.ouroboros.bot/brand/ouro-hx-render-128.webp"],
+    ["/assets/brand/ouro-hx-render-256.webp", "https://ui.ouroboros.bot/brand/ouro-hx-render-256.webp"],
+  ];
+  for (const [path, to] of files) {
     const response = await get(path);
     assert.equal(response.status, 301, path);
-    assert.equal(response.headers.get("location"), "https://ouroboros.bot/ouro-hx/", path);
+    assert.equal(response.headers.get("location"), to, path);
   }
+  assert.equal(calls.length, 0);
 });
 
 test("sends Shepherd and the retired Workbench to Shepherd on the shelf", async () => {
@@ -119,17 +138,20 @@ test("sends any other path to the same path on ouroboros.bot with a 301, so a mi
   assert.equal(calls.length, 0);
 });
 
-// Every forward lands on a page that exists. Set OUROBOROS_DIST to a built
-// ourostack/ouroboros-website dist/ to check it offline; otherwise this checks the live site.
-test("every forward destination exists on ouroboros.bot", async () => {
+// Every forward lands on a page that exists, on ouroboros.bot, on the Ouro UI site (Ouro HX's page and
+// files) or in ouro-ui's repository (their provenance). Set OUROBOROS_DIST to a built
+// ourostack/ouroboros-website dist/ to check ouroboros.bot offline; the rest, and otherwise all, are checked live.
+const destinationHomes = ["https://ouroboros.bot", "https://ui.ouroboros.bot", "https://github.com"];
+test("every forward destination exists, on ouroboros.bot, ui.ouroboros.bot or ouro-ui's repository", async () => {
   globalThis.fetch = realFetch;
   const destinations = [...new Set(forwards.values())];
   for (const destination of destinations) {
     const url = new URL(destination);
-    assert.equal(url.origin, "https://ouroboros.bot", destination);
+    assert.ok(destinationHomes.includes(url.origin), destination);
+    if (url.origin === "https://github.com") assert.match(url.pathname, /^\/ourostack\/ouro-ui\/blob\/main\//, destination);
     const fragment = url.hash.slice(1);
     let body;
-    if (process.env.OUROBOROS_DIST) {
+    if (process.env.OUROBOROS_DIST && url.origin === "https://ouroboros.bot") {
       const file = url.pathname.endsWith("/") ? `${url.pathname}index.html` : url.pathname;
       body = await readFile(`${process.env.OUROBOROS_DIST}${file}`, "utf8");
     } else {
