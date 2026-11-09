@@ -10,7 +10,7 @@ Follow ourostack's shared rule, [every PR merges within 30 minutes](https://gith
 
 ## What still lives here
 
-- The `ouro-apex` Worker: `worker.js`, its routing table `routes.js`, and `wrangler.jsonc`. `.github/workflows/deploy.yml` deploys it when a push to main changes it; see the README.
+- The `ouro-apex` Worker: `worker.js`, its routing table `routes.js`, and `wrangler.jsonc`. ourostack/ouroboros-website's `deploy-ouro-apex.yml` deploys it after a change here merges; see the README.
 
 Don't add pages or files here.
 

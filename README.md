@@ -41,7 +41,7 @@ npm test   # the Worker's contract; one test fetches the live ouroboros.bot
 
 ## Deploying the Worker
 
-`.github/workflows/deploy.yml` deploys the Worker when a push to `main` changes `worker.js`, `routes.js` or `wrangler.jsonc`, and can be run by hand from the Actions tab. It runs the steps below: it records the live version, waits out the stable.json refresh window, snapshots the endpoints, deploys, snapshots again, checks each host's redirect and HSTS, and rolls back if anything changed. It uses the repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. The same steps by hand:
+ourostack/ouroboros-website's `.github/workflows/deploy-ouro-apex.yml` deploys the Worker, with that repository's Cloudflare token, because this repository's token can't deploy Workers. Three times an hour it deploys when the newest commit here that changes `worker.js`, `routes.js` or `wrangler.jsonc` differs from the live version, following the steps below. It waits out the stable.json refresh window, records the live version, snapshots the endpoints, deploys, snapshots again, checks each host's redirect and HSTS, and rolls back if anything changed. While the live deployment is a rollback, its scheduled runs hold until someone runs it by hand from that repository's Actions tab. A hand deploy of anything other than main lasts only until the next scheduled run, which redeploys main's Worker. The same steps by hand, for main's code or right after a rollback:
 
 The hourly refresh in ouroboros-website (cron `17 * * * *`) rewrites `stable.json` whenever Ouro MD ships, so the check compares that file's fields, not its hash. Take both snapshots within the same hour, away from :17 past the hour; the script warns between :12 and :25.
 
