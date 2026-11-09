@@ -31,7 +31,7 @@
 - **Anything else** gets a 301 to the same path (and query) on ouroboros.bot. A page that exists there opens; a missing one gets ouroboros.bot's "Lost in the coils" page with a real 404.
 - **`www.ouro.bot`** forwards exactly like the apex. **`ui.ouro.bot`** was Ouro UI's site, which now lives at `ui.ouroboros.bot` (served by `site/host` in ourostack/ouro-ui); every path on it 301s to the same path, query included, there.
 
-Every response carries `Strict-Transport-Security: max-age=31536000`, as ouroboros.bot's do, so a browser that has seen ouro.bot once goes to https first. Plain HTTP already reaches the Worker and gets the same redirect straight to https.
+Every response carries `Strict-Transport-Security: max-age=31536000`, as ouroboros.bot's do. Browsers record HSTS only from an https response, so it protects ouro.bot once a browser has reached it over https; on a plain-HTTP request the header does nothing, and that request already gets its redirect straight to https on the new host.
 
 Why 301s: the unified domain is Ari's decision (2026-11-06, extended to Ouro MD on 2026-11-07), the move is permanent, and search engines should carry the old pages' standing to ouroboros.bot. `curl -fsSL https://ouro.bot/ouro-md-install.sh | bash` keeps working, because `-L` follows the 301. The App Store support and privacy URLs stay 302s because they may still change.
 

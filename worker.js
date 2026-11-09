@@ -3,8 +3,8 @@
 
 import { home, uiOld, uiHome, forwards, elsewhere } from "./routes.js";
 
-// Every response carries HSTS, as ouroboros.bot's do (2026-11-09), so a browser that has seen
-// ouro.bot once goes to https first.
+// Every response carries HSTS, as ouroboros.bot's do (2026-11-09). Browsers record it only from an
+// https response, so it protects ouro.bot once a browser has reached it over https.
 export const hsts = "max-age=31536000";
 
 function redirect(location, status) {
