@@ -41,7 +41,7 @@ npm test   # the Worker's contract; one test fetches the live ouroboros.bot
 
 ## Deploying the Worker
 
-Merging to `main` does not deploy the Worker. Redeploy it by hand, only when you edit those files, and check the endpoints before and after.
+`.github/workflows/deploy.yml` deploys the Worker when a push to `main` changes `worker.js`, `routes.js` or `wrangler.jsonc`, and can be run by hand from the Actions tab. It runs the steps below: it records the live version, waits out the stable.json refresh window, snapshots the endpoints, deploys, snapshots again, checks each host's redirect and HSTS, and rolls back if anything changed. It uses the repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. The same steps by hand:
 
 The hourly refresh in ouroboros-website (cron `17 * * * *`) rewrites `stable.json` whenever Ouro MD ships, so the check compares that file's fields, not its hash. Take both snapshots within the same hour, away from :17 past the hour; the script warns between :12 and :25.
 
