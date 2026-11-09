@@ -5,7 +5,7 @@
 import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import worker from "../worker.js";
+import worker, { hsts } from "../worker.js";
 import { forwards } from "../routes.js";
 
 let calls;
@@ -210,6 +210,22 @@ test("ui.ouro.bot forwards every path, with its query, to the same place on ui.o
     const response = await worker.fetch(new Request(`https://ui.ouro.bot${path}`));
     assert.equal(response.status, 301, path);
     assert.equal(response.headers.get("location"), `https://ui.ouroboros.bot${path}`, path);
+  }
+  assert.equal(calls.length, 0);
+});
+
+test("every response on every host carries HSTS", async () => {
+  assert.equal(hsts, "max-age=31536000");
+  const hosts = ["ouro.bot", "www.ouro.bot", "ui.ouro.bot"];
+  const paths = ["/", "/apps/ouro-md/", "/ouro-md-install.sh", "/support/", "/privacy/", "/nope/?x=1"];
+  for (const scheme of ["https", "http"]) {
+    for (const host of hosts) {
+      for (const path of paths) {
+        const response = await worker.fetch(new Request(`${scheme}://${host}${path}`));
+        assert.ok([301, 302].includes(response.status), `${scheme}://${host}${path}`);
+        assert.equal(response.headers.get("strict-transport-security"), hsts, `${scheme}://${host}${path}`);
+      }
+    }
   }
   assert.equal(calls.length, 0);
 });
