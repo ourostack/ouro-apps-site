@@ -59,7 +59,7 @@ jobs:
 
       - run: $WRANGLER deploy
 
-      - name: Check the endpoints after, and roll back if anything changed
+      - name: Check the endpoints after
         run: |
           sleep 15
           scripts/verify-endpoints.sh | tee after.txt
@@ -74,7 +74,11 @@ jobs:
             echo "$head" | grep -qiE '^location: https://(ui\.)?ouroboros\.bot/.*\?(x|y)=1$' || { echo "::error::$u lost its target or query"; ok=0; }
             echo "$head" | grep -qi '^strict-transport-security: max-age=31536000$' || { echo "::error::$u has no HSTS"; ok=0; }
           done
-          if [ "$ok" != 1 ]; then
-            $WRANGLER rollback "$ROLLBACK_ID" --name ouro-apex --message "deploy.yml: checks failed after deploy" --yes
-            exit 1
-          fi
+          [ "$ok" = 1 ]
+
+      # Any failure or cancellation after the live version was recorded puts it back. After a failed
+      # deploy this restores the version that is already live, which is harmless.
+      - name: Roll back
+        if: (failure() || cancelled()) && env.ROLLBACK_ID != ''
+        run: |
+          $WRANGLER rollback "$ROLLBACK_ID" --name ouro-apex --message "deploy.yml: checks failed after deploy" --yes
