@@ -53,10 +53,10 @@ export const forwards = new Map([
     [`/assets/media/ouro-md-${clip}-${theme}.webm`, `${home}/images/workshop/ouro-md-${clip}-${theme}.webm`],
     [`/assets/media/ouro-md-${clip}-${theme}-poster.png`, `${home}/images/workshop/ouro-md-${clip}-${theme}-poster.png`],
   ])),
-  // The Ouro HX page's files: the X-ray shots and the mark on the Ouro UI site (byte for byte at 1600 wide),
+  // The Ouro HX page's files: the X-ray shots and the mark on the Ouro UI site (byte for byte at 1920 wide),
   // their provenance in its repository, and its old share image the site's own card.
-  ["/assets/media/ouro-hx-spoonjoy-xray-dark.webp", `${uiHome}/showcase/spoonjoy-xray-dark-1600.webp`],
-  ["/assets/media/ouro-hx-spoonjoy-xray-light.webp", `${uiHome}/showcase/spoonjoy-xray-light-1600.webp`],
+  ["/assets/media/ouro-hx-spoonjoy-xray-dark.webp", `${uiHome}/showcase/spoonjoy-xray-dark-1920.webp`],
+  ["/assets/media/ouro-hx-spoonjoy-xray-light.webp", `${uiHome}/showcase/spoonjoy-xray-light-1920.webp`],
   ["/assets/media/ouro-hx-spoonjoy-xray-provenance.json", "https://github.com/ourostack/ouro-ui/blob/main/site/showcase/provenance.json"],
   ["/assets/media/ouro-hx-spoonjoy-xray-og.png", `${uiHome}/og/home.jpg`],
   ...["ouro-hx-render-128.webp", "ouro-hx-render-256.webp"].map((file) => [`/assets/brand/${file}`, `${uiHome}/brand/${file}`]),
