@@ -101,8 +101,8 @@ test("forwards the Ouro HX page straight to the Ouro UI site, its one home, keep
 
 test("forwards the Ouro HX page's files to their homes on the Ouro UI site", async () => {
   const files = [
-    ["/assets/media/ouro-hx-spoonjoy-xray-dark.webp", "https://ui.ouroboros.bot/showcase/spoonjoy-xray-dark-1600.webp"],
-    ["/assets/media/ouro-hx-spoonjoy-xray-light.webp", "https://ui.ouroboros.bot/showcase/spoonjoy-xray-light-1600.webp"],
+    ["/assets/media/ouro-hx-spoonjoy-xray-dark.webp", "https://ui.ouroboros.bot/showcase/spoonjoy-xray-dark-1920.webp"],
+    ["/assets/media/ouro-hx-spoonjoy-xray-light.webp", "https://ui.ouroboros.bot/showcase/spoonjoy-xray-light-1920.webp"],
     ["/assets/media/ouro-hx-spoonjoy-xray-provenance.json", "https://github.com/ourostack/ouro-ui/blob/main/site/showcase/provenance.json"],
     ["/assets/media/ouro-hx-spoonjoy-xray-og.png", "https://ui.ouroboros.bot/og/home.jpg"],
     ["/assets/brand/ouro-hx-render-128.webp", "https://ui.ouroboros.bot/brand/ouro-hx-render-128.webp"],
